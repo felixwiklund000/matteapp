@@ -10,6 +10,10 @@ Appen kan spara framstegen i molnet med [Supabase](https://supabase.com), som ha
 - **Flera enheter:** vid start och inloggning hämtas de senaste framstegen. Har både enheten och kontot egna framsteg får spelaren välja vilka som ska gälla.
 - **Utan konto:** "Fortsätt utan konto" fungerar precis som tidigare.
 
+## Läget just nu
+
+Supabase-projektet **snabbmatte** (`tdeyncxolyuguwskzvnh`, Stockholm) är skapat. Steg 1–3, 7 och 8 nedan är klara. Kvar är steg 4–6, som måste göras i Supabases webbgränssnitt.
+
 ## Sätta upp Supabase (cirka 15 minuter)
 
 1. **Skapa ett projekt.** Skapa ett konto på supabase.com och ett nytt projekt. Välj en region i Europa, till exempel Stockholm.
