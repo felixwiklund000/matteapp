@@ -445,6 +445,9 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 .card>.xpbar{margin:10px 0 6px}
 
 /* ===== Lär dig ===== */
+.backrow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:2px 0 6px}
+.backbtn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px 8px 10px;font-weight:800;font-size:.9rem}
+.backbtn.plain{background:none;border-color:transparent;color:var(--muted)}
 .lkicker{font-size:.8rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--wc);margin:6px 0 2px}
 .ltabs{display:flex;gap:6px;overflow-x:auto;margin:0 0 14px;padding-bottom:2px}
 .ltabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:7px 12px;font-size:.85rem;font-weight:800}
@@ -3767,7 +3770,13 @@ function bindCards(root){ root.querySelectorAll('[data-card]').forEach(b=>b.oncl
 /* ---------- Skärmar ---------- */
 const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test','account','learn','topic'];
 let curWorld=1;
-function show(name,arg){
+// Mobilens tillbaka-gest går tillbaka i appen. Sidor man bläddrar mellan läggs i webbläsarens historik.
+const NAV=['worlds','world','kodex','shop','stats','black','bworld','lesson','account','learn','topic'];
+function show(name,arg,fromHistory){
+  if(!fromHistory){
+    if(NAV.includes(name)) history.pushState({s:name,arg:arg===undefined?null:arg},'');
+    else if(name==='home' && history.state && history.state.s) history.replaceState(null,'');
+  }
   SCREENS.forEach(s=>{ const el=$('#s-'+s); if(el) el.classList.toggle('hidden',s!==name); });
   window.scrollTo(0,0);
   if(name==='home') renderHome();
@@ -3786,6 +3795,12 @@ function show(name,arg){
   if(name==='topic'){ if(arg) curTopic=arg; renderTopic(); }
 }
 $$('[data-home]').forEach(b=>b.onclick=()=>show('home'));
+addEventListener('popstate',e=>{
+  const st=e.state;
+  if(R && !$('#s-game').classList.contains('hidden')){ pauseRun(); history.pushState(st,''); return; }   // tillbaka mitt i en runda = paus
+  if(!$('#modal').classList.contains('hidden')) $('#modal').classList.add('hidden');
+  show(st && st.s ? st.s : 'home', st ? st.arg||undefined : undefined, true);
+});
 $$('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go));
 
 function renderHome(){
@@ -4613,7 +4628,7 @@ function renderLearn(){
   const row=(w,L)=>{ const ts=C.LEARN[w], read=ts.filter(t=>S.read[t.id]).length;
     return `<button class="lvl" data-lw="${w}" style="--wc:${wcol(w)}"><span class="n">${w}</span>
       <span class="t">${esc(L)}<small>${ts.length} avsnitt · ${read===ts.length?'alla lästa':read+' lästa'}</small></span>${read===ts.length?'<span class="ok">✓</span>':''}</button>`; };
-  $('#learnbody').innerHTML=`<h2>Lär dig</h2>
+  $('#learnbody').innerHTML=`<div class="backrow"><button class="backbtn" data-home>‹ Startsidan</button></div><h2>Lär dig</h2>
     <p class="sub small">Varje avsnitt har en enkel förklaring och ett exempel steg för steg. Tryck på <b>Förstår inte</b> om det inte klickar, eller på <b>Avancerat</b> om du vill veta mer. Allt fungerar utan internet.</p>
     <div class="levels">${[...C.WORLDS,10].map(w=>row(w,worldName(w))).join('')}</div>
     <h3 style="margin:20px 0 4px">Överkurs <span class="okb">MATTE 3–5</span></h3>
@@ -4631,7 +4646,8 @@ function renderTopic(){
   if(!S.read[t.id]){ S.read[t.id]=Date.now(); save(); }
   const box=$('#topicbody'); box.style.setProperty('--wc',wcol(w));
   const cards=(t.cards||[]).map(id=>C.CARDS.find(c=>c.id===id)).filter(Boolean);
-  box.innerHTML=`<p class="lkicker">${esc(worldName(w))}${ts.length>1?` · avsnitt ${k+1} av ${ts.length}`:''}</p>
+  box.innerHTML=`<div class="backrow"><button class="backbtn" id="l-back-top">‹ Lär dig</button><button class="backbtn plain" id="l-home-top">Startsidan</button></div>
+    <p class="lkicker">${esc(worldName(w))}${ts.length>1?` · avsnitt ${k+1} av ${ts.length}`:''}</p>
     <h2>${md(t.title)}</h2>
     ${ts.length>1?`<div class="ltabs">${ts.map((x,i)=>`<button class="${i===k?'on':''}" data-lk="${i}">${i+1}. ${md(x.title)}</button>`).join('')}</div>`:''}
     <div class="card ltext">${t.easy.map(p=>`<p>${md(p)}</p>`).join('')}</div>
@@ -4676,6 +4692,8 @@ function renderTopic(){
   $('#l-play').onclick=()=>startRound('level',w);
   const nt=$('#l-nexttopic'); if(nt) nt.onclick=()=>show('topic',{w,k:k+1});
   $('#l-back').onclick=()=>show('learn');
+  $('#l-back-top').onclick=()=>show('learn');
+  $('#l-home-top').onclick=()=>show('home');
 }
 
 /* =====================================================================
@@ -4864,6 +4882,8 @@ async function cloudInit(){
 }
 document.addEventListener('visibilitychange',()=>{ if(!A.user) return; if(document.hidden) pushNow(); else reconcile(); });
 window.addEventListener('online',()=>{ if(A.user) pushNow(); });
+// Offline eller dåligt nät: försök igen varje halvminut tills molnet har det senaste
+setInterval(()=>{ if(A.user && syncMeta().dirty && A.status!=='saving') pushNow(); },30000);
 
 async function logout(){
   if(!(await pushNow()) && syncMeta().dirty && !A.forceOut){
