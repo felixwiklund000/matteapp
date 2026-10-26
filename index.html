@@ -440,6 +440,42 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 :root[data-skin="black"] .playbtn{color:#111}
 .card>.xpbar{margin:10px 0 6px}
 
+/* ===== Konto ===== */
+.avatarbtn{position:absolute;top:10px;left:0;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;color:var(--muted);padding:0}
+.avatarbtn svg{width:20px;height:20px}
+.avatarbtn.in{border:0;color:#fff;font:900 1.1rem/1 var(--font);background:linear-gradient(145deg,var(--accent),var(--accent-2));box-shadow:0 4px 14px color-mix(in srgb,var(--accent) 40%,transparent)}
+.avatarbtn .sd{position:absolute;right:-1px;bottom:-1px;width:13px;height:13px;border-radius:50%;border:2.5px solid var(--bg);background:var(--good)}
+.avatarbtn .sd.pending,.avatarbtn .sd.saving{background:var(--warn)}
+.avatarbtn .sd.offline{background:var(--muted)}
+.acc-hero{text-align:center;padding:8px 0 6px}
+.acc-hero .logo{width:72px;height:72px;margin-bottom:6px}
+.acc-hero h2{margin:4px 0 4px;font-size:1.7rem}
+.acc-hero p{color:var(--muted);margin:0 auto;max-width:340px;font-size:.95rem}
+.field{display:block;margin:0 0 14px}
+.field>span{display:block;font-size:.85rem;font-weight:800;color:var(--muted);margin:0 0 6px 2px}
+.field input{width:100%;font:700 1.05rem/1.2 var(--font);padding:13px 14px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);transition:border-color .15s}
+.field input:focus{outline:none;border-color:var(--accent)}
+.field small{display:block;font-size:.78rem;color:var(--muted);margin:5px 2px 0;font-weight:600}
+.field small.ok{color:var(--good)}.field small.no{color:var(--bad)}
+.pw{position:relative}
+.pw input{padding-right:64px}
+.pw button{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:var(--raised);color:var(--muted);border-radius:9px;padding:5px 9px;font-size:.78rem;font-weight:800}
+.codein{text-align:center;font:800 1.9rem/1 var(--num)!important;letter-spacing:.35em;padding:14px 8px 14px calc(8px + .35em)!important}
+.formerr{background:var(--bad-soft);color:var(--bad);border-radius:12px;padding:10px 12px;margin:0 0 14px;font-weight:700;font-size:.92rem}
+.formok{background:var(--good-soft);color:var(--good);border-radius:12px;padding:10px 12px;margin:0 0 14px;font-weight:700;font-size:.92rem}
+.linkbtn{display:block;margin:4px auto 10px;border:0;background:none;color:var(--accent);font-weight:800;font-size:.95rem;padding:8px}
+.linkbtn:disabled{color:var(--muted);opacity:.7}
+.btn.busy{opacity:.7;pointer-events:none}
+.prof{display:flex;align-items:center;gap:14px}
+.prof .av{flex:0 0 60px;height:60px;border-radius:50%;display:grid;place-items:center;color:#fff;font:900 1.6rem/1 var(--font);background:linear-gradient(145deg,var(--accent),var(--accent-2))}
+.prof b{display:block;font-size:1.25rem}
+.syncline{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:.9rem;color:var(--muted)}
+.syncline i{width:10px;height:10px;border-radius:50%;background:var(--good);flex:0 0 10px}
+.syncline i.pending,.syncline i.saving{background:var(--warn)}.syncline i.offline{background:var(--muted)}
+.choice{display:block;width:100%;text-align:left;margin:0 0 12px}
+.choice b{display:block;font-size:1.05rem}
+.choice small{display:block;color:var(--muted);font-weight:600;margin-top:2px}
+
 /* ===== Nivå upp ===== */
 .lvup{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;
   background:radial-gradient(80% 60% at 50% 40%,color-mix(in srgb,var(--lc) 35%,transparent),transparent 70%),color-mix(in srgb,var(--bg) 88%,transparent);
@@ -474,6 +510,7 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 <section id="s-home">
   <div class="hud" id="homeinfo"></div>
   <div class="hero">
+    <button class="avatarbtn hidden" id="b-account" aria-label="Konto"></button>
     <button class="themebtn" id="b-theme-mode" aria-label="Byt mellan mörkt och ljust läge"></button>
     <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
       <defs><linearGradient id="lg-logo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--accent)"/><stop offset="1" stop-color="var(--accent-2)"/></linearGradient></defs>
@@ -568,6 +605,9 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 <section id="s-lesson" class="hidden"><div id="lessonbody"></div></section>
 <section id="s-boss" class="hidden"><div id="bossbody"></div></section>
 <section id="s-test" class="hidden"><div id="testbody"></div></section>
+
+<!-- ============ KONTO ============ -->
+<section id="s-account" class="hidden"><div id="accountbody"></div></section>
 
 </main>
 <div id="fx" class="fx hidden" role="dialog" aria-label="Black upplåst"></div>
@@ -3226,7 +3266,8 @@ function md(str){
 /* ---------- Sparat läge ---------- */
 let storeKey=STORE;
 function load(key){ try{ return C.migrate(JSON.parse(localStorage.getItem(key))); }catch(e){ return C.migrate(null); } }
-function save(){ try{ localStorage.setItem(storeKey,JSON.stringify(S)); }catch(e){} }
+let onSaved=null;   // sätts av kontodelen: molnsparning efter varje lokal sparning
+function save(){ try{ localStorage.setItem(storeKey,JSON.stringify(S)); }catch(e){} if(onSaved && storeKey===STORE) onSaved(); }
 let S=load(STORE);
 save(); // sparar uppgraderingen, gamla fält behålls
 
@@ -3308,7 +3349,7 @@ function openModal(html){ const m=$('#modal'); m.innerHTML=`<div class="inner">$
 function bindCards(root){ root.querySelectorAll('[data-card]').forEach(b=>b.onclick=()=>{ const c=C.CARDS.find(x=>x.id===b.dataset.card); openModal(cardHTML(c,true,{big:true})); }); }
 
 /* ---------- Skärmar ---------- */
-const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test'];
+const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test','account'];
 let curWorld=1;
 function show(name,arg){
   SCREENS.forEach(s=>{ const el=$('#s-'+s); if(el) el.classList.toggle('hidden',s!==name); });
@@ -3324,6 +3365,7 @@ function show(name,arg){
   if(name==='lesson'){ if(arg) curB=arg; renderLesson(curB); }
   if(name==='boss') renderBossIntro();
   if(name==='test') renderTest();
+  if(name==='account') renderAccount();
 }
 $$('[data-home]').forEach(b=>b.onclick=()=>show('home'));
 $$('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go));
@@ -3353,7 +3395,7 @@ function renderHome(){
   $('#b-kodex').innerHTML=act(ICON.cards,'Kodex',`${nCards} av ${C.CARDS.length} kort`);
   $('#b-shop').innerHTML=act(ICON.bag,'Butik','Teman för ✦');
   $('#b-stats').innerHTML=act(ICON.chart,'Statistik','Se hur det går');
-  renderThemeBtn();
+  renderThemeBtn(); renderAccountBtn();
   renderHomeSpecial();
 }
 $('#b-theme-mode').onclick=()=>setTheme(!isLight());
@@ -3855,7 +3897,7 @@ function blackCardHTML(){
   return `<div class="bcard ${st}" role="img" aria-label="${st==='black'?'Black-kort':'Grafit-kort'}"><div class="bc-sheen"></div>
     <div class="bc-top"><span>SNABBMATTE</span><span class="bc-tier">${st==='black'?'BLACK':'GRAFIT'}</span></div>
     <div class="bc-chip"><i></i><i></i><i></i></div><div class="bc-sym">∑ ∫ √ π ∞</div>
-    <div class="bc-name">${esc((S.black.name||'Spelare').toUpperCase())}</div>
+    <div class="bc-name">${esc((S.black.name||A.username||'Spelare').toUpperCase())}</div>
     <div class="bc-row"><span>NIVÅ<b>${pl}</b></span><span>RÄTT<b>${acc} %</b></span><span>INSIKTER<b>${S.insightsEarned}</b></span><span>KODEX<b>${nC}/${C.CARDS.length}</b></span></div>
     <div class="bc-since">MEDLEM SEDAN ${since}</div></div>`;
 }
@@ -4033,11 +4075,300 @@ $('#tb-exit').onclick=exitTest;
   });
 })();
 
+/* =====================================================================
+   KONTO OCH MOLNSPARNING (Supabase)
+   Utan url och nyckel här under är kontot avstängt, och allt sparas bara
+   lokalt i webbläsaren som förut. Uppsättningen beskrivs i KONTO.md.
+   Nyckeln är den publika "anon"-nyckeln. Den får ligga i koden eftersom
+   databasen bara släpper fram varje användares egna rader (RLS).
+   ===================================================================== */
+const CLOUD={url:'', anonKey:''};
+const CLOUD_ON=!!(CLOUD.url && CLOUD.anonKey);
+const SB_SRC='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js';
+const SYNCKEY='snabbmatte-sync', SKIPKEY='snabbmatte-utan-konto';
+const USER_RE=/^[A-Za-z0-9ÅÄÖåäö_.-]{3,20}$/, MAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+let sb=null, sbReady=null;
+const A={user:null, username:'', view:'welcome', err:'', ok:'', busy:false, status:'ok', f:{}, free:null, cooldownUntil:0, pending:null, forceOut:false};
+const lsGet=k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
+const lsSet=(k,v)=>{ try{ if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v); }catch(e){} };
+// Synkläget: vem de lokala framstegen tillhör, när de sparades och om molnet ligger efter.
+function syncMeta(){ try{ return JSON.parse(lsGet(SYNCKEY))||{}; }catch(e){ return {}; } }
+function setSyncMeta(m){ lsSet(SYNCKEY,JSON.stringify(m)); }
+
+function loadSB(){
+  if(!sbReady) sbReady=new Promise((res,rej)=>{
+    const s=document.createElement('script'); s.src=SB_SRC;
+    s.onload=()=>{ try{ sb=window.supabase.createClient(CLOUD.url,CLOUD.anonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}); res(sb); }catch(e){ rej(e); } };
+    s.onerror=()=>{ sbReady=null; s.remove(); rej(new Error('offline')); };
+    document.head.appendChild(s);
+  });
+  return sbReady;
+}
+function errText(e){
+  const c=String((e&&(e.code||e.error_code))||''), m=String(e&&e.message||'').toLowerCase();
+  if(c==='invalid_credentials'||m.includes('invalid login')) return 'Fel e-post eller lösenord.';
+  if(c==='email_not_confirmed'||m.includes('not confirmed')) return 'E-postadressen är inte verifierad än.';
+  if(c==='user_already_exists'||c==='email_exists'||m.includes('already registered')) return 'Det finns redan ett konto med den e-postadressen. Logga in i stället.';
+  if(c==='weak_password'||m.includes('password should')) return 'Lösenordet är för svagt. Välj minst 8 tecken.';
+  if(c==='same_password') return 'Välj ett annat lösenord än det gamla.';
+  if(c==='otp_expired'||m.includes('expired')||(m.includes('invalid')&&m.includes('otp'))) return 'Koden stämmer inte eller har gått ut. Skicka en ny kod.';
+  if(c.includes('rate_limit')||m.includes('rate limit')||(e&&e.status===429)) return 'För många försök på kort tid. Vänta en minut och försök igen.';
+  if(m.includes('database error saving new user')) return 'Användarnamnet är redan taget. Välj ett annat.';
+  if(m==='offline'||m.includes('fetch')||m.includes('network')) return 'Ingen kontakt med servern. Kolla din internetanslutning.';
+  return 'Något gick fel: '+(e&&e.message||'okänt fel');
+}
+const must=r=>{ if(r && r.error) throw r.error; return r ? r.data : null; };
+
+/* ----- Sparning till molnet ----- */
+let pushT=0;
+onSaved=()=>{
+  const m=syncMeta(); m.savedAt=Date.now();
+  if(A.user){ m.dirty=true; m.owner=A.user.id; }
+  setSyncMeta(m);
+  if(A.user){ setStatus('pending'); clearTimeout(pushT); pushT=setTimeout(pushNow,1500); }
+};
+async function pushNow(){
+  clearTimeout(pushT);
+  if(!A.user||!sb) return false;
+  const m=syncMeta(); if(!m.dirty){ setStatus('ok'); return true; }
+  const at=m.savedAt||Date.now();
+  let data; try{ data=JSON.parse(lsGet(STORE)); }catch(e){}
+  if(!data) return false;
+  setStatus('saving');
+  let error; try{ ({error}=await sb.from('progress').upsert({user_id:A.user.id,data,updated_at:new Date(at).toISOString()})); }catch(e){ error=e; }
+  if(error){ setStatus('offline'); return false; }
+  const m2=syncMeta(); m2.owner=A.user.id; if(m2.savedAt===at) m2.dirty=false; setSyncMeta(m2);
+  if(m2.dirty){ setStatus('pending'); pushT=setTimeout(pushNow,1500); } else setStatus('ok');
+  return true;
+}
+// Jämför den här enhetens framsteg med molnets och välj de senaste.
+async function reconcile(){
+  if(!A.user||!sb) return;
+  if(!$('#s-game').classList.contains('hidden')) return;   // aldrig mitt i en runda
+  let r; try{ r=await sb.from('progress').select('data,updated_at').eq('user_id',A.user.id).maybeSingle(); }catch(e){ r={error:e}; }
+  if(r.error){ setStatus('offline'); return; }
+  const m=syncMeta(), remote=r.data;
+  if(!remote){ m.owner=A.user.id; m.dirty=true; m.savedAt=m.savedAt||Date.now(); setSyncMeta(m); await pushNow(); return; }
+  const rt=Date.parse(remote.updated_at)||0;
+  if(m.owner===A.user.id){
+    if(rt>(m.savedAt||0) && !m.dirty) applyRemote(remote.data,rt);   // spelat på en annan enhet sedan sist
+    else if(m.dirty) await pushNow();
+    else setStatus('ok');
+    return;
+  }
+  const local=load(STORE);
+  if(!local.answered && !local.xp){ applyRemote(remote.data,rt); return; }
+  A.pending={remote:C.migrate(remote.data),rt}; A.view='choose'; show('account');   // båda har framsteg: låt spelaren välja
+}
+function applyRemote(data,rt){
+  const st=C.migrate(data);
+  lsSet(STORE,JSON.stringify(st)); setSyncMeta({owner:A.user.id,savedAt:rt,dirty:false});
+  if(!TEST){ S=st; applySkin(); }
+  setStatus('ok');
+  const cur=SCREENS.find(n=>!$('#s-'+n).classList.contains('hidden'));
+  if(!TEST && ['home','worlds','kodex','shop','stats'].includes(cur)) show(cur);
+}
+function setStatus(st){
+  A.status=st; renderAccountBtn();
+  const l=$('#syncline'); if(l) l.outerHTML=syncLine();
+}
+const SYNC_TXT={ok:'Sparat i molnet',pending:'Sparar snart…',saving:'Sparar…',offline:'Offline. Sparas när du är online igen.'};
+const syncLine=()=>`<div class="syncline" id="syncline"><i class="${A.status}"></i>${SYNC_TXT[A.status]||''}</div>`;
+
+/* ----- Inloggning ----- */
+async function afterLogin(user){
+  A.user=user; A.username=(user.user_metadata&&user.user_metadata.username)||'';
+  lsSet(SKIPKEY,null);
+  try{ const p=await sb.from('profiles').select('username').eq('id',user.id).maybeSingle(); if(p.data&&p.data.username) A.username=p.data.username; }catch(e){}
+  renderAccountBtn();
+  A.view='profile';
+  await reconcile();
+}
+async function finishLogin(user){
+  await afterLogin(user);
+  A.f={}; A.err=''; A.ok='';
+  if(A.view!=='choose'){ show('home'); toast(`Inloggad som ${A.username||user.email}`); }
+}
+async function cloudInit(){
+  if(!CLOUD_ON) return;
+  let hasToken=false; try{ hasToken=Object.keys(localStorage).some(k=>/^sb-.*-auth-token$/.test(k)); }catch(e){}
+  renderAccountBtn();
+  if(!hasToken && !lsGet(SKIPKEY)){ A.view='welcome'; show('account'); }
+  try{ await loadSB(); }catch(e){ setStatus('offline'); return; }
+  sb.auth.onAuthStateChange((ev)=>{ if(ev==='SIGNED_OUT' && A.user){ A.user=null; A.username=''; renderAccountBtn(); } });
+  try{ const {data}=await sb.auth.getSession(); if(data&&data.session) await afterLogin(data.session.user); }catch(e){ setStatus('offline'); }
+}
+document.addEventListener('visibilitychange',()=>{ if(!A.user) return; if(document.hidden) pushNow(); else reconcile(); });
+window.addEventListener('online',()=>{ if(A.user) pushNow(); });
+
+async function logout(){
+  if(!(await pushNow()) && syncMeta().dirty && !A.forceOut){
+    A.forceOut=true; A.err='De senaste framstegen kunde inte sparas i molnet. Tryck på Logga ut igen för att logga ut ändå, men då försvinner det som inte hunnit sparas.';
+    renderAccount(); return;
+  }
+  try{ await sb.auth.signOut(); }catch(e){}
+  A.user=null; A.username=''; A.forceOut=false; A.err='';
+  lsSet(STORE,null); setSyncMeta({}); S=C.migrate(null); save();   // nästa person på enheten börjar från noll
+  applySkin(); renderAccountBtn(); A.view='welcome'; show('account');
+}
+
+/* ----- Kontoskärmen ----- */
+function renderAccountBtn(){
+  const b=$('#b-account'); if(!b) return;
+  b.classList.toggle('hidden',!CLOUD_ON);
+  b.classList.toggle('in',!!A.user);
+  b.innerHTML=A.user ? `${esc((A.username||'?')[0].toUpperCase())}<span class="sd ${A.status}"></span>` : svgI('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>');
+}
+$('#b-account').onclick=()=>{ A.view=A.user?'profile':'welcome'; A.err=''; A.ok=''; show('account'); };
+function go(view){ A.view=view; A.err=''; A.ok=''; A.forceOut=false; renderAccount(); window.scrollTo(0,0); }
+async function run(fn){
+  if(A.busy) return; A.busy=true; A.err=''; A.ok=''; renderAccount();
+  try{ await loadSB(); await fn(); }catch(e){ A.err=errText(e); }
+  A.busy=false; if(!$('#s-account').classList.contains('hidden')) renderAccount();
+}
+const field=(name,label,type,auto,extra='')=>`<label class="field"><span>${label}</span>${type==='password'
+  ?`<span class="pw"><input name="${name}" type="password" autocomplete="${auto}" value="${esc(A.f[name]||'')}" ${extra}><button type="button" data-show>Visa</button></span>`
+  :`<input name="${name}" type="${type}" autocomplete="${auto}" value="${esc(A.f[name]||'')}" ${extra}>`}${name==='username'?'<small id="u-help">3–20 tecken: bokstäver, siffror, _ . -</small>':''}</label>`;
+const msgs=()=>(A.err?`<div class="formerr" role="alert">${esc(A.err)}</div>`:'')+(A.ok?`<div class="formok">${esc(A.ok)}</div>`:'');
+const submit=(label)=>`<button class="btn primary${A.busy?' busy':''}" type="submit">${A.busy?'Vänta…':label}</button>`;
+const accHero=(title,text)=>`<div class="acc-hero">${$('.hero .logo').outerHTML.replace(/lg-logo/g,'lg-logo-acc')}<h2>${title}</h2>${text?`<p>${text}</p>`:''}</div>`;
+const summary=st=>{ const pl=C.playerLevel(st.xp); return `Spelarnivå ${pl.level} · ${st.xp} XP · ${esc(worldName(st.level))}`; };
+
+function renderAccount(){
+  const v=A.view, box=$('#accountbody'); let h='';
+  if(!CLOUD_ON){ box.innerHTML=accHero('Konto','Kontot är inte aktiverat i den här versionen av appen. Dina framsteg sparas på den här enheten.')+'<button class="btn ghost" data-acc-home>Tillbaka</button>'; bindAcc(); return; }
+  if(v==='welcome') h=accHero('Spara dina framsteg','Med ett konto sparas allt du klarar i molnet, så att du kan fortsätta på vilken mobil eller dator som helst.')+msgs()+`
+    <button class="btn primary" data-go-acc="signup">Skapa konto</button>
+    <button class="btn" data-go-acc="login">Jag har redan ett konto</button>
+    <button class="linkbtn" data-skip>Fortsätt utan konto</button>
+    <p class="muted small" style="text-align:center;margin:0">Utan konto sparas framstegen bara på den här enheten.</p>`;
+  else if(v==='signup') h=accHero('Skapa konto','')+msgs()+`<form data-form="signup" novalidate>
+    ${field('username','Användarnamn','text','username','maxlength="20" autocapitalize="off" spellcheck="false"')}
+    ${field('email','E-post','email','email','inputmode="email" autocapitalize="off"')}
+    ${field('password','Lösenord (minst 8 tecken)','password','new-password')}
+    ${submit('Skapa konto')}</form>
+    <button class="linkbtn" data-go-acc="login">Har du redan ett konto? Logga in</button>
+    <button class="btn ghost" data-go-acc="welcome">Tillbaka</button>`;
+  else if(v==='verify') h=accHero('Kolla din mejl',`Vi har skickat en kod till <b>${esc(A.f.email||'')}</b>. Skriv in den här för att verifiera kontot. Hittar du inte mejlet, titta i skräpposten.`)+msgs()+`<form data-form="verify" novalidate>
+    <label class="field"><span>Kod</span><input class="codein" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" value="${esc(A.f.code||'')}" placeholder="••••••"></label>
+    ${submit('Verifiera')}</form>${resendBtn('resend')}
+    <button class="btn ghost" data-go-acc="signup">Fel e-post? Börja om</button>`;
+  else if(v==='login') h=accHero('Logga in','')+msgs()+`<form data-form="login" novalidate>
+    ${field('email','E-post','email','email','inputmode="email" autocapitalize="off"')}
+    ${field('password','Lösenord','password','current-password')}
+    ${submit('Logga in')}</form>
+    <button class="linkbtn" data-go-acc="forgot">Glömt lösenordet?</button>
+    <button class="btn ghost" data-go-acc="welcome">Tillbaka</button>`;
+  else if(v==='forgot') h=accHero('Glömt lösenordet','Skriv din e-post så skickar vi en kod som du använder för att välja ett nytt lösenord.')+msgs()+`<form data-form="forgot" novalidate>
+    ${field('email','E-post','email','email','inputmode="email" autocapitalize="off"')}
+    ${submit('Skicka kod')}</form>
+    <button class="btn ghost" data-go-acc="login">Tillbaka</button>`;
+  else if(v==='reset') h=accHero('Nytt lösenord',`Skriv koden vi skickade till <b>${esc(A.f.email||'')}</b> och välj ett nytt lösenord.`)+msgs()+`<form data-form="reset" novalidate>
+    <label class="field"><span>Kod</span><input class="codein" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" value="${esc(A.f.code||'')}" placeholder="••••••"></label>
+    ${field('newpw','Nytt lösenord (minst 8 tecken)','password','new-password')}
+    ${submit('Spara nytt lösenord')}</form>${resendBtn('resendReset')}
+    <button class="btn ghost" data-go-acc="login">Tillbaka</button>`;
+  else if(v==='choose'){ const loc=load(STORE), rem=A.pending.remote;
+    h=accHero('Vilka framsteg vill du ha?','Både den här enheten och ditt konto har sparade framsteg. Välj vilka du vill fortsätta med. De andra skrivs över.')+msgs()+`
+    <button class="btn choice" data-choose="remote"><b>Kontots framsteg</b><small>${summary(rem)}</small></button>
+    <button class="btn choice" data-choose="local"><b>Den här enhetens framsteg</b><small>${summary(loc)}</small></button>`; }
+  else if(v==='profile') h=`<h2>Ditt konto</h2><div class="card"><div class="prof"><span class="av">${esc((A.username||'?')[0].toUpperCase())}</span>
+      <span style="min-width:0"><b>${esc(A.username)}</b><span class="muted small" style="overflow-wrap:anywhere">${esc(A.user?A.user.email:'')}</span></span></div>${syncLine()}</div>`+msgs()+`
+    <button class="btn" data-sync>Spara nu</button>
+    <button class="btn ghost" data-logout style="color:var(--bad)">Logga ut</button>
+    <button class="btn ghost" data-acc-home>Tillbaka</button>`;
+  box.innerHTML=h; bindAcc();
+}
+let cdTimer=0;
+function resendBtn(act){
+  const left=Math.ceil((A.cooldownUntil-Date.now())/1000);
+  if(left>0 && !cdTimer) cdTimer=setTimeout(()=>{ cdTimer=0; const b=$('[data-resend]'); if(b){ b.outerHTML=resendBtn(act); bindResend(); } },1000);
+  return `<button class="linkbtn" data-resend="${act}" ${left>0?'disabled':''}>${left>0?`Skicka ny kod (${left} s)`:'Skicka ny kod'}</button>`;
+}
+function bindResend(){
+  const b=$('[data-resend]'); if(!b) return;
+  b.onclick=()=>run(async()=>{
+    if(b.dataset.resend==='resend') must(await sb.auth.resend({type:'signup',email:A.f.email}));
+    else must(await sb.auth.resetPasswordForEmail(A.f.email));
+    A.cooldownUntil=Date.now()+60000; A.ok='En ny kod är skickad.';
+  });
+}
+let uCheck=0;
+function bindAcc(){
+  const box=$('#accountbody');
+  box.querySelectorAll('[data-go-acc]').forEach(b=>b.onclick=()=>go(b.dataset.goAcc));
+  box.querySelectorAll('[data-acc-home]').forEach(b=>b.onclick=()=>show('home'));
+  const skip=box.querySelector('[data-skip]'); if(skip) skip.onclick=()=>{ lsSet(SKIPKEY,'1'); show('home'); };
+  box.querySelectorAll('[data-show]').forEach(b=>b.onclick=()=>{ const i=b.previousElementSibling; i.type=i.type==='password'?'text':'password'; b.textContent=i.type==='password'?'Visa':'Dölj'; });
+  box.querySelectorAll('input[name]').forEach(i=>i.oninput=()=>{ A.f[i.name]=i.value; if(i.name==='username') checkUsername(); });
+  const sync=box.querySelector('[data-sync]'); if(sync) sync.onclick=async()=>{ const m=syncMeta(); m.dirty=true; m.savedAt=m.savedAt||Date.now(); setSyncMeta(m); await pushNow(); };
+  const lo=box.querySelector('[data-logout]'); if(lo) lo.onclick=()=>run(logout);
+  box.querySelectorAll('[data-choose]').forEach(b=>b.onclick=()=>run(async()=>{
+    const p=A.pending; A.pending=null;
+    if(b.dataset.choose==='remote') applyRemote(p.remote,p.rt);
+    else { setSyncMeta({owner:A.user.id,savedAt:Date.now(),dirty:true}); await pushNow(); }
+    A.view='profile'; show('home'); toast(`Inloggad som ${A.username}`);
+  }));
+  bindResend();
+  const form=box.querySelector('form'); if(form) form.onsubmit=e=>{ e.preventDefault(); submitAcc(form.dataset.form); };
+  if(A.view==='signup' && A.f.username) checkUsername();
+}
+function checkUsername(){
+  clearTimeout(uCheck);
+  const h=$('#u-help'), u=(A.f.username||'').trim(); if(!h) return;
+  A.free=null; h.className=''; h.textContent='3–20 tecken: bokstäver, siffror, _ . -';
+  if(!u) return;
+  if(!USER_RE.test(u)){ h.className='no'; h.textContent=u.length<3?'Minst 3 tecken.':'Bara bokstäver, siffror och _ . - (max 20 tecken).'; return; }
+  uCheck=setTimeout(async()=>{
+    try{ await loadSB(); const free=must(await sb.rpc('username_available',{name:u}));
+      if((A.f.username||'').trim()!==u) return;
+      A.free=!!free; const h2=$('#u-help'); if(h2){ h2.className=free?'ok':'no'; h2.textContent=free?'✓ Ledigt':'Upptaget. Välj ett annat.'; } }catch(e){}
+  },400);
+}
+function submitAcc(form){
+  const f=A.f, email=(f.email||'').trim().toLowerCase(), bad=t=>{ A.err=t; renderAccount(); };
+  if(['signup','login','forgot'].includes(form)){ if(!MAIL_RE.test(email)) return bad('Skriv en giltig e-postadress.'); f.email=email; }
+  if(form==='signup'){
+    const u=(f.username||'').trim();
+    if(!USER_RE.test(u)) return bad('Användarnamnet ska vara 3–20 tecken: bokstäver, siffror, _ . -');
+    if((f.password||'').length<8) return bad('Lösenordet måste vara minst 8 tecken.');
+    run(async()=>{
+      if(!must(await sb.rpc('username_available',{name:u}))) throw new Error('Database error saving new user');
+      const d=must(await sb.auth.signUp({email,password:f.password,options:{data:{username:u}}}));
+      if(d.user && Array.isArray(d.user.identities) && !d.user.identities.length) throw {code:'user_already_exists'};
+      if(d.session) return finishLogin(d.session.user);   // om e-postverifiering är avstängd i Supabase
+      f.password=''; A.cooldownUntil=Date.now()+60000; A.view='verify';
+    });
+  }
+  if(form==='verify' || form==='reset'){
+    const code=(f.code||'').replace(/\s/g,'');
+    if(!/^\d{6,10}$/.test(code)) return bad('Koden består av siffror. Kolla mejlet igen.');
+    if(form==='reset' && (f.newpw||'').length<8) return bad('Lösenordet måste vara minst 8 tecken.');
+    run(async()=>{
+      const d=must(await sb.auth.verifyOtp({email:f.email,token:code,type:form==='verify'?'email':'recovery'}));
+      if(form==='reset') must(await sb.auth.updateUser({password:f.newpw}));
+      await finishLogin(d.user||(d.session&&d.session.user));
+    });
+  }
+  if(form==='login'){
+    if(!f.password) return bad('Skriv ditt lösenord.');
+    run(async()=>{
+      const r=await sb.auth.signInWithPassword({email,password:f.password});
+      if(r.error && errText(r.error).startsWith('E-postadressen är inte')){
+        must(await sb.auth.resend({type:'signup',email})); A.cooldownUntil=Date.now()+60000;
+        A.view='verify'; A.ok='Kontot är inte verifierat än. Vi har skickat en ny kod.'; return;
+      }
+      must(r); f.password=''; await finishLogin(r.data.user);
+    });
+  }
+  if(form==='forgot') run(async()=>{ must(await sb.auth.resetPasswordForEmail(email)); A.cooldownUntil=Date.now()+60000; A.view='reset'; });
+}
+
 // Intern krok för testsidan och testläget
 window.__app={startRun,show,state:()=>S,round:()=>R,save};
 applySkin();
 show('home');
-if(location.hash==='#test') enterTest();
+if(location.hash==='#test') enterTest(); else cloudInit();
 })();
 </script>
 </body>
