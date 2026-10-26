@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tester – Snabbmatte</title>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+body{font:15px/1.5 system-ui,sans-serif;margin:16px;background:#fff;color:#111}
+pre{white-space:pre-wrap;word-break:break-word}
+.pass{color:#15803d}.fail{color:#c2263a}
+</style>
+</head>
+<body>
+<h1 id="summary">Kör tester…</h1>
+<pre id="out"></pre>
+<script>
+/* Testerna läser kärnan (<script id="core">) direkt ur index.html.
+   Öppna via en lokal server, t.ex.:  python3 -m http.server  →  http://localhost:8000/tests.html */
+(async function(){
+  const out=[]; let pass=0, fail=0;
+  const log=(ok,name,detail='')=>{ ok?pass++:fail++; if(!ok||detail) out.push(`${ok?'✓':'✗'} ${name}${detail?' – '+detail:''}`); };
+  const eq=(a,b,name)=>log(a===b,name,a===b?'':`fick ${JSON.stringify(a)}, väntade ${JSON.stringify(b)}`);
+
+  const html=await (await fetch('index.html',{cache:'no-store'})).text();
+  const doc=new DOMParser().parseFromString(html,'text/html');
+  new Function(doc.getElementById('core').textContent)();
+  const C=window.Core, F=C.F;
+
+  // Reproducerbar slump
+  function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+  C.setRandom(mulberry32(12345));
+
+  /* ---------- Bråk ---------- */
+  eq(F(2,4).str(),'1/2','Bråk förkortas');
+  eq(F(3,-6).str(),'-1/2','Minustecken flyttas till täljaren');
+  eq(F(1,2).add(F(1,3)).str(),'5/6','1/2 + 1/3');
+  eq(F(-3).mul(F(-3)).str(),'9','(-3)(-3)');
+  eq(F(-5,2).tex(),'-\\frac{5}{2}','TeX för negativt bråk');
+
+  /* ---------- Polynom ---------- */
+  const x=C.Poly.v('x');
+  eq(x.add(-2).mul(x.add(-3)).tex(),'x^{2} - 5x + 6','(x-2)(x-3)');
+  eq(C.Poly.mono(-3,{a:1}).pow(2).tex(),'9a^{2}','(-3a)^2');
+  const f=C.Poly.uni([-2,5,0]);
+  eq(f.subst('x',C.Poly.mono(-3,{a:1})).tex(),'-18a^{2} - 15a','f(-3a) för f(x)=5x-2x²');
+  eq(f.subst('x',x.add(2)).tex(),'-2x^{2} - 3x + 2','f(x+2) för f(x)=5x-2x²');
+
+  /* ---------- Tolka tal ---------- */
+  const pn=s=>{ const v=C.parseNum(s); return v?v.str():null; };
+  eq(pn('1/2'),'1/2','"1/2"'); eq(pn('0,5'),'1/2','"0,5"'); eq(pn('0.5'),'1/2','"0.5"');
+  eq(pn('-3'),'-3','"-3"'); eq(pn('−3'),'-3','Unicode-minus'); eq(pn(' x = 4 '),'4','"x = 4"');
+  eq(pn('-1/2'),'-1/2','"-1/2"'); eq(pn('2/-4'),'-1/2','"2/-4"'); eq(pn('4/2'),'2','"4/2"');
+  eq(pn('1/0'),null,'Division med noll avvisas'); eq(pn('abc'),null,'Text avvisas'); eq(pn(''),null,'Tomt avvisas');
+  eq(pn('1,25'),'5/4','"1,25"'); eq(pn('-0,5'),'-1/2','"-0,5"');
+
+  const pl=(s,n)=>{ const v=C.parseList(s,n); return v?v.map(z=>z.str()).join('|'):null; };
+  eq(pl('2, -3',2),'2|-3','"2, -3"');
+  eq(pl('2;-3',2),'2|-3','"2;-3"');
+  eq(pl('2,-3',2),'2|-3','"2,-3"');
+  eq(pl('x = 2 eller x = -3',2),'2|-3','"x = 2 eller x = -3"');
+  eq(pl('x1=2, x2=-3',2),'2|-3','"x1=2, x2=-3"');
+  eq(pl('0,5',1),'1/2','"0,5" som ett svar');
+  eq(pl('2,3',2),'2|3','"2,3" när två svar väntas');
+  eq(pl('2,3',1),'23/10','"2,3" när ett svar väntas');
+  eq(pl('1; 0,5',2),'1|1/2','"1; 0,5"');
+  eq(pl('1/2 ; - 3',2),'1/2|-3','Mellanslag efter minus');
+
+  /* ---------- Svarskontroll ---------- */
+  const fake={answer:{kind:'num',values:[F(2),F(-3)],ordered:false,tex:''},errors:[{values:[F(-2),F(3)],msg:'TECKEN'}]};
+  eq(C.check(fake,'2; -3').correct,true,'Rätt svar godtas');
+  eq(C.check(fake,'-3, 2').correct,true,'Ordningen spelar ingen roll för rötter');
+  eq(C.check(fake,'-2; 3').msg,'TECKEN','Känt felsvar ger riktad feedback');
+  eq(/fel tecken/.test(C.check(fake,'2; 3').msg),true,'Ett tecken fel ger teckentips');
+  eq(/2 lösningar/.test(C.check(fake,'2').msg),true,'Bara en rot ger tips om fler lösningar');
+  eq(C.check(fake,'hej').valid,false,'Ogiltigt svar markeras');
+  const ord={answer:{kind:'num',values:[F(1),F(1,2)],ordered:true,tex:''},errors:[]};
+  eq(C.check(ord,'1; 0,5').correct,true,'Ordnat svar med decimalkomma');
+  eq(C.check(ord,'0.5; 1').correct,false,'Ordnat svar i fel ordning är fel');
+  const half={answer:{kind:'num',values:[F(1,2)],ordered:false,tex:''},errors:[]};
+  ['1/2','0,5','0.5','2/4'].forEach(s=>eq(C.check(half,s).correct,true,`"${s}" räknas som 1/2`));
+
+  /* ---------- Uppgiftsgeneratorerna ---------- */
+  const N=300;
+  const mathOf=s=>String(s).split('$').filter((_,i)=>i%2===1);
+  const texOk=t=>{ if(!window.katex) return true; try{ katex.renderToString(t,{throwOnError:true}); return true; }catch(e){ return e.message; } };
+  const cardIds=new Set(C.CARDS.map(c=>c.id)), cardsSeen=new Set(), kindsPerWorld={};
+  // Kontrollerar en svarsdel (enkel uppgift eller del i en kedja)
+  function checkPart(p,problems,texts){
+    if(p.prompt) texts.push(p.prompt);
+    const A=p.answer;
+    if(A.kind==='num'){
+      texts.push('$'+A.tex+'$');
+      const r=C.check(p,C.answerString(p));
+      if(!r.valid||!r.correct) problems.add('facit godtas inte av svarskontrollen: '+C.answerString(p));
+      A.values.forEach(v=>{ if(v.d>4||Math.abs(v.n)>300) problems.add('osnyggt svar: '+v.str()); });
+      p.errors.forEach(e=>{ texts.push(e.msg); if(C.sameVals(e.values,A.values,A.ordered)) problems.add('felsvar = facit');
+        if(C.check(p,e.values.map(v=>v.str()).join('; ')).correct) problems.add('felsvar godtogs som rätt'); });
+    } else if(A.kind==='mc'){
+      const opts=A.options;
+      if(opts.filter(o=>o.ok).length!==1) problems.add('flerval ska ha exakt ett rätt alternativ');
+      if(opts.length<(A.fixed?2:3)) problems.add('för få alternativ: '+opts.length);
+      if(new Set(opts.map(o=>o.t)).size!==opts.length) problems.add('dubbletter bland alternativen');
+      if(opts.some(o=>o.h) && new Set(opts.map(o=>o.h)).size!==opts.length) problems.add('två bild-alternativ är identiska');
+      opts.forEach((o,i)=>{ if(!o.h) texts.push(o.t); if(o.msg) texts.push(o.msg);
+        if(o.h && /NaN|undefined/.test(o.h)) problems.add('NaN i bild-alternativ');
+        if(C.check(p,i).correct!==o.ok) problems.add('svarskontroll för flerval stämmer inte'); });
+    } else if(A.kind==='order'){
+      A.items.forEach(x=>texts.push(x));
+      if(new Set(A.items).size!==A.items.length) problems.add('dubbletter bland stegen');
+      if(A.items.length<3) problems.add('för få steg att ordna');
+      if(A.start.every((v,i)=>v===i)) problems.add('startordningen är redan rätt');
+      if(!C.check(p,A.items.map((_,i)=>i)).correct) problems.add('rätt ordning godtas inte');
+      if(C.check(p,A.start).correct) problems.add('fel ordning godtas');
+    } else problems.add('okänd svarstyp '+A.kind);
+  }
+  for(const id of Object.keys(C.TYPES)){
+    const problems=new Set(); let seen=new Set(); const def=C.TYPES[id];
+    for(let i=0;i<N;i++){
+      let t;
+      try{ t=C.generate(id); }catch(e){ problems.add('kastade fel: '+e.message); continue; }
+      seen.add(t.prompt+t.fig+JSON.stringify(t.parts.map(p=>p.answer))+JSON.stringify(t.lines));
+      if(!t.verify()) problems.add('verify() misslyckades');
+      if(![1,2,3].includes(t.diff)) problems.add('svårighet saknas: '+t.diff);
+      if(t.steps.length<3) problems.add('för få steg');
+      if(!/^Kontroll/.test(t.steps[t.steps.length-1])) problems.add('sista steget är ingen kontroll');
+      const texts=[t.prompt,...t.steps,...(t.lines||[])];
+      if(t.lines && t.mark!==undefined && t.mark!==null && !(t.mark>=0&&t.mark<t.lines.length)) problems.add('markerad rad finns inte');
+      t.parts.forEach(p=>checkPart(p,problems,texts));
+      if(t.parts.filter(p=>p.role!=='predict').length<1) problems.add('ingen huvuddel');
+      if(t.und){
+        if(!C.UND[t.und]) problems.add('okänd förståelsetyp');
+        if(!cardIds.has(t.card)) problems.add('okänt kort: '+t.card); else cardsSeen.add(t.card);
+        (kindsPerWorld[t.level]=kindsPerWorld[t.level]||new Set()).add(t.und);
+      }
+      for(const s of texts){
+        if((String(s).match(/\$/g)||[]).length%2) problems.add('udda antal $ i: '+s);
+        if(/\d\s*\/\s*\d/.test(String(s).replace(/<[^>]*>/g,''))) problems.add('snedstreck i stället för bråk: '+s);
+        for(const m of mathOf(s)){ const ok=texOk(m); if(ok!==true) problems.add('KaTeX-fel: '+m+' ('+ok+')'); }
+        if(/undefined|NaN|\[object|null/.test(s)) problems.add('trasig text: '+s);
+      }
+      if(t.fig && !/^<svg[\s\S]*<\/svg>$/.test(t.fig)) problems.add('trasig SVG');
+      if(t.fig && /NaN|undefined/.test(t.fig)) problems.add('NaN i SVG');
+    }
+    const minVariety=def.und==='fraga'?6:12;
+    const name=`Generator ${id} (nivå ${def.level}${def.und?', '+C.UND[def.und]:''}, ${N} st, ${seen.size} olika)`;
+    log(problems.size===0 && seen.size>=minVariety, name, [...problems].slice(0,4).join(' | ') || '');
+  }
+
+  /* ---------- Förståelse och Kodex ---------- */
+  log(cardsSeen.size===cardIds.size, 'Alla Kodex-kort går att vinna', [...cardIds].filter(c=>!cardsSeen.has(c)).join(', '));
+  C.WORLDS.forEach(w=>log((kindsPerWorld[w]||new Set()).size>=2, `Värld ${w} har minst två sorters förståelseuppgifter (krävs för Förstådd)`));
+  log(Object.keys(C.UND).every(k=>Object.values(C.TYPES).some(t=>t.und===k)), 'Alla sju förståelsetyper finns');
+  C.CARDS.forEach(c=>{ [c.rule,c.ex,c.why].forEach(s=>{ if(/\d\s*\/\s*\d/.test(s)) log(false,'Snedstreck i kort '+c.id);
+    for(const m of mathOf(s)){ const ok=texOk(m); if(ok!==true) log(false,'KaTeX-fel i kort '+c.id,m); } }); });
+  log(C.CARDS.every(c=>c.r>=1&&c.r<=4), 'Alla kort har en sällsynthet');
+  log([1,2,3,4].every(r=>C.CARDS.some(c=>c.r===r)), 'Alla fyra sällsyntheter finns');
+
+  /* ---------- Rundor ---------- */
+  for(const L of C.LEVELS.filter(L=>!L.black)){
+    const r=C.makeRound(C.typesFor(L.n),10,C.undTypesFor(L.n),3);
+    const und=r.filter(t=>t.und).length;
+    log(r.length===10 && r.every(t=>t.level===L.n) && und===3 && !r[0].und, `Runda på nivå ${L.n}: 10 uppgifter varav 3 förståelse`);
+  }
+  const pr=C.makeRound(['pq','fn-ka'],10);
+  log(pr.length===10 && pr.every(t=>t.type==='pq'||t.type==='fn-ka'), 'Träna på mina fel ger bara de missade typerna');
+  const ur=C.makeRound(C.undTypesFor(4),10);
+  log(ur.every(t=>t.und), 'Förståelseträning ger bara förståelseuppgifter');
+  log(C.LEVELS.filter(L=>!L.black).every(L=>C.typesFor(L.n).length>0 && C.undTypesFor(L.n).length>0), 'Alla Matte 2-nivåer har både räkne- och förståelseuppgifter');
+
+  /* ---------- Black ---------- */
+  const now=Date.now();
+  log(C.BLACK_LEVELS.length===7, 'Sju Black-världar');
+  C.BLACK_LEVELS.forEach(n=>{
+    const L=C.levelInfo(n), ids=C.typesFor(n), Ls=C.LESSONS[n];
+    log(ids.length>=3, `Black-värld ${n} (${L.name}) har minst tre uppgiftstyper`);
+    const r=C.makeRound(ids,10); log(r.length===10 && r.every(t=>t.level===n), `Black-värld ${n} ger en runda på 10`);
+    const texts=[...Ls.idea, Ls.ex.prompt, ...Ls.ex.steps, Ls.quiz.q, ...Ls.quiz.options.map(o=>o.t), ...Ls.quiz.options.map(o=>o.msg||'')];
+    const bad=texts.filter(x=>/\d\s*\/\s*\d/.test(x) || mathOf(x).some(m=>texOk(m)!==true) || (x.match(/\$/g)||[]).length%2);
+    log(!!Ls && bad.length===0 && Ls.quiz.options.filter(o=>o.ok).length===1, `Lektion ${n} är korrekt skriven`, bad.slice(0,2).join(' | '));
+  });
+  log(!C.typesFor(10).includes('boss'), 'Slutbossen blandas inte in i vanliga provrundor');
+  const B=C.generate('boss');
+  log(B.parts.length===5 && B.time===240 && B.parts.every(p=>p.role==='main'), 'Slutbossen: fem steg på 240 sekunder');
+  const Sb=C.migrate(null);
+  log(!C.bossReady(Sb) && C.blackStatus(Sb,now)===null, 'Black är låst från början');
+  C.WORLDS.forEach(w=>{ Sb.stars[w]={best:3,n3:3,n:3}; Sb.und[w]={n:3,kinds:{varfor:1,felet:1}}; Sb.worldLast[w]=now; });
+  C.CARDS.forEach(c=>Sb.cards[c.id]=now);
+  log(!C.bossReady(Sb), 'Alla Diamant räcker inte utan Provberedskap A');
+  Sb.history.push({level:10,correct:10},{level:10,correct:9},{level:10,correct:9});
+  log(!C.bossReady(Sb), 'Insikter krävs också');
+  Sb.insightsEarned=120; log(C.bossReady(Sb), 'Diamant, A och Insikter öppnar Slutbossen');
+  log(C.blackRequirements(Sb).filter(r=>r.done).length===3, 'Tre av fyra krav klara före bossen');
+  Sb.black.unlocked=true; Sb.black.beaten=true;
+  eq(C.blackStatus(Sb,now),'black','Tränad spelare har Black-status');
+  eq(C.blackStatus(Sb,now+8*C.DAY),'grafit','Utan träning sjunker kortet till Grafit');
+  Sb.worldLast[3]=now+8*C.DAY; C.WORLDS.forEach(w=>Sb.worldLast[w]=now+8*C.DAY);
+  eq(C.blackStatus(Sb,now+8*C.DAY),'black','Efter repetition är kortet Black igen');
+  log(C.LEVELS[0].time===20 && C.LEVELS[9].time===90, 'Tid 20 s på nivå 1 och 90 s på nivå 10');
+
+  /* ---------- Progression ---------- */
+  const old={level:4,passed:{1:true,2:true,3:true},best:{1:900},rounds:5,answered:50,correct:40,bestStreak:7,totalTime:300,types:{pq:{n:3,c:2,time:20}},
+    history:[{level:1,correct:10,score:900,date:now-1000},{level:2,correct:8,score:700,date:now-1000},{level:10,correct:9,score:800,date:now}]};
+  const M=C.migrate(JSON.parse(JSON.stringify(old)));
+  log(M.level===4 && M.best[1]===900 && M.history.length===3 && M.types.pq.n===3 && M.bestStreak===7, 'Uppgradering behåller gammal progression');
+  eq(M.xp,2400,'XP räknas fram ur gamla rundor');
+  eq(M.stars[1].best,3,'Stjärnor räknas fram ur historiken');
+  eq(M.stars[3].best,2,'Godkänd nivå utan historik får två stjärnor');
+  eq(C.medalInfo(M,1).medal,2,'Tre stjärnor utan Förstådd ger bara Silver');
+  log(C.medalInfo(M,1).capped,'Silver-taket syns');
+  M.und[1]={n:3,kinds:{varfor:true,koppla:true}};
+  eq(C.medalInfo(M,1).medal,3,'Tre stjärnor och Förstådd ger Guld');
+  M.stars[1].n3=3; C.cardsOfWorld(1).forEach(id=>M.cards[id]=now);
+  eq(C.medalInfo(M,1).medal,4,'Tre treor, Förstådd och alla kort ger Diamant');
+  M.und[2]={n:5,kinds:{varfor:true}}; eq(C.forstadd(M,2),false,'Förstådd kräver två olika förståelsetyper');
+  eq(C.provGrade(M),'F','En enda provrunda räknas som snitt av tre');
+  M.history.push({level:10,correct:9},{level:10,correct:10}); eq(C.provGrade(M),'A','Tre provrundor med snitt över 9 ger A');
+  log(!C.isRusty(M,1,now),'Nyss tränad värld är inte rostig');
+  log(C.isRusty(M,1,now+8*C.DAY),'Värld rostar efter mer än 7 dagar');
+  log(!C.isRusty(M,7,now+30*C.DAY),'Värld utan medalj kan inte rosta');
+  const again=C.migrate(JSON.parse(JSON.stringify(M)));
+  eq(again.xp,M.xp,'Ny version uppgraderas inte två gånger');
+  eq(C.migrate(null).level,1,'Tomt läge ger startläge');
+  eq(C.playerLevel(0).level,1,'Spelarnivå 1 från början'); eq(C.playerLevel(150).level,2,'150 XP ger spelarnivå 2');
+  log(!!window.katex, 'KaTeX laddades, så all TeX är kontrollerad');
+
+  const sum=document.getElementById('summary');
+  sum.textContent=fail?`${fail} test misslyckades, ${pass} gick igenom`:`Alla ${pass} test gick igenom`;
+  sum.className=fail?'fail':'pass';
+  document.title=fail?'FAIL':'PASS';
+  document.getElementById('out').textContent=out.join('\n')||'Inga fel.';
+})().catch(e=>{ document.getElementById('summary').textContent='Testkörningen kraschade: '+e.message; document.getElementById('out').textContent=e.stack; document.title='FAIL'; });
+</script>
+</body>
+</html>
