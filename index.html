@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0c0f1d">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Snabbmatte">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Snabbmatte Matte 2</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237c5cff'/%3E%3Cstop offset='1' stop-color='%23ff4fb8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3Cpath d='M12 35l6-3 7 13 13-31h14' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <script>
@@ -530,6 +534,7 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
     <button class="btn act" id="b-kodex" style="--tc:#a855f7"></button>
     <button class="btn act" id="b-shop" style="--tc:#f43f5e"></button>
     <button class="btn act wide" id="b-stats" style="--tc:#f59e0b"></button>
+    <button class="btn act wide hidden" id="b-offline" style="--tc:#22c55e"></button>
   </div>
 </section>
 
@@ -3316,6 +3321,8 @@ const ICON={
   flame:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 1.5-4.5 3-6 .3 2 1 3 2 3.5C11 9 10.5 5 12 2z" fill="currentColor"/></svg>',
   cap:svgI('<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5M22 9v6"/>'),
   gem:svgI('<path d="M12 3l2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/>'),
+  plane:svgI('<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>'),
+  check:svgI('<path d="M20 6 9 17l-5-5"/>'),
   sun:svgI('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>'),
   moon:svgI('<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'),
 };
@@ -3395,6 +3402,7 @@ function renderHome(){
   $('#b-kodex').innerHTML=act(ICON.cards,'Kodex',`${nCards} av ${C.CARDS.length} kort`);
   $('#b-shop').innerHTML=act(ICON.bag,'Butik','Teman för ✦');
   $('#b-stats').innerHTML=act(ICON.chart,'Statistik','Se hur det går');
+  renderOfflineBtn();
   renderThemeBtn(); renderAccountBtn();
   renderHomeSpecial();
 }
@@ -4074,6 +4082,47 @@ $('#tb-exit').onclick=exitTest;
     if(taps.length>=5){ taps=[]; enterTest(); }
   });
 })();
+
+/* =====================================================================
+   OFFLINE
+   sw.js sparar appen, typsnitten och biblioteken på enheten. Uppgifterna
+   skapas av appen själv, så det finns obegränsat med uppgifter offline.
+   ===================================================================== */
+const OFF={on:'serviceWorker' in navigator && location.protocol!=='file:', state:'check', done:0, total:0};
+function swAsk(msg,onMsg){
+  return navigator.serviceWorker.ready.then(reg=>new Promise(res=>{
+    const ch=new MessageChannel(); ch.port1.onmessage=e=>{ onMsg&&onMsg(e.data); if(e.data.type!=='progress') res(e.data); };
+    reg.active.postMessage(msg,[ch.port2]);
+  }));
+}
+function renderOfflineBtn(){
+  const b=$('#b-offline'); if(!b) return;
+  b.classList.toggle('hidden',!OFF.on);
+  const sub = !navigator.onLine && OFF.state==='ready' ? 'Du är offline. Allt fungerar ändå.'
+    : OFF.state==='ready' ? 'Redo för flygplanet · obegränsat med uppgifter'
+    : OFF.state==='loading' ? `Laddar ner… ${OFF.total?Math.round(100*OFF.done/OFF.total):0} %`
+    : OFF.state==='check' ? 'Kollar…' : 'Tryck för att ladda ner appen till mobilen';
+  b.innerHTML=`<span class="ic">${OFF.state==='ready'?ICON.check:ICON.plane}</span><span><b>${OFF.state==='ready'?'Fungerar offline':'Offline-läge'}</b><small>${sub}</small></span>`;
+}
+async function offlineDownload(){
+  if(OFF.state==='loading') return;
+  OFF.state='loading'; OFF.done=0; renderOfflineBtn();
+  const r=await swAsk('precache',d=>{ if(d.type==='progress'){ OFF.done=d.done; OFF.total=d.total; renderOfflineBtn(); } });
+  OFF.state=r.ready?'ready':'missing'; renderOfflineBtn();
+  toast(r.ready?'Klart! Appen fungerar nu utan internet.':'Allt kunde inte laddas ner. Kolla internet och försök igen.');
+}
+if(OFF.on){
+  navigator.serviceWorker.register('sw.js').catch(()=>{ OFF.on=false; renderOfflineBtn(); });
+  swAsk('status').then(s=>{ OFF.state=s.ready?'ready':'missing'; renderOfflineBtn(); if(!s.ready && navigator.onLine) offlineDownload(); });
+  addEventListener('online',renderOfflineBtn); addEventListener('offline',renderOfflineBtn);
+}
+$('#b-offline').onclick=()=>{ openModal(`<h2>Träna utan internet</h2>
+  <p>Alla uppgifter räknas fram av appen själv, så du får nya uppgifter hela tiden, även på flygplanet. Det som behöver finnas på mobilen är själva appen, och den sparas automatiskt.</p>
+  <p><b>Inför resan:</b> öppna appen en gång med internet, gärna från ikonen på hemskärmen, och kolla att det står <b>Fungerar offline</b> här.</p>
+  <p>Är du inloggad sparas framstegen i molnet nästa gång du har nät.</p>
+  <button class="btn primary" id="b-offline-dl">${OFF.state==='ready'?'Ladda ner på nytt':'Ladda ner nu'}</button>`);
+  $('#b-offline-dl').onclick=()=>{ $('#modal').classList.add('hidden'); offlineDownload(); };
+};
 
 /* =====================================================================
    KONTO OCH MOLNSPARNING (Supabase)
