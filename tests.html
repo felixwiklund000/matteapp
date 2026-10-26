@@ -147,6 +147,18 @@ pre{white-space:pre-wrap;word-break:break-word}
     log(problems.size===0 && seen.size>=minVariety, name, [...problems].slice(0,4).join(' | ') || '');
   }
 
+  /* ---------- Pausad runda: uppgifter sparade som JSON ---------- */
+  {
+    const problems=new Set(); let n=0;
+    for(const id of Object.keys(C.TYPES)) for(let i=0;i<3;i++){
+      const t=C.reviveTask(JSON.parse(JSON.stringify(C.generate(id)))); n++;
+      t.parts.forEach(p=>checkPart(p,problems,[t.prompt,...t.steps,...(t.lines||[])]));
+      if(t.answer!==t.parts[t.parts.length-1].answer) problems.add(id+': t.answer pekar inte på sista delen');
+      if(t.answer.kind==='num' && !C.check(t,C.answerString(t)).correct) problems.add(id+': facit godtas inte efter sparning');
+    }
+    log(problems.size===0, `Sparade och återställda uppgifter fungerar (${n} st, alla typer)`, [...problems].slice(0,4).join(' | '));
+  }
+
   /* ---------- Förståelse och Kodex ---------- */
   log(cardsSeen.size===cardIds.size, 'Alla Kodex-kort går att vinna', [...cardIds].filter(c=>!cardsSeen.has(c)).join(', '));
   C.WORLDS.forEach(w=>log((kindsPerWorld[w]||new Set()).size>=2, `Värld ${w} har minst två sorters förståelseuppgifter (krävs för Förstådd)`));
