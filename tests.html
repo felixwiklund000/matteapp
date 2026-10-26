@@ -159,6 +159,26 @@ pre{white-space:pre-wrap;word-break:break-word}
     log(problems.size===0, `Sparade och återställda uppgifter fungerar (${n} st, alla typer)`, [...problems].slice(0,4).join(' | '));
   }
 
+  /* ---------- Lär dig ---------- */
+  {
+    const problems=new Set(), ids=new Set(), cardIdsL=new Set(C.CARDS.map(c=>c.id)); let n=0;
+    for(const w of [...C.WORLDS,10]) if(!(C.LEARN[w]||[]).length) problems.add('värld '+w+' saknar avsnitt');
+    for(const [w,ts] of Object.entries(C.LEARN)) for(const t of ts){
+      n++; if(ids.has(t.id)) problems.add('dubblett-id '+t.id); ids.add(t.id);
+      if(!t.easy.length || t.ex.steps.length<3 || t.help.length<2 || !t.adv.length) problems.add(t.id+': ofullständigt');
+      if(t.quiz.options.filter(o=>o.ok).length!==1) problems.add(t.id+': frågan ska ha exakt ett rätt svar');
+      if(new Set(t.quiz.options.map(o=>o.t)).size!==t.quiz.options.length) problems.add(t.id+': dubbletter bland svaren');
+      (t.cards||[]).forEach(c=>{ if(!cardIdsL.has(c)) problems.add(t.id+': okänt kort '+c); });
+      const texts=[t.title,...t.easy,t.ex.prompt,...t.ex.steps,...t.help.flat(),...t.adv,t.quiz.q,...t.quiz.options.flatMap(o=>[o.t,o.msg||''])];
+      for(const s of texts){
+        if((String(s).match(/\$/g)||[]).length%2) problems.add(t.id+': udda antal $ i: '+s);
+        if(/\d\s*\/\s*\d/.test(s)) problems.add(t.id+': snedstreck i stället för bråk: '+s);
+        for(const m of mathOf(s)){ const ok=texOk(m); if(ok!==true) problems.add(t.id+': KaTeX-fel: '+m+' ('+ok+')'); }
+      }
+    }
+    log(problems.size===0, `Lär dig: ${n} avsnitt med korrekt TeX, ett rätt svar per fråga och kända kort`, [...problems].slice(0,4).join(' | '));
+  }
+
   /* ---------- Förståelse och Kodex ---------- */
   log(cardsSeen.size===cardIds.size, 'Alla Kodex-kort går att vinna', [...cardIds].filter(c=>!cardsSeen.has(c)).join(', '));
   C.WORLDS.forEach(w=>log((kindsPerWorld[w]||new Set()).size>=2, `Värld ${w} har minst två sorters förståelseuppgifter (krävs för Förstådd)`));

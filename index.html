@@ -444,6 +444,33 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 :root[data-skin="black"] .playbtn{color:#111}
 .card>.xpbar{margin:10px 0 6px}
 
+/* ===== Lär dig ===== */
+.lkicker{font-size:.8rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--wc);margin:6px 0 2px}
+.ltabs{display:flex;gap:6px;overflow-x:auto;margin:0 0 14px;padding-bottom:2px}
+.ltabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:7px 12px;font-size:.85rem;font-weight:800}
+.ltabs button.on{background:var(--wc);border-color:var(--wc);color:#fff}
+.ltext p{margin:0 0 12px;font-size:1.05rem;line-height:1.65}
+.ltext p:last-child{margin-bottom:0}
+.ltext{border-left:5px solid var(--wc)}
+.lbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+.lbtns .btn{margin:0;min-height:52px;font-size:.98rem}
+.btn.lhelp{--b:color-mix(in srgb,var(--warn) 20%,var(--card));--bd:color-mix(in srgb,var(--warn) 45%,#000);color:var(--warn)}
+.btn.ladv{--b:color-mix(in srgb,var(--accent) 22%,var(--card));--bd:var(--accent-deep);color:color-mix(in srgb,var(--accent) 60%,var(--ink))}
+.btn.lhelp.on,.btn.ladv.on{outline:2px solid currentColor;outline-offset:-2px}
+.lpanel{border-radius:var(--radius);padding:16px 18px;margin:0 0 14px;animation:slideup .3s cubic-bezier(.2,.9,.3,1.1) both}
+.lpanel p{margin:0 0 10px;line-height:1.6}
+.lpanel p:last-child{margin-bottom:0}
+.lpanel h4{margin:0 0 8px;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:900}
+.lpanel.help{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 40%,transparent)}
+.lpanel.help h4{color:var(--warn)}
+.lpanel.help+.lpanel.help{margin-top:-4px}
+.lpanel.adv{background:color-mix(in srgb,var(--accent) 12%,var(--card));border:1px solid color-mix(in srgb,var(--accent) 40%,transparent)}
+.lpanel.adv h4{color:color-mix(in srgb,var(--accent) 60%,var(--ink))}
+.lremember{list-style:none;padding:0;margin:8px 0 0}
+.lremember li{padding:8px 0;border-top:1px solid var(--line)}
+.lremember li:first-child{border-top:0}
+.lvl .ok{margin-left:auto}
+
 /* ===== Paus ===== */
 .pausebtn{flex:0 0 34px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;padding:0}
 .pausebtn svg{width:16px;height:16px}
@@ -549,6 +576,7 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
   <div id="home-resume"></div>
   <button class="btn primary playbtn" id="b-continue"></button>
   <div class="actions">
+    <button class="btn act wide" id="b-learn" style="--tc:#f97316"></button>
     <button class="btn act" id="b-worlds" style="--tc:#3b82f6"></button>
     <button class="btn act" id="b-und" style="--tc:#14b8a6"></button>
     <button class="btn act" id="b-kodex" style="--tc:#a855f7"></button>
@@ -631,6 +659,10 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 <section id="s-lesson" class="hidden"><div id="lessonbody"></div></section>
 <section id="s-boss" class="hidden"><div id="bossbody"></div></section>
 <section id="s-test" class="hidden"><div id="testbody"></div></section>
+
+<!-- ============ LÄR DIG ============ -->
+<section id="s-learn" class="hidden"><div id="learnbody"></div></section>
+<section id="s-topic" class="hidden"><div id="topicbody"></div></section>
 
 <!-- ============ KONTO ============ -->
 <section id="s-account" class="hidden"><div id="accountbody"></div></section>
@@ -3214,6 +3246,339 @@ function makeRound(typeIds,n=10,undIds=[],undCount=0){
 }
 
 /* =====================================================================
+   LÄR DIG: genomgångar per värld
+   Varje avsnitt: enkel förklaring, exempel steg för steg, "Förstår inte"
+   i två allt enklare nivåer, en avancerad del och en kontrollfråga.
+   cards pekar på Kodex-korten vars regler visas som "Kom ihåg".
+   ===================================================================== */
+const LEARN={
+1:[
+  {id:'l1-ins', title:'Sätta in ett tal i en funktion', cards:['insattning'],
+   easy:['En funktion är en regel. $f(x) = 3x - 5$ betyder: ta talet, gånga med $3$ och dra bort $5$.',
+     '$f(4)$ betyder att du använder regeln på talet $4$. Byt varje $x$ mot $4$: $f(4) = 3\\cdot 4 - 5 = 7$.',
+     'Räkna i rätt ordning: först potenser, sedan gånger och delat, sist plus och minus.'],
+   ex:{prompt:'$f(x) = x^2 - 4x + 1$. Beräkna $f(3)$.', steps:['Byt varje $x$ mot $3$: $f(3) = 3^2 - 4\\cdot 3 + 1$','Potensen först: $3^2 = 9$','Sedan gånger: $4\\cdot 3 = 12$','Plus och minus från vänster: $9 - 12 + 1 = -2$','Svar: $f(3) = -2$']},
+   help:[['Tänk på $f$ som en maskin. Du stoppar in ett tal, och maskinen gör samma sak med det varje gång.',
+       '$f(x) = 2x + 1$ betyder: dubbla talet och lägg till $1$. Stoppar du in $5$ får du $2\\cdot 5 + 1 = 11$. Det skrivs $f(5) = 11$.'],
+     ['Gör det i två steg. Steg 1: skriv av formeln, men med en lucka där $x$ står: $f(\\square) = 2\\cdot\\square + 1$.',
+       'Steg 2: skriv talet i varje lucka. Med $5$ blir det $2\\cdot 5 + 1$. Räkna sedan ut det som vanligt.',
+       'Är talet negativt ska det stå inom parentes: $2\\cdot(-3) + 1 = -5$.']],
+   adv:['$f$ är själva regeln, medan $f(3)$ är ett tal. Grafen till $f$ består av alla punkter $(x, f(x))$. Att räkna ut $f(3) = -2$ är alltså samma sak som att hitta punkten $(3, -2)$ på grafen.',
+     'Man kan sätta in uttryck också, inte bara tal, till exempel $f(2a)$ eller $f(x + 1)$. Det tränar du i värld 6.',
+     'I Matte 3 bygger derivatan på samma idé: ändringskvoten $\\frac{f(x + h) - f(x)}{h}$ är två insättningar i samma funktion.'],
+   quiz:{q:'$f(x) = 5 - 2x$. Vad är $f(4)$?', options:[
+     {t:'$-3$', ok:true, msg:'Rätt: $5 - 2\\cdot 4 = 5 - 8 = -3$.'},
+     {t:'$12$', msg:'Du räknade $(5 - 2)\\cdot 4$. Gånger går före minus: $5 - 2\\cdot 4 = 5 - 8$.'},
+     {t:'$3$', msg:'Rätt siffror men fel tecken: $5 - 8 = -3$.'},
+     {t:'$13$', msg:'Det står minus: $5 - 2\\cdot 4 = 5 - 8$, inte $5 + 8$.'}]}},
+  {id:'l1-neg', title:'Negativa tal och potenser', cards:['parentes-neg'],
+   easy:['När du sätter in ett negativt tal ska det stå inom parentes. $f(x) = x^2$ ger $f(-3) = (-3)^2 = 9$.',
+     'Utan parentes blir det fel: $-3^2$ betyder $-(3^2) = -9$. Potensen gäller bara det som står närmast.',
+     'Minus gånger minus blir plus: $(-3)\\cdot(-3) = 9$.'],
+   ex:{prompt:'$f(x) = 2x^2 - x$. Beräkna $f(-2)$.', steps:['Sätt in med parentes: $f(-2) = 2\\cdot(-2)^2 - (-2)$','Potensen först: $(-2)^2 = 4$','Gånger: $2\\cdot 4 = 8$','Minus ett negativt tal blir plus: $8 - (-2) = 8 + 2 = 10$','Svar: $f(-2) = 10$']},
+   help:[['Potensen $^2$ betyder gånger sig själv. $(-3)^2$ är $(-3)\\cdot(-3)$. De två minustecknen tar ut varandra, så det blir $9$.',
+       '$-3^2$ läses ”minus (tre i kvadrat)”. Där kvadreras bara trean, och minustecknet står kvar: $-9$.'],
+     ['Ett säkert knep: skriv först formeln med tomma parenteser, $f(\\quad) = 2(\\quad)^2 - (\\quad)$, och fyll sedan i $-2$ i varje parentes.',
+       'Räkna en sak i taget och skriv varje mellanled. Det är nästan alltid tecknen som går fel, inte själva räknandet.']],
+   adv:['Jämna och udda potenser: $(-a)^2 = a^2$ men $(-a)^3 = -a^3$. Ett jämnt antal minustecken blir plus.',
+     'Därför är $x^2 \\ge 0$ för alla reella tal $x$. Det förklarar varför grafen till $y = x^2$ aldrig går under $x$-axeln, något du använder när du bestämmer värdemängder i värld 5.'],
+   quiz:{q:'Vad är $-4^2$?', options:[
+     {t:'$-16$', ok:true, msg:'Rätt: bara fyran kvadreras, och minustecknet står kvar.'},
+     {t:'$16$', msg:'$16$ är $(-4)^2$. Utan parentes kvadreras bara fyran: $-4^2 = -16$.'},
+     {t:'$-8$', msg:'Kvadrat betyder gånger sig själv, inte gånger två: $4^2 = 16$.'},
+     {t:'$8$', msg:'Kvadrat betyder gånger sig själv: $4\\cdot 4 = 16$. Minustecknet står kvar: $-16$.'}]}},
+  {id:'l1-los', title:'Lös f(x) = k', cards:['insattning'],
+   easy:['$f(x) = k$ är en omvänd fråga: vilket $x$ ger värdet $k$?',
+     'Sätt formeln lika med talet och lös ekvationen. $f(x) = 2x - 4$ och $f(x) = 10$ ger $2x - 4 = 10$, alltså $x = 7$.'],
+   ex:{prompt:'$f(x) = 3x + 2$. Lös $f(x) = -7$.', steps:['Sätt formeln lika med $-7$: $3x + 2 = -7$','Dra bort $2$ på båda sidor: $3x = -9$','Dela med $3$: $x = -3$','Kontroll: $f(-3) = 3\\cdot(-3) + 2 = -7$ ✓']},
+   help:[['$f(4)$ frågar: vad kommer ut om man stoppar in $4$? $f(x) = 10$ frågar tvärtom: vad måste man stoppa in för att få ut $10$?',
+       'Det är som en gåta: ”Jag tänker på ett tal, dubblar det och drar bort $4$. Då får jag $10$. Vilket tal tänkte jag på?”'],
+     ['Lös gåtan baklänges. Det sista som hände var minus $4$, så gör tvärtom först: $10 + 4 = 14$.',
+       'Före det dubblades talet, så dela med två: $\\frac{14}{2} = 7$. Kolla: $2\\cdot 7 - 4 = 10$ ✓']],
+   adv:['Grafiskt betyder $f(x) = k$ att man drar den vågräta linjen $y = k$ och läser av var den skär grafen. En sned linje skärs en gång. En parabel kan skäras två gånger, en gång eller inte alls.',
+     'Därför kan $f(x) = k$ ha två lösningar när $f$ är en andragradsfunktion. Då behöver du pq-formeln från värld 4.'],
+   quiz:{q:'$f(x) = 4x - 1$ och $f(x) = 11$. Vad är $x$?', options:[
+     {t:'$3$', ok:true, msg:'Rätt: $4x - 1 = 11$ ger $4x = 12$ och $x = 3$.'},
+     {t:'$43$', msg:'$43$ är $f(11)$. Frågan är omvänd: vilket $x$ ger $11$? Lös $4x - 1 = 11$.'},
+     {t:'$\\frac{5}{2}$', msg:'Du drog bort $1$ i stället för att lägga till. $4x = 11 + 1 = 12$.'},
+     {t:'$12$', msg:'$4x = 12$, men frågan är $x$. Dela med $4$: $x = 3$.'}]}}
+],
+2:[
+  {id:'l2-en', title:'Multiplicera in i en parentes', cards:['distributiv','teckenregler'],
+   easy:['$3(x - 4)$ betyder tre gånger hela parentesen. Gånga in talet i varje term: $3\\cdot x - 3\\cdot 4 = 3x - 12$.',
+     'Står det minus framför parentesen byter alla termer tecken: $-2(x - 5) = -2x + 10$.',
+     'Teckenregeln: lika tecken ger plus, olika tecken ger minus.'],
+   ex:{prompt:'Multiplicera ut $-3x(2x - 5)$.', steps:['Gånga $-3x$ med första termen: $-3x\\cdot 2x = -6x^2$','Gånga $-3x$ med andra termen: $-3x\\cdot(-5) = 15x$, eftersom minus gånger minus blir plus','Svar: $-6x^2 + 15x$','Kontroll med $x = 1$: $-3\\cdot(2 - 5) = 9$ och $-6 + 15 = 9$ ✓']},
+   help:[['Tänk dig parentesen som en påse. $3(x - 4)$ är tre påsar, och i varje påse ligger ett $x$ och ett minus $4$. Totalt blir det tre $x$ och tre minus $4$, alltså $3x - 12$.',
+       'Det vanligaste felet är att bara gånga in i första termen. $3(x - 4) = 3x - 4$ är fel.'],
+     ['Rita pilar från talet framför parentesen till varje term inuti. Varje pil är en multiplikation.',
+       'Ta tecknen först och siffrorna sedan. $-2\\cdot(-5)$: två minus ger plus, och $2\\cdot 5 = 10$. Alltså $+10$.']],
+   adv:['Regeln $a(b + c) = ab + ac$ heter distributiva lagen. Den gäller åt båda hållen: att bryta ut, $6x - 9 = 3(2x - 3)$, är samma regel baklänges. Det kallas att faktorisera.',
+     'Att faktorisera är nyckeln i värld 3: $x^2 - 5x = x(x - 5)$ gör att ekvationen $x^2 - 5x = 0$ kan lösas med nollproduktmetoden.'],
+   quiz:{q:'Vad är $-4(2x - 3)$?', options:[
+     {t:'$-8x + 12$', ok:true, msg:'Rätt: $-4\\cdot 2x = -8x$ och $-4\\cdot(-3) = 12$.'},
+     {t:'$-8x - 12$', msg:'Minus gånger minus blir plus: $-4\\cdot(-3) = 12$.'},
+     {t:'$-8x - 3$', msg:'Båda termerna ska gångras med $-4$, även $-3$.'},
+     {t:'$8x + 12$', msg:'$-4\\cdot 2x$ blir negativt, eftersom olika tecken ger minus.'}]}},
+  {id:'l2-tva', title:'Två parenteser och kvadreringsregeln', cards:['kvadreringsregeln','kvadrera-produkt'],
+   easy:['$(x + 2)(x + 5)$: varje term i första parentesen gångras med varje term i den andra. Det blir fyra produkter: $x\\cdot x + 5x + 2x + 10 = x^2 + 7x + 10$.',
+     'Kvadreringsregeln: $(x + k)^2 = x^2 + 2kx + k^2$. Glöm inte mittentermen $2kx$.',
+     'Kvadrera en produkt: $(3a)^2 = 9a^2$. Både talet och bokstaven kvadreras.'],
+   ex:{prompt:'Utveckla $(x - 3)^2$.', steps:['$(x - 3)^2 = (x - 3)(x - 3)$','Fyra produkter: $x\\cdot x - 3x - 3x + 9$','Slå ihop: $x^2 - 6x + 9$','Kontroll med $x = 5$: $(5 - 3)^2 = 4$ och $25 - 30 + 9 = 4$ ✓']},
+   help:[['Det vanligaste felet är att skriva $(x - 3)^2 = x^2 + 9$. Testa med $x = 5$: $(5 - 3)^2 = 4$, men $25 + 9 = 34$. Det stämmer inte, så något saknas.',
+       'Det som saknas är mittentermen. När du gångrar $(x - 3)(x - 3)$ får du $-3x$ två gånger, alltså $-6x$.'],
+     ['Tänk på en kvadrat med sidan $x + 3$. Arean $(x + 3)^2$ består av fyra delar: en stor kvadrat $x^2$, två rektanglar som är $3x$ var och en liten kvadrat $9$.',
+       'Därför är $(x + 3)^2 = x^2 + 3x + 3x + 9 = x^2 + 6x + 9$. De två rektanglarna är mittentermen.']],
+   adv:['Konjugatregeln: $(x + k)(x - k) = x^2 - k^2$. Här tar mittentermerna ut varandra, eftersom $kx - kx = 0$.',
+     'Reglerna ger snabb huvudräkning: $31^2 = (30 + 1)^2 = 900 + 60 + 1 = 961$ och $29\\cdot 31 = (30 - 1)(30 + 1) = 900 - 1 = 899$.',
+     'Samma sätt att räkna ger $(a + b)^3 = a^3 + 3a^2b + 3ab^2 + b^3$.'],
+   quiz:{q:'Vad är $(x + 4)^2$?', options:[
+     {t:'$x^2 + 8x + 16$', ok:true, msg:'Rätt: mittentermen är $2\\cdot 4\\cdot x = 8x$.'},
+     {t:'$x^2 + 16$', msg:'Mittentermen saknas: $2\\cdot 4\\cdot x = 8x$.'},
+     {t:'$x^2 + 4x + 16$', msg:'Mittentermen är dubbla produkten: $2\\cdot 4x = 8x$.'},
+     {t:'$2x + 8$', msg:'Kvadrat betyder inte gånger två. $(x + 4)^2 = (x + 4)(x + 4)$.'}]}}
+],
+3:[
+  {id:'l3-noll', title:'Nollproduktmetoden', cards:['nollprodukt'],
+   easy:['Om en produkt är noll måste någon av faktorerna vara noll. $A\\cdot B = 0$ ger $A = 0$ eller $B = 0$.',
+     '$(x - 2)(x + 5) = 0$ ger $x - 2 = 0$ eller $x + 5 = 0$, alltså $x = 2$ eller $x = -5$.',
+     'Lägg märke till att tecknet byts: faktorn $(x + 5)$ ger roten $-5$.'],
+   ex:{prompt:'Lös $x(2x - 6) = 0$.', steps:['Produkten är noll, så någon faktor är noll','Första faktorn: $x = 0$','Andra faktorn: $2x - 6 = 0$ ger $2x = 6$ och $x = 3$','Svar: $x_1 = 0$ och $x_2 = 3$','Kontroll: $3\\cdot(2\\cdot 3 - 6) = 3\\cdot 0 = 0$ ✓']},
+   help:[['Fundera på gånger: kan två tal som inte är noll ge noll? $3\\cdot 7 = 21$ och $(-2)\\cdot 5 = -10$. Nej, aldrig. Produkten blir noll bara om något av talen är noll.',
+       'Därför letar man efter vad $x$ måste vara för att en av parenteserna ska bli noll.'],
+     ['Ta en parentes i taget och fråga: vilket tal gör den här parentesen till noll?',
+       '$(x + 5)$: vilket tal plus fem blir noll? Det är $-5$, eftersom $-5 + 5 = 0$. $(x - 2)$: vilket tal minus två blir noll? Det är $2$.']],
+   adv:['Metoden fungerar bara när högerledet är noll. $(x - 2)(x + 5) = 6$ kan inte lösas genom att sätta varje faktor lika med $6$. Då multiplicerar du ut, flyttar över $6$ och löser $x^2 + 3x - 16 = 0$ med pq-formeln.',
+     'Dela inte $x^2 = 5x$ med $x$, för då försvinner roten $x = 0$. Flytta allt till en sida och bryt ut: $x^2 - 5x = x(x - 5) = 0$.'],
+   quiz:{q:'Lös $(x + 3)(x - 7) = 0$.', options:[
+     {t:'$x = -3$ eller $x = 7$', ok:true, msg:'Rätt: varje faktor sätts lika med noll.'},
+     {t:'$x = 3$ eller $x = -7$', msg:'Tecknet byts: $x + 3 = 0$ ger $x = -3$.'},
+     {t:'$x = -21$', msg:'Gånga inte ihop talen. Sätt varje parentes lika med noll.'},
+     {t:'$x = 7$', msg:'Det finns två faktorer och därför två lösningar. $x = -3$ är också en lösning.'}]}},
+  {id:'l3-bygg', title:'Från rötter till faktorform', cards:['faktorform'],
+   easy:['Varje rot $r$ hör ihop med en faktor $(x - r)$.',
+     'Rötterna $2$ och $-6$ ger $(x - 2)(x + 6) = 0$. Multiplicerar du ut får du $x^2 + 4x - 12 = 0$.'],
+   ex:{prompt:'Skriv en andragradsekvation med rötterna $x = 3$ och $x = -1$.', steps:['Roten $3$ ger faktorn $(x - 3)$','Roten $-1$ ger faktorn $(x - (-1)) = (x + 1)$','Ekvationen blir $(x - 3)(x + 1) = 0$','Utvecklat: $x^2 + x - 3x - 3 = x^2 - 2x - 3 = 0$','Kontroll: $3^2 - 2\\cdot 3 - 3 = 0$ ✓']},
+   help:[['Gör tvärtom mot nollproduktmetoden. Där gick vi från $x - 3 = 0$ till $x = 3$. Nu går vi från $x = 3$ till faktorn $(x - 3)$.',
+       'Kolla alltid genom att sätta in roten i faktorn: $3 - 3 = 0$ ✓'],
+     ['Minnesregel: tecknet byts. Roten är plus tre, så faktorn har minus tre. Roten är minus ett, så faktorn har plus ett.',
+       'Är du osäker, skriv $(x - \\text{roten})$ och sätt in roten med parentes: $(x - (-1)) = (x + 1)$.']],
+   adv:['$(x - 3)(x + 1) = 0$ har samma rötter som $2(x - 3)(x + 1) = 0$. Det finns alltså oändligt många ekvationer med samma rötter. De skiljer sig bara med en konstant faktor.',
+     'Utvecklar du $(x - r_1)(x - r_2)$ får du $x^2 - (r_1 + r_2)x + r_1r_2$. Summan och produkten av rötterna syns direkt i koefficienterna. Det är Vietas formler, som finns i Black-världen B2.'],
+   quiz:{q:'Vilken ekvation har rötterna $x = 4$ och $x = -2$?', options:[
+     {t:'$(x - 4)(x + 2) = 0$', ok:true, msg:'Rätt: tecknet byts för båda rötterna.'},
+     {t:'$(x + 4)(x - 2) = 0$', msg:'Tecknet byts: roten $4$ ger $(x - 4)$ och roten $-2$ ger $(x + 2)$.'},
+     {t:'$(x - 4)(x - 2) = 0$', msg:'Roten $-2$ ger $(x - (-2)) = (x + 2)$.'},
+     {t:'$(x + 4)(x + 2) = 0$', msg:'Roten $4$ ger $(x - 4)$, eftersom $4 - 4 = 0$.'}]}}
+],
+4:[
+  {id:'l4-pq', title:'pq-formeln', cards:['pq','antal-losningar'],
+   easy:['pq-formeln löser ekvationer på formen $x^2 + px + q = 0$: $x = -\\frac{p}{2} \\pm \\sqrt{\\left(\\frac{p}{2}\\right)^2 - q}$',
+     'Framför $x^2$ måste det stå $1$. Står det något annat tal, dela först alla termer med det talet.',
+     'Ta med tecknen när du läser av $p$ och $q$. I $x^2 - 6x + 8 = 0$ är $p = -6$ och $q = 8$.'],
+   ex:{prompt:'Lös $x^2 - 6x + 8 = 0$.', steps:['$p = -6$ och $q = 8$','$-\\frac{p}{2} = 3$ och $\\left(\\frac{p}{2}\\right)^2 = 9$','$x = 3 \\pm \\sqrt{9 - 8} = 3 \\pm 1$','$x_1 = 4$ och $x_2 = 2$','Kontroll: $4^2 - 6\\cdot 4 + 8 = 0$ ✓']},
+   help:[['Formeln ser krånglig ut men är bara tre steg. Ett: halvera $p$ och byt tecken. Två: kvadrera halva $p$ och dra bort $q$. Tre: ta roten ur, och lägg sedan till och dra bort den.',
+       'Med $x^2 - 6x + 8 = 0$: halva $p$ är $-3$, och med bytt tecken blir det $3$. Kvadraten är $9$, och minus $q$ blir $1$. Roten ur $1$ är $1$. Svaren är $3 + 1$ och $3 - 1$.'],
+     ['Skriv upp $p$ och $q$ först, med sina tecken, innan du gör något annat. Det är där de flesta fel uppstår.',
+       'Ringa in talet framför $x$: det är $p$. Ringa in talet utan $x$: det är $q$. Ta med minustecknet som står framför.']],
+   adv:['Formeln kommer från kvadratkomplettering: $x^2 + px + q = 0$ skrivs om till $\\left(x + \\frac{p}{2}\\right)^2 = \\left(\\frac{p}{2}\\right)^2 - q$, och sedan drar man roten ur. Det visas i Black-världen B3.',
+     'Uttrycket under rottecknet avgör antalet lösningar: positivt ger två, noll ger en (en dubbelrot) och negativt ger inga reella lösningar. I Matte 4 räknar man med komplexa tal, och då finns det alltid lösningar.'],
+   quiz:{q:'Vad är $p$ och $q$ i $x^2 + 4x - 5 = 0$?', options:[
+     {t:'$p = 4$ och $q = -5$', ok:true, msg:'Rätt: tecknen följer med.'},
+     {t:'$p = 4$ och $q = 5$', msg:'Ta med tecknet. Det står $-5$, så $q = -5$.'},
+     {t:'$p = -4$ och $q = -5$', msg:'$p$ är talet framför $x$, med sitt tecken: $+4$.'},
+     {t:'$p = 1$ och $q = 4$', msg:'Ettan framför $x^2$ är inte $p$. $p$ står framför $x$.'}]}},
+  {id:'l4-dela', title:'Dela först, eller använd abc-formeln', cards:['dela-alla','tva-vagar'],
+   easy:['pq-formeln kräver att det står $1$ framför $x^2$. $2x^2 - 12x + 16 = 0$ delas därför först med $2$: $x^2 - 6x + 8 = 0$.',
+     'Alla termer ska delas, även konstanttermen. Högerledet är $0$, och $0$ delat med något är fortfarande $0$.',
+     'abc-formeln fungerar direkt på $ax^2 + bx + c = 0$: $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$'],
+   ex:{prompt:'Lös $3x^2 + 6x - 9 = 0$.', steps:['Dela alla termer med $3$: $x^2 + 2x - 3 = 0$','$p = 2$ och $q = -3$','$x = -1 \\pm \\sqrt{1 + 3} = -1 \\pm 2$','$x_1 = 1$ och $x_2 = -3$','Kontroll: $3\\cdot 1^2 + 6\\cdot 1 - 9 = 0$ ✓']},
+   help:[['En ekvation är som en våg i balans. Delar du allt på båda sidor med samma tal är den fortfarande i balans.',
+       'Delar du bara $x^2$-termen ändrar du ekvationen, och då får du fel rötter.'],
+     ['Skriv ekvationen igen, term för term, och dela var och en: $\\frac{3x^2}{3} + \\frac{6x}{3} - \\frac{9}{3} = \\frac{0}{3}$.',
+       'Det blir $x^2 + 2x - 3 = 0$. Fortsätt sedan med pq-formeln som vanligt.']],
+   adv:['Med abc-formeln slipper du dela: $3x^2 + 6x - 9 = 0$ ger $x = \\frac{-6 \\pm \\sqrt{36 + 108}}{6} = \\frac{-6 \\pm 12}{6}$, alltså $x = 1$ eller $x = -3$.',
+     'Diskriminanten $b^2 - 4ac$ avgör antalet lösningar, på samma sätt som uttrycket under rottecknet i pq-formeln.',
+     'Går ekvationen att faktorisera är det ofta snabbast: $x^2 + 2x - 3 = (x + 3)(x - 1)$. Alla metoder ger samma rötter.'],
+   quiz:{q:'Vad blir $5x^2 - 10x + 15 = 0$ när du delar med $5$?', options:[
+     {t:'$x^2 - 2x + 3 = 0$', ok:true, msg:'Rätt: alla tre termerna delas med $5$.'},
+     {t:'$x^2 - 10x + 15 = 0$', msg:'Alla termer ska delas, inte bara $x^2$-termen.'},
+     {t:'$x^2 - 2x + 15 = 0$', msg:'Konstanttermen ska också delas: $\\frac{15}{5} = 3$.'},
+     {t:'$x^2 - 2x + 3 = 5$', msg:'Högerledet är $0$, och $\\frac{0}{5} = 0$.'}]}}
+],
+5:[
+  {id:'l5-int', title:'Intervall och prickar', cards:['prickar'],
+   easy:['Ett intervall är alla tal mellan två gränser, till exempel $-2 \\le x < 3$.',
+     '$\\le$ betyder att gränsen är med. På tallinjen ritas den med en fylld prick.',
+     '$<$ betyder att gränsen inte är med. Den ritas med en ofylld prick.'],
+   ex:{prompt:'Fylld prick vid $-1$, ofylld prick vid $4$ och linjen mellan dem markerad. Skriv intervallet.', steps:['Gränsen $-1$ är med: $-1 \\le x$','Gränsen $4$ är inte med: $x < 4$','Tillsammans: $-1 \\le x < 4$','Kontroll: $-1$ är med (fylld prick) och $4$ är inte med (ofylld prick) ✓']},
+   help:[['Tänk på en åldersgräns. ”Från $15$ år” betyder att den som är exakt $15$ får vara med: $x \\ge 15$, fylld prick. ”Under $18$” betyder att den som är $18$ inte får vara med: $x < 18$, ofylld prick.',
+       'Strecket under $\\le$ betyder ”eller lika med”.'],
+     ['Titta på en prick i taget. Fylld prick: skriv $\\le$ vid den. Ofylld prick: skriv $<$.',
+       'Skriv det minsta talet till vänster och låt båda tecknen peka åt samma håll: $-1 \\le x < 4$.']],
+   adv:['Ett intervall kan sakna gräns åt ena hållet, som $x > 2$.',
+     'Två villkor som ska gälla samtidigt ger ett intervall: $x > -1$ och $x \\le 4$ blir $-1 < x \\le 4$. Två villkor där det räcker att ett gäller, som $x < -1$ eller $x > 2$, ger två skilda delar. Sådana svar får du när du löser olikheter med grafer i värld 8.'],
+   quiz:{q:'Ofylld prick vid $0$ och fylld prick vid $5$. Vilket intervall är det?', options:[
+     {t:'$0 < x \\le 5$', ok:true, msg:'Rätt: $0$ är inte med, men $5$ är med.'},
+     {t:'$0 \\le x < 5$', msg:'Det är tvärtom. Ofylld prick vid $0$ ger $<$, och fylld prick vid $5$ ger $\\le$.'},
+     {t:'$0 \\le x \\le 5$', msg:'Pricken vid $0$ är ofylld, så $0$ är inte med.'},
+     {t:'$0 < x < 5$', msg:'Pricken vid $5$ är fylld, så $5$ är med.'}]}},
+  {id:'l5-dfvf', title:'Definitionsmängd och värdemängd', cards:['df-vf'],
+   easy:['Definitionsmängden $D_f$ är alla $x$ man får stoppa in i funktionen.',
+     'Värdemängden $V_f$ är alla $y$ som kan komma ut.',
+     'Ur en graf läser du av $D_f$ längs $x$-axeln, alltså hur långt grafen sträcker sig åt sidorna. $V_f$ läser du av längs $y$-axeln, alltså hur högt och lågt grafen går.'],
+   ex:{prompt:'En graf börjar i $(-2, 1)$, går upp till toppen $(1, 5)$ och slutar i $(3, -1)$. Båda ändpunkterna är fyllda. Bestäm $D_f$ och $V_f$.', steps:['Längst till vänster är $x = -2$ och längst till höger $x = 3$. Båda ändpunkterna är med.','$D_f$: $-2 \\le x \\le 3$','Lägsta $y$ är $-1$, i slutpunkten. Högsta $y$ är $5$, i toppen.','$V_f$: $-1 \\le y \\le 5$','Kontroll: toppen är inte en ändpunkt, men den räknas ändå. Därför är det $5$ och inte $1$ som är det högsta värdet ✓']},
+   help:[['Tänk på funktionen som en automat. $D_f$ är vilka mynt automaten tar emot. $V_f$ är vilka varor som kan komma ut.',
+       'I en modell bestämmer verkligheten $D_f$. En längd kan inte vara negativ, och tiden börjar på $0$.'],
+     ['Tänk dig två linjaler. För en lodrät linjal från vänster till höger: där den rör grafen ligger $D_f$. För en vågrät linjal nerifrån och upp: där den rör grafen ligger $V_f$.',
+       'Skriv sedan det minsta och det största talet och kolla om ändpunkterna är med (fylld prick) eller inte (ofylld prick).']],
+   adv:['För en andragradsfunktion $f(x) = a(x - h)^2 + k$ med $a > 0$ är $V_f$: $y \\ge k$, eftersom kvadraten aldrig är negativ.',
+     'I Matte 3 bestämmer man $D_f$ direkt ur formeln. $\\frac{1}{x - 2}$ är inte definierad för $x = 2$, och $\\sqrt{x}$ kräver att $x \\ge 0$. Det tränar du i Black-världen B5.'],
+   quiz:{q:'En rektangel har sidorna $x$ cm och $(10 - x)$ cm. Vilken definitionsmängd är rimlig för arean?', options:[
+     {t:'$0 < x < 10$', ok:true, msg:'Rätt: båda sidorna måste vara större än noll.'},
+     {t:'$0 \\le x \\le 10$', msg:'Om $x = 0$ eller $x = 10$ blir en sida noll, och då finns ingen rektangel.'},
+     {t:'$x > 0$', msg:'Den andra sidan $10 - x$ måste också vara positiv, så $x < 10$.'},
+     {t:'Alla tal', msg:'En sida kan inte vara noll eller negativ.'}]}}
+],
+6:[
+  {id:'l6-ka', title:'Sätt in ett uttryck: f(2a)', cards:['f-nagot'],
+   easy:['Du kan sätta in ett uttryck i en funktion, inte bara ett tal. Gör precis som förut: byt varje $x$ mot uttrycket, med parentes.',
+     '$f(x) = x^2 + 3x$ ger $f(2a) = (2a)^2 + 3\\cdot 2a = 4a^2 + 6a$.'],
+   ex:{prompt:'$f(x) = 3x^2 - x$. Bestäm $f(-2a)$.', steps:['Byt varje $x$ mot $(-2a)$: $f(-2a) = 3(-2a)^2 - (-2a)$','Kvadrera hela parentesen: $(-2a)^2 = 4a^2$','$3\\cdot 4a^2 = 12a^2$ och $-(-2a) = 2a$','Svar: $f(-2a) = 12a^2 + 2a$','Kontroll med $a = 1$: $f(-2) = 3\\cdot 4 + 2 = 14$ och $12 + 2 = 14$ ✓']},
+   help:[['Det är precis som att sätta in ett tal. Tänk att $2a$ är ett paket som ska in på varje plats där $x$ står.',
+       'Paketet får inte delas upp, därför behövs parentesen: $(2a)^2$, inte $2a^2$.'],
+     ['Steg 1: skriv formeln med tomma parenteser där $x$ stod: $f(\\quad) = (\\quad)^2 + 3(\\quad)$.',
+       'Steg 2: skriv $2a$ i varje parentes: $(2a)^2 + 3(2a)$. Steg 3: räkna. $(2a)^2 = 2a\\cdot 2a = 4a^2$ och $3\\cdot 2a = 6a$.']],
+   adv:['Snabb kontroll: välj ett tal för $a$, till exempel $a = 1$, och räkna på båda sätten. Får du samma svar är det troligen rätt.',
+     '$f(2a)$ och $2f(a)$ är oftast olika. Med $f(x) = x^2$ är $f(2a) = 4a^2$ men $2f(a) = 2a^2$.'],
+   quiz:{q:'$f(x) = x^2 - 2x$. Vad är $f(3a)$?', options:[
+     {t:'$9a^2 - 6a$', ok:true, msg:'Rätt: $(3a)^2 - 2\\cdot 3a$.'},
+     {t:'$3a^2 - 6a$', msg:'Hela $3a$ ska kvadreras: $(3a)^2 = 9a^2$.'},
+     {t:'$9a^2 - 2a$', msg:'Även $x$ i $-2x$ ska bytas mot $3a$: $-2\\cdot 3a = -6a$.'},
+     {t:'$9a - 6a$', msg:'$(3a)^2$ betyder $3a\\cdot 3a = 9a^2$, inte $9a$.'}]}},
+  {id:'l6-xk', title:'f(x + k) och f(f(x))', cards:['f-nagot'],
+   easy:['$f(x + 1)$: byt varje $x$ mot $(x + 1)$. $f(x) = x^2$ ger $f(x + 1) = (x + 1)^2 = x^2 + 2x + 1$.',
+     '$f(f(2))$: räkna inifrån och ut. Först $f(2)$, sedan $f$ av svaret.'],
+   ex:{prompt:'$f(x) = x^2 - 3$. Bestäm $f(x + 2)$.', steps:['Byt $x$ mot $(x + 2)$: $f(x + 2) = (x + 2)^2 - 3$','Kvadreringsregeln: $(x + 2)^2 = x^2 + 4x + 4$','$x^2 + 4x + 4 - 3 = x^2 + 4x + 1$','Kontroll med $x = 1$: $f(3) = 9 - 3 = 6$ och $1 + 4 + 1 = 6$ ✓']},
+   help:[['Tänk på $f$ som en maskin igen. $f(x + 2)$ betyder att det som matas in är $x + 2$ i stället för $x$.',
+       '$f(f(2))$ är två maskiner efter varandra: det som kommer ut ur den första matas in i den andra.'],
+     ['Med $f(x) = 2x + 1$: räkna först $f(2) = 5$ och skriv ner $5$. Räkna sedan $f(5) = 11$. Alltså är $f(f(2)) = 11$.',
+       'För $f(x + 2)$: skriv $(x + 2)$ överallt där $x$ står, med parentes. Multiplicera sedan ut med reglerna från värld 2.']],
+   adv:['Grafen till $y = f(x + 2)$ är grafen till $f$ flyttad två steg åt vänster, inte åt höger. Med $f(x) = x^2$ har $(x + 2)^2$ sin vändpunkt i $x = -2$. Det tränas i Black-världen B6.',
+     '$f(x + h) - f(x)$ beskriver hur mycket funktionen ändras när $x$ ökar med $h$. Det är grunden för derivatan i Matte 3.'],
+   quiz:{q:'$f(x) = 3x - 1$. Vad är $f(f(1))$?', options:[
+     {t:'$5$', ok:true, msg:'Rätt: $f(1) = 2$ och $f(2) = 5$.'},
+     {t:'$2$', msg:'$2$ är $f(1)$. Sätt in $2$ i $f$ en gång till: $f(2) = 5$.'},
+     {t:'$4$', msg:'$f(f(1))$ är inte $f(1)$ i kvadrat. Sätt in $f(1) = 2$ i funktionen: $f(2) = 5$.'},
+     {t:'$8$', msg:'Räkna steg för steg: först $f(1) = 2$, sedan $f(2) = 3\\cdot 2 - 1 = 5$.'}]}}
+],
+7:[
+  {id:'l7-k', title:'Bestäm en okänd konstant', cards:['konstant'],
+   easy:['Ibland saknas ett tal i formeln, till exempel $f(x) = kx + 3$. Då behöver du en ledtråd, som $f(4) = 5$.',
+     '$f(4) = 5$ betyder: sätt in $4$, och svaret ska bli $5$. Det ger ekvationen $4k + 3 = 5$.',
+     'Lös ekvationen: $4k = 2$, så $k = \\frac{1}{2}$.'],
+   ex:{prompt:'$f(x) = x^2 + bx - 4$ och $f(2) = 6$. Bestäm $b$.', steps:['Sätt in $x = 2$: $f(2) = 2^2 + 2b - 4 = 2b$','Det ska vara $6$: $2b = 6$','$b = 3$','Kontroll: $f(2) = 4 + 6 - 4 = 6$ ✓']},
+   help:[['Det okända talet är som en pusselbit som saknas. Ledtråden $f(4) = 5$ visar hur pusslet ska se ut när det är klart.',
+       'Ledtråden betyder också att punkten $(4, 5)$ ligger på grafen.'],
+     ['Steg 1: byt $x$ mot talet i parentesen: $f(4) = k\\cdot 4 + 3$. Steg 2: skriv $= 5$ efter, eftersom $f(4)$ ska vara $5$: $4k + 3 = 5$.',
+       'Steg 3: lös som en vanlig ekvation. Dra bort $3$: $4k = 2$. Dela med $4$: $k = \\frac{2}{4} = \\frac{1}{2}$.']],
+   adv:['Har formeln två okända konstanter behövs två ledtrådar. $f(x) = kx + m$ genom $(1, 5)$ och $(3, 9)$ ger $k + m = 5$ och $3k + m = 9$. Dra den första ekvationen från den andra: $2k = 4$, så $k = 2$ och $m = 3$.',
+     'För en rät linje är $k = \\frac{y_2 - y_1}{x_2 - x_1}$, alltså ändringen i $y$ delat med ändringen i $x$. Med punkterna ovan blir det $\\frac{9 - 5}{3 - 1} = 2$.'],
+   quiz:{q:'$f(x) = kx - 2$ och $f(3) = 10$. Vad är $k$?', options:[
+     {t:'$4$', ok:true, msg:'Rätt: $3k - 2 = 10$ ger $3k = 12$ och $k = 4$.'},
+     {t:'$\\frac{8}{3}$', msg:'Lägg till $2$, dra inte bort: $3k = 10 + 2 = 12$.'},
+     {t:'$12$', msg:'$3k = 12$, så dela med $3$: $k = 4$.'},
+     {t:'$\\frac{10}{3}$', msg:'Glöm inte $-2$. Ekvationen är $3k - 2 = 10$.'}]}}
+],
+8:[
+  {id:'l8-skar', title:'f(x) = g(x) ur grafer', cards:['skarning','graf-tabell'],
+   easy:['Där två grafer skär varandra har de samma $y$ för samma $x$. Där är $f(x) = g(x)$.',
+     'Svaret är $x$-värdena för skärningspunkterna, inte $y$-värdena.',
+     'En linje och en parabel kan skära varandra två gånger, en gång eller inte alls.'],
+   ex:{prompt:'Graferna till $f$ och $g$ skär varandra i $(-1, 2)$ och $(3, 6)$. Lös $f(x) = g(x)$.', steps:['Skärningspunkterna är $(-1, 2)$ och $(3, 6)$','Ta $x$-koordinaterna: $-1$ och $3$','Svar: $x_1 = -1$ och $x_2 = 3$','Kontroll: i båda punkterna har graferna samma $y$, alltså är $f(x) = g(x)$ där ✓']},
+   help:[['Tänk på två personer som går på varsin stig i en backe. Där stigarna korsar varandra står de på samma höjd på samma plats.',
+       'Frågan $f(x) = g(x)$ betyder: var är de lika höga? Svaret är platsen, alltså $x$.'],
+     ['Sätt fingret på en skärningspunkt i taget. Följ en lodrät linje rakt ner eller upp till $x$-axeln och läs av talet där.',
+       'Skriv bara de talen. $y$-värdena behövs inte i svaret.']],
+   adv:['Med formler blir $f(x) = g(x)$ en ekvation. $x^2 = x + 2$ ger $x^2 - x - 2 = 0$, alltså $(x - 2)(x + 1) = 0$ och $x = 2$ eller $x = -1$.',
+     'Olikheten $f(x) > g(x)$ gäller där grafen till $f$ ligger ovanför grafen till $g$. Det är nästa avsnitt.'],
+   quiz:{q:'Graferna till $f$ och $g$ skär varandra i $(2, -3)$. Vad är lösningen till $f(x) = g(x)$?', options:[
+     {t:'$x = 2$', ok:true, msg:'Rätt: svaret är $x$-koordinaten.'},
+     {t:'$x = -3$', msg:'$-3$ är $y$-värdet. Frågan gäller $x$.'},
+     {t:'$x = 2$ och $y = -3$', msg:'Svaret på en ekvation i $x$ är bara $x$-värdet: $x = 2$.'},
+     {t:'$x = -1$', msg:'Läs av punktens $x$-koordinat, alltså det första talet: $2$.'}]}},
+  {id:'l8-olik', title:'f(x) > g(x) ur grafer', cards:['olikhet-graf'],
+   easy:['$f(x) > g(x)$ betyder: var ligger grafen till $f$ ovanför grafen till $g$?',
+     'Hitta först skärningspunkterna. Vid dem byter graferna plats.',
+     'Svaret skrivs som intervall för $x$, till exempel $x < -1$ eller $x > 2$.'],
+   ex:{prompt:'En parabel $f$ och en linje $g$ skär varandra vid $x = -1$ och $x = 2$. Mellan skärningarna ligger parabeln under linjen. Lös $f(x) > g(x)$.', steps:['Mellan $-1$ och $2$ ligger $f$ under $g$, så där är $f(x) < g(x)$','Utanför skärningarna ligger $f$ ovanför $g$','Svar: $x < -1$ eller $x > 2$','Kontroll: gränserna är inte med, eftersom $f(x) = g(x)$ där och olikheten är strikt ✓']},
+   help:[['”Större än” betyder högre upp i koordinatsystemet. Du letar efter de $x$ där grafen till $f$ ligger högst.',
+       'Skärningspunkterna är gränserna där graferna byter vem som ligger högst.'],
+     ['Färglägg i tanken de delar av grafen till $f$ som ligger ovanför grafen till $g$.',
+       'Titta sedan ner på $x$-axeln under de färglagda delarna. De $x$-värdena är svaret.']],
+   adv:['Med $\\ge$ i stället för $>$ kommer skärningspunkterna med: $x \\le -1$ eller $x \\ge 2$.',
+     'Med formler kan du flytta allt till ena sidan. $f(x) > g(x)$ är samma sak som $f(x) - g(x) > 0$, så det räcker att ta reda på var skillnaden är positiv.'],
+   quiz:{q:'$f$ ligger ovanför $g$ när $x$ är mellan $1$ och $4$, och graferna skär varandra vid $x = 1$ och $x = 4$. Lös $f(x) > g(x)$.', options:[
+     {t:'$1 < x < 4$', ok:true, msg:'Rätt: där ligger $f$ ovanför, och gränserna är inte med.'},
+     {t:'$x < 1$ eller $x > 4$', msg:'Där ligger $f$ under. Frågan gäller var $f$ ligger ovanför.'},
+     {t:'$1 \\le x \\le 4$', msg:'Vid $x = 1$ och $x = 4$ är graferna lika höga, och olikheten är strikt.'},
+     {t:'$x = 1$ och $x = 4$', msg:'Det är lösningen till $f(x) = g(x)$.'}]}}
+],
+9:[
+  {id:'l9-mod', title:'Ställ upp och använd en modell', cards:['fraga','df-vf'],
+   easy:['En modell är en formel som beskriver något verkligt, till exempel höjden på en boll: $h(t) = 20t - 5t^2$.',
+     'Läs vad bokstäverna betyder. Här är $t$ tiden i sekunder och $h(t)$ höjden i meter.',
+     'Att räkna med modellen är insättning. $h(1) = 20 - 5 = 15$ betyder att bollen är $15$ m upp efter $1$ sekund.'],
+   ex:{prompt:'En ränna har tvärsnittsarean $A(x) = x(12 - 2x)$ cm², där $x$ är kanthöjden i cm. Vad är arean när $x = 2$?', steps:['Sätt in $x = 2$: $A(2) = 2(12 - 2\\cdot 2)$','Parentesen först: $12 - 4 = 8$','$A(2) = 2\\cdot 8 = 16$','Svar: arean är $16$ cm²','Kontroll: höjden $2$ cm och bredden $8$ cm ger arean $2\\cdot 8 = 16$ cm² ✓']},
+   help:[['En modell är som ett recept som räknar ut något åt dig. Du stoppar in tiden och får ut höjden.',
+       'Det svåra är oftast att förstå vad frågan vill ha. ”Hur högt” vill ha ett $h$. ”När” vill ha ett $t$.'],
+     ['Skriv upp vad varje bokstav betyder, med enhet, innan du räknar. Till exempel: $t$ är tid i sekunder och $h$ är höjd i meter.',
+       'Stryk under frågeordet. ”Hur högt”: räkna ut $h$. ”När”: lös en ekvation och svara med $t$. ”Vilka värden”: svara med ett intervall.']],
+   adv:['Modellens definitionsmängd bestäms av verkligheten. För rännan måste både höjden $x$ och bredden $12 - 2x$ vara större än noll, alltså $0 < x < 6$.',
+     'Värdemängden är de värden modellen kan ge. Rännans area blir som störst $18$ cm² när $x = 3$, så värdemängden är $0 < A \\le 18$.'],
+   quiz:{q:'$h(t) = 20t - 5t^2$ är höjden i meter efter $t$ sekunder. Vad frågar ”Efter hur lång tid är bollen på marken igen?” efter?', options:[
+     {t:'Det $t$ där $h(t) = 0$, efter kastet', ok:true, msg:'Rätt: på marken betyder höjden noll, och frågan vill ha en tid.'},
+     {t:'Värdet $h(0)$', msg:'$h(0) = 0$ är när bollen kastas. Frågan gäller när den landar.'},
+     {t:'Den största höjden', msg:'”Efter hur lång tid” vill ha en tid, inte en höjd.'},
+     {t:'Höjden efter $1$ sekund', msg:'Det är $h(1)$. Frågan gäller när $h(t) = 0$.'}]}},
+  {id:'l9-max', title:'Största värdet med symmetri', cards:['symmetri'],
+   easy:['En parabel som öppnar nedåt har ett största värde i sin topp.',
+     'Toppen ligger mitt emellan nollställena, eftersom parabeln är symmetrisk.',
+     '$A(x) = x(12 - 2x)$ har nollställena $x = 0$ och $x = 6$. Mitt emellan ligger $x = 3$, och största värdet är $A(3) = 3\\cdot 6 = 18$.'],
+   ex:{prompt:'$h(t) = 20t - 5t^2$. Vilken är den största höjden?', steps:['Bryt ut: $h(t) = 5t(4 - t)$, så nollställena är $t = 0$ och $t = 4$','Mitt emellan: $t = 2$','$h(2) = 40 - 20 = 20$','Svar: största höjden är $20$ m, efter $2$ s','Kontroll: $h(1) = 15$ och $h(3) = 15$ är lika, symmetriskt kring $t = 2$ ✓']},
+   help:[['Kasta en boll rakt upp. Den åker upp, vänder i toppen och faller ner. Det tar lika lång tid upp som ner.',
+       'Därför ligger toppen precis i mitten av tiden från kast till landning.'],
+     ['Steg 1: hitta var värdet är noll, alltså nollställena. Steg 2: ta medelvärdet av dem. Med $0$ och $4$ blir det $\\frac{0 + 4}{2} = 2$. Där ligger toppen.',
+       'Steg 3: sätt in det talet i formeln för att få det största värdet. Svara på det som frågan vill ha: tiden eller höjden.']],
+   adv:['Symmetrin fungerar med vilka två punkter som helst på samma höjd, inte bara nollställena.',
+     'För $f(x) = ax^2 + bx + c$ ligger symmetrilinjen alltid i $x = -\\frac{b}{2a}$. Med $h(t) = -5t^2 + 20t$ blir det $-\\frac{20}{2\\cdot(-5)} = 2$.',
+     'I Matte 3 hittar man toppen med derivata: $h\'(t) = 20 - 10t = 0$ ger $t = 2$. Det tränas i Black-världen B1.'],
+   quiz:{q:'En parabel har nollställena $x = -2$ och $x = 6$. Var ligger symmetrilinjen?', options:[
+     {t:'$x = 2$', ok:true, msg:'Rätt: $\\frac{-2 + 6}{2} = 2$.'},
+     {t:'$x = 4$', msg:'Ta medelvärdet: $\\frac{-2 + 6}{2} = 2$.'},
+     {t:'$x = 8$', msg:'Avståndet mellan nollställena är $8$, men symmetrilinjen ligger mitt emellan: $x = 2$.'},
+     {t:'$x = 0$', msg:'Symmetrilinjen ligger mitt emellan nollställena, inte vid $y$-axeln: $\\frac{-2 + 6}{2} = 2$.'}]}}
+],
+10:[
+  {id:'l10-prov', title:'Inför provet: koefficientjämförelse och kontroll', cards:['koef'],
+   easy:['På provnivån blandas allt från värld 1 till 9, och uppgifterna är längre.',
+     'Läs hela uppgiften och stryk under det som efterfrågas. Många fel beror på att man svarar på fel fråga.',
+     'Kontrollera svaret genom att sätta in det. Det tar några sekunder och fångar de flesta teckenfel.'],
+   ex:{prompt:'Bestäm $a$ och $b$ så att $a(x + b) = 3x - 6$ för alla $x$.', steps:['Multiplicera ut vänsterledet: $ax + ab$','Jämför $x$-termerna: $a = 3$','Jämför konstanttermerna: $ab = -6$, alltså $3b = -6$ och $b = -2$','Svar: $a = 3$ och $b = -2$','Kontroll: $3(x - 2) = 3x - 6$ ✓']},
+   help:[['Koefficientjämförelse låter svårt men är enkelt. Om två uttryck ska vara exakt lika måste de ha lika mycket $x$ och lika mycket tal utan $x$.',
+       'Som två fruktkorgar: är korgarna exakt lika har de lika många äpplen och lika många päron.'],
+     ['Multiplicera ut så att båda sidor har formen $(\\text{tal})\\cdot x + (\\text{tal})$.',
+       'Para ihop: talet framför $x$ till vänster ska vara lika med talet framför $x$ till höger. Gör sedan likadant med talen utan $x$.']],
+   adv:['Redovisa dina steg tydligt. På svårare uppgifter bedöms hur du resonerar, inte bara svaret.',
+     'Två polynom är lika för alla $x$ bara om varje koefficient är lika. Samma idé används när man kontrollerar en faktorisering: $(x - 2)(x + 3)$ och $x^2 + x - 6$ har samma koefficienter, alltså är de samma polynom.'],
+   quiz:{q:'$a(x - 4) = 2x + b$ för alla $x$. Vad är $b$?', options:[
+     {t:'$-8$', ok:true, msg:'Rätt: $a = 2$ och $b = 2\\cdot(-4) = -8$.'},
+     {t:'$-4$', msg:'Först $a = 2$. Sedan är $b = a\\cdot(-4) = -8$.'},
+     {t:'$8$', msg:'Kolla tecknet: $2\\cdot(-4) = -8$.'},
+     {t:'$2$', msg:'$2$ är $a$. $b$ är konstanttermen $a\\cdot(-4)$.'}]}}
+]};
+
+/* =====================================================================
    PROGRESSION: stjärnor, medaljer, Förstådd, Provberedskap, rost
    Rena funktioner av sparat läge, så att de går att testa.
    ===================================================================== */
@@ -3222,7 +3587,7 @@ const MEDALS=['Ingen medalj','Brons','Silver','Guld','Diamant'];
 const starsFor = c => c>=9?3:c>=8?2:c>=6?1:0;
 function freshState(){
   return {v:2, level:1, passed:{}, best:{}, low:{level:0,count:0}, rounds:0, answered:0, correct:0, bestStreak:0, totalTime:0, types:{}, history:[],
-    xp:0, insights:0, insightsEarned:0, hintsUsed:0, stars:{}, und:{}, cards:{}, worldLast:{},
+    xp:0, insights:0, insightsEarned:0, hintsUsed:0, stars:{}, und:{}, cards:{}, worldLast:{}, read:{},
     skin:{owned:['standard'], active:'standard'},
     black:{unlocked:false, beaten:false, name:'', theme:false, lessons:{}, attempts:0, unlockedAt:0}};
 }
@@ -3231,7 +3596,7 @@ function migrate(old){
   const f=freshState();
   for(const k in old) if(old[k]!==undefined) S[k]=old[k];
   S.skin=Object.assign({},f.skin,old.skin||{}); S.black=Object.assign({},f.black,old.black||{});
-  for(const k of ['stars','und','cards','worldLast','passed','best','types']) S[k]=Object.assign({},old[k]||{});
+  for(const k of ['stars','und','cards','worldLast','passed','best','types','read']) S[k]=Object.assign({},old[k]||{});
   if(!Array.isArray(S.history)) S.history=[];
   if(!old.v || old.v<2){
     const now=Date.now();
@@ -3280,7 +3645,7 @@ const blackStatus = (S,now) => !S.black.unlocked ? null : rustyWorlds(S,now).len
 function playerLevel(xp){ let l=1; while(xp>=150*l*l) l++; return {level:l, from:150*(l-1)*(l-1), to:150*l*l}; }
 
 root.Core={Frac,F,Poly,parseNum,parseList,check,answerString,generate,makeRound,reviveTask,TYPES,LEVELS,typesFor,undTypesFor,levelInfo,timeFor,setRandom,sameVals,
-  UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
+  UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,LEARN,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
 })(typeof window!=='undefined'?window:globalThis);
 </script>
 
@@ -3356,6 +3721,7 @@ function renderThemeBtn(){ const b=$('#b-theme-mode'); if(b) b.innerHTML=isLight
 const svgI=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 const ICON={
   play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z" fill="currentColor"/></svg>',
+  book:svgI('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M9 7h7M9 11h5"/>'),
   map:svgI('<path d="M9 4 3 6.5v13L9 17l6 2.5 6-2.5V4l-6 2.5z"/><path d="M9 4v13M15 6.5v13"/>'),
   spark:svgI('<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/>'),
   cards:svgI('<rect x="7" y="3" width="13" height="17" rx="2.5"/><path d="M4 7v11.5A2.5 2.5 0 0 0 6.5 21H16"/>'),
@@ -3399,7 +3765,7 @@ function openModal(html){ const m=$('#modal'); m.innerHTML=`<div class="inner">$
 function bindCards(root){ root.querySelectorAll('[data-card]').forEach(b=>b.onclick=()=>{ const c=C.CARDS.find(x=>x.id===b.dataset.card); openModal(cardHTML(c,true,{big:true})); }); }
 
 /* ---------- Skärmar ---------- */
-const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test','account'];
+const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test','account','learn','topic'];
 let curWorld=1;
 function show(name,arg){
   SCREENS.forEach(s=>{ const el=$('#s-'+s); if(el) el.classList.toggle('hidden',s!==name); });
@@ -3416,6 +3782,8 @@ function show(name,arg){
   if(name==='boss') renderBossIntro();
   if(name==='test') renderTest();
   if(name==='account') renderAccount();
+  if(name==='learn') renderLearn();
+  if(name==='topic'){ if(arg) curTopic=arg; renderTopic(); }
 }
 $$('[data-home]').forEach(b=>b.onclick=()=>show('home'));
 $$('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go));
@@ -3440,6 +3808,8 @@ function renderHome(){
   $('#b-continue').style.setProperty('--wc',wcol(S.level));
   $('#b-continue').innerHTML=`<span class="pi">${ICON.play}</span><span class="pt">Fortsätt<small><span class="wdot"></span>${esc(worldName(S.level))}</small></span><span class="chev">›</span>`;
   const act=(icon,title,sub)=>`<span class="ic">${icon}</span><span><b>${title}</b><small>${sub}</small></span>`;
+  const nRead=Object.values(C.LEARN).flat().filter(t=>S.read[t.id]).length, nTopics=Object.values(C.LEARN).flat().length;
+  $('#b-learn').innerHTML=act(ICON.book,'Lär dig',nRead?`${nRead} av ${nTopics} avsnitt lästa · fungerar offline`:'Läs på i lugn och ro, även offline');
   $('#b-worlds').innerHTML=act(ICON.map,'Världar','Medaljer och nivåer');
   $('#b-und').innerHTML=act(ICON.spark,'Förståelse','Tjäna ✦ och kort');
   $('#b-kodex').innerHTML=act(ICON.cards,'Kodex',`${nCards} av ${C.CARDS.length} kort`);
@@ -3456,6 +3826,7 @@ $('#b-und').onclick=()=>startRound('und',S.level);
 $('#b-kodex').onclick=()=>show('kodex');
 $('#b-shop').onclick=()=>show('shop');
 $('#b-stats').onclick=()=>show('stats');
+$('#b-learn').onclick=()=>show('learn');
 
 /* ---------- Världar ---------- */
 function renderWorlds(){
@@ -4231,6 +4602,81 @@ $('#tb-exit').onclick=exitTest;
     if(taps.length>=5){ taps=[]; enterTest(); }
   });
 })();
+
+/* =====================================================================
+   LÄR DIG
+   Genomgångarna ligger i Core.LEARN och följer med appen, så de fungerar
+   offline. Black-världarnas lektioner (Core.LESSONS) länkas hit.
+   ===================================================================== */
+let curTopic={w:1,k:0};
+function renderLearn(){
+  const row=(w,L)=>{ const ts=C.LEARN[w], read=ts.filter(t=>S.read[t.id]).length;
+    return `<button class="lvl" data-lw="${w}" style="--wc:${wcol(w)}"><span class="n">${w}</span>
+      <span class="t">${esc(L)}<small>${ts.length} avsnitt · ${read===ts.length?'alla lästa':read+' lästa'}</small></span>${read===ts.length?'<span class="ok">✓</span>':''}</button>`; };
+  $('#learnbody').innerHTML=`<h2>Lär dig</h2>
+    <p class="sub small">Varje avsnitt har en enkel förklaring och ett exempel steg för steg. Tryck på <b>Förstår inte</b> om det inte klickar, eller på <b>Avancerat</b> om du vill veta mer. Allt fungerar utan internet.</p>
+    <div class="levels">${[...C.WORLDS,10].map(w=>row(w,worldName(w))).join('')}</div>
+    <h3 style="margin:20px 0 4px">Överkurs <span class="okb">MATTE 3–5</span></h3>
+    ${S.black.unlocked
+      ? `<div class="levels">${C.BLACK_LEVELS.map((n,i)=>`<button class="lvl bl" data-lb="${n}"><span class="n">B${i+1}</span><span class="t">${esc(C.levelInfo(n).name)}<small><span class="okb">${esc(C.levelInfo(n).course)}</span>${S.black.lessons[n]?' · läst':''}</small></span></button>`).join('')}</div>`
+      : '<div class="card small muted">Lektioner från Matte 3, 4 och 5 låses upp tillsammans med Black. Fram till dess hittar du smakprov under <b>Avancerat</b> i avsnitten ovan.</div>'}
+    <button class="btn ghost" data-home style="margin-top:14px">Tillbaka</button>`;
+  $$('#learnbody [data-lw]').forEach(b=>b.onclick=()=>show('topic',{w:+b.dataset.lw,k:0}));
+  $$('#learnbody [data-lb]').forEach(b=>b.onclick=()=>show('lesson',+b.dataset.lb));
+  $$('#learnbody [data-home]').forEach(b=>b.onclick=()=>show('home'));
+}
+function renderTopic(){
+  const {w,k}=curTopic, ts=C.LEARN[w], t=ts[k];
+  let shown=1, helpLvl=0;
+  if(!S.read[t.id]){ S.read[t.id]=Date.now(); save(); }
+  const box=$('#topicbody'); box.style.setProperty('--wc',wcol(w));
+  const cards=(t.cards||[]).map(id=>C.CARDS.find(c=>c.id===id)).filter(Boolean);
+  box.innerHTML=`<p class="lkicker">${esc(worldName(w))}${ts.length>1?` · avsnitt ${k+1} av ${ts.length}`:''}</p>
+    <h2>${md(t.title)}</h2>
+    ${ts.length>1?`<div class="ltabs">${ts.map((x,i)=>`<button class="${i===k?'on':''}" data-lk="${i}">${i+1}. ${md(x.title)}</button>`).join('')}</div>`:''}
+    <div class="card ltext">${t.easy.map(p=>`<p>${md(p)}</p>`).join('')}</div>
+    <div class="lbtns"><button class="btn lhelp" id="l-help">🤔 Förstår inte</button><button class="btn ladv" id="l-adv">🚀 Avancerat</button></div>
+    <div id="l-helpbox"></div><div id="l-advbox"></div>
+    <div class="card"><b>Exempel</b><p style="margin:8px 0 0">${md(t.ex.prompt)}</p><ol class="exsteps" id="l-steps"></ol>
+      <button class="btn" id="l-next">Visa nästa steg</button></div>
+    ${cards.length?`<div class="card"><b>Kom ihåg</b><ul class="lremember">${cards.map(c=>`<li>${md(c.rule)}</li>`).join('')}</ul></div>`:''}
+    <div class="card"><b>Testa dig själv</b><p style="margin:8px 0 10px">${md(t.quiz.q)}</p>
+      <div class="opts">${shuffleArr(t.quiz.options.map((o,i)=>i)).map(i=>`<button class="opt" data-q="${i}">${md(t.quiz.options[i].t)}</button>`).join('')}</div><div id="l-res"></div></div>
+    <button class="btn primary" id="l-play">Öva: ${esc(worldName(w))}</button>
+    ${k<ts.length-1?`<button class="btn" id="l-nexttopic">Nästa avsnitt: ${md(ts[k+1].title)}</button>`:''}
+    <button class="btn ghost" id="l-back">Till Lär dig</button>`;
+  const draw=()=>{ $('#l-steps').innerHTML=t.ex.steps.slice(0,shown).map(s=>`<li>${md(s)}</li>`).join(''); const n=$('#l-next'); if(n && shown>=t.ex.steps.length) n.remove(); };
+  draw(); $('#l-next').onclick=()=>{ shown++; draw(); };
+  // "Förstår inte": varje tryck visar en enklare förklaring, tills de är slut
+  $('#l-help').onclick=()=>{
+    const hb=$('#l-helpbox'), btn=$('#l-help');
+    if(helpLvl<t.help.length){
+      hb.insertAdjacentHTML('beforeend',`<div class="lpanel help"><h4>${helpLvl===0?'Enklare förklarat':'Ännu enklare, steg för steg'}</h4>${t.help[helpLvl].map(p=>`<p>${md(p)}</p>`).join('')}</div>`);
+      helpLvl++; btn.classList.add('on');
+      btn.textContent = helpLvl<t.help.length ? '🤔 Förstår fortfarande inte' : '🤔 Fortfarande oklart?';
+      hb.lastElementChild.scrollIntoView({behavior:'smooth',block:'nearest'});
+    } else if(!$('#l-helpend')){
+      hb.insertAdjacentHTML('beforeend',`<div class="lpanel help" id="l-helpend"><h4>Prova så här</h4><p>Gå igenom exemplet nedan ett steg i taget och försök gissa nästa steg innan du trycker. Spela sedan några uppgifter: efter varje svar visas en lösning steg för steg.</p><p>Fastnar du på samma sak flera gånger, fråga din lärare om just det steget. Visa gärna exemplet här.</p></div>`);
+      hb.lastElementChild.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+  };
+  $('#l-adv').onclick=()=>{
+    const ab=$('#l-advbox'), btn=$('#l-adv');
+    if(ab.innerHTML){ ab.innerHTML=''; btn.classList.remove('on'); return; }
+    ab.innerHTML=`<div class="lpanel adv"><h4>Avancerat</h4>${t.adv.map(p=>`<p>${md(p)}</p>`).join('')}</div>`; btn.classList.add('on');
+    ab.firstElementChild.scrollIntoView({behavior:'smooth',block:'nearest'});
+  };
+  $$('#topicbody [data-q]').forEach(b=>b.onclick=()=>{
+    const o=t.quiz.options[+b.dataset.q];
+    $$('#topicbody [data-q]').forEach(x=>{ x.disabled=true; if(t.quiz.options[+x.dataset.q].ok) x.classList.add('right'); });
+    if(!o.ok) b.classList.add('wrong');
+    $('#l-res').innerHTML=`<div class="qres" style="color:var(--${o.ok?'good':'bad'})">${o.ok?'✓ Rätt!':'✗ Inte riktigt.'}</div>${o.msg?`<div class="small">${md(o.msg)}</div>`:''}`;
+  });
+  $$('#topicbody [data-lk]').forEach(b=>b.onclick=()=>show('topic',{w,k:+b.dataset.lk}));
+  $('#l-play').onclick=()=>startRound('level',w);
+  const nt=$('#l-nexttopic'); if(nt) nt.onclick=()=>show('topic',{w,k:k+1});
+  $('#l-back').onclick=()=>show('learn');
+}
 
 /* =====================================================================
    OFFLINE
