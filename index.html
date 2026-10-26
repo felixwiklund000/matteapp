@@ -4710,6 +4710,22 @@ if(OFF.on){
   navigator.serviceWorker.register('sw.js').catch(()=>{ OFF.on=false; renderOfflineBtn(); });
   swAsk('status').then(s=>{ OFF.state=s.ready?'ready':'missing'; renderOfflineBtn(); if(!s.ready && navigator.onLine) offlineDownload(); });
   addEventListener('online',renderOfflineBtn); addEventListener('offline',renderOfflineBtn);
+  // En app på hemskärmen laddas inte om av sig själv. När den kommer tillbaka kollar vi efter en ny version.
+  let hiddenAt=0;
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){ hiddenAt=Date.now(); return; }
+    if(!navigator.onLine || Date.now()-hiddenAt<30000) return;
+    swAsk('check').then(r=>{ if(r.updated) newVersion(); });
+  });
+  swAsk('check').then(r=>{ if(r.updated) newVersion(); });
+}
+// Ny version: ladda om direkt om ingen runda pågår, annars visa en knapp
+function newVersion(){
+  const busy=!$('#s-game').classList.contains('hidden') || !$('#s-end').classList.contains('hidden') || !$('#s-account').classList.contains('hidden');
+  if(!busy){ location.reload(); return; }
+  if($('#updbar')) return;
+  document.body.insertAdjacentHTML('beforeend','<button id="updbar" class="toast" style="animation:none;opacity:1;border:0">En ny version finns · tryck för att uppdatera</button>');
+  $('#updbar').onclick=()=>{ if(R && !R.done) pauseRun(); if(R) saveRun(); location.reload(); };
 }
 $('#b-offline').onclick=()=>{ openModal(`<h2>Träna utan internet</h2>
   <p>Alla uppgifter räknas fram av appen själv, så du får nya uppgifter hela tiden, även på flygplanet. Det som behöver finnas på mobilen är själva appen, och den sparas automatiskt.</p>

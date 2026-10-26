@@ -1,7 +1,7 @@
 /* Snabbmatte offline: sparar appen och allt den behöver på enheten.
    Uppgifterna skapas av appen själv, så när filerna här finns sparade
    går det att träna obegränsat utan internet. */
-const CACHE = 'snabbmatte-v1';
+const CACHE = 'snabbmatte-v2';
 const KATEX = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/';
 const KATEX_FONTS = ['AMS-Regular','Caligraphic-Bold','Caligraphic-Regular','Fraktur-Bold','Fraktur-Regular','Main-Bold','Main-BoldItalic',
   'Main-Italic','Main-Regular','Math-BoldItalic','Math-Italic','SansSerif-Bold','SansSerif-Italic','SansSerif-Regular','Script-Regular',
@@ -48,11 +48,22 @@ self.addEventListener('activate', e => {
 self.addEventListener('message', e => {
   const port = e.ports[0]; if (!port) return;
   if (e.data === 'status') status().then(s => port.postMessage({ type: 'status', ...s }));
+  if (e.data === 'check') checkUpdate().then(updated => port.postMessage({ type: 'check', updated })).catch(() => port.postMessage({ type: 'check', updated: false }));
   if (e.data === 'precache') precache((done, total) => port.postMessage({ type: 'progress', done, total }))
     .then(r => status().then(s => port.postMessage({ type: 'done', failed: r.failed, ...s })))
     .catch(() => port.postMessage({ type: 'error' }));
 });
 
+// Finns en nyare index.html på servern än den sparade? Då sparas den nya.
+async function checkUpdate() {
+  const cache = await caches.open(CACHE);
+  const res = await fetch('./index.html', { cache: 'no-cache' });
+  if (!res.ok) return false;
+  const fresh = await res.clone().text(), old = await cache.match('./index.html');
+  const changed = !old || (await old.text()) !== fresh;
+  if (changed) await cache.put('./index.html', res);
+  return !!old && changed;
+}
 const timeout = ms => new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms));
 self.addEventListener('fetch', e => {
   const req = e.request, url = new URL(req.url);
@@ -62,7 +73,8 @@ self.addEventListener('fetch', e => {
     e.respondWith((async () => {
       const cache = await caches.open(CACHE);
       try {
-        const res = await Promise.race([fetch(req), timeout(4000)]);
+        // no-cache: fråga alltid servern om det finns en ny version (GitHub Pages låter annars webbläsaren spara sidan i 10 minuter)
+        const res = await Promise.race([fetch(req.mode === 'navigate' ? req.url : req, { cache: 'no-cache' }), timeout(4000)]);
         if (res.ok) cache.put(req.mode === 'navigate' ? './index.html' : req, res.clone());
         return res;
       } catch (err) {
