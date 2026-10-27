@@ -480,6 +480,26 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 .lremember li:first-child{border-top:0}
 .lvl .ok{margin-left:auto}
 
+/* ===== Miniräknare ===== */
+.calcbtn{border:0;background:color-mix(in srgb,var(--ins) 20%,var(--card));color:var(--ins);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:800;margin-top:10px}
+.calctag{color:var(--ins);font-weight:800;margin-right:6px}
+.calc{position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;justify-content:center;padding:0 8px calc(8px + env(safe-area-inset-bottom));pointer-events:none}
+.calc-in{pointer-events:auto;width:100%;max-width:560px;background:var(--card);border:1px solid var(--line);border-radius:22px 22px 18px 18px;padding:12px;box-shadow:0 -12px 40px rgba(0,0,0,.45);animation:slideup .25s ease-out both}
+.calc-top{display:flex;justify-content:space-between;align-items:center;margin:0 4px 6px}
+.calc-top button{border:0;background:var(--raised);color:var(--ink);width:34px;height:34px;border-radius:50%;font-size:1rem}
+.calc-expr{min-height:26px;text-align:right;color:var(--muted);font-size:1.05rem;word-break:break-all;padding:0 6px}
+.calc-res{text-align:right;font-size:1.9rem;font-weight:800;padding:0 6px 8px;word-break:break-all}
+.calc-res.err{color:var(--bad);font-size:1.1rem}
+.calc-keys{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.calc-keys button{min-height:44px;border:0;border-radius:12px;background:var(--raised);color:var(--ink);font:700 1.05rem/1 var(--num);box-shadow:0 3px 0 color-mix(in srgb,var(--raised) 60%,#000)}
+.calc-keys button:active{transform:translateY(3px);box-shadow:none}
+.calc-keys .fn{background:color-mix(in srgb,var(--ins) 18%,var(--raised));color:var(--ins);font-size:.95rem}
+.calc-keys .op{background:color-mix(in srgb,var(--accent) 22%,var(--raised))}
+.calc-keys .eq{background:var(--accent);color:var(--accent-ink)}
+.calc-keys .ins{grid-column:span 3;background:var(--good);color:#fff;font-family:var(--font);font-weight:900;font-size:.95rem}
+.calc-keys .w2{grid-column:span 2}
+body.calc-open #s-game{padding-bottom:380px}
+
 /* ===== Paus ===== */
 .pausebtn{flex:0 0 34px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;padding:0}
 .pausebtn svg{width:16px;height:16px}
@@ -652,6 +672,7 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
     <div id="g-lines"></div>
     <div id="g-fig"></div>
     <div id="g-hint"></div>
+    <div id="g-tools"></div>
     <div id="g-parts"></div>
   </div>
   <div id="g-feedback"></div>
@@ -681,6 +702,14 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 </main>
 <div id="fx" class="fx hidden" role="dialog" aria-label="Black upplåst"></div>
 <div id="modal" class="modal hidden" role="dialog" aria-modal="true"></div>
+<div id="calc" class="calc hidden" role="dialog" aria-label="Miniräknare">
+  <div class="calc-in">
+    <div class="calc-top"><b>Miniräknare</b><button id="calc-x" aria-label="Stäng">✕</button></div>
+    <div class="calc-expr num" id="calc-expr"></div>
+    <div class="calc-res num" id="calc-res">0</div>
+    <div class="calc-keys" id="calc-keys"></div>
+  </div>
+</div>
 <div id="pausemenu" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="pm-title">
   <div class="inner card pm">
     <div class="pm-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor"/></svg></div>
@@ -832,7 +861,7 @@ const WORD={2:'tvåan',3:'trean',4:'fyran',5:'femman'};
 const NAMES=['Alva','Elias','Maja','Noah','Ella','Hugo','Saga','Liam','Vera','Omar','Ida','Leo'];
 
 /* ---------- Svarstyper ---------- */
-function num(values,tex,opts={}){ return {kind:'num', values:values.map(Frac.of), tex, ordered:!!opts.ordered, hint:opts.hint||''}; }
+function num(values,tex,opts={}){ const a={kind:'num', values:values.map(Frac.of), tex, ordered:!!opts.ordered, hint:opts.hint||''}; if(opts.tol) a.tol=opts.tol; return a; }
 function mc(correct,distractors){
   const seen=new Set([correct]); const opts=[{t:correct, ok:true, msg:null, h:null}];
   for(const d of distractors){
@@ -884,6 +913,12 @@ function sameVals(a,b,ordered){
   const ua=uniq(a), ub=uniq(b);
   return ua.length===ub.length && ua.every(v=>ub.some(w=>w.eq(v)));
 }
+function approxVals(a,b,ordered,tol){
+  if(a.length!==b.length) return false;
+  let x=a.map(v=>v.num()), y=b.map(v=>v.num());
+  if(!ordered){ x=[...x].sort((p,q)=>p-q); y=[...y].sort((p,q)=>p-q); }
+  return x.every((v,i)=>Math.abs(v-y[i])<=tol+1e-12);
+}
 function check(task,input){
   const A=task.answer;
   if(A.kind==='mc'){
@@ -900,10 +935,12 @@ function check(task,input){
   }
   const vals=parseList(input, A.values.length);
   if(!vals || !vals.length) return {valid:false};
-  if(sameVals(vals,A.values,A.ordered)) return {valid:true, correct:true, msg:null};
-  for(const e of task.errors) if(sameVals(vals,e.values,A.ordered)) return {valid:true, correct:false, msg:e.msg};
+  // Med tol (uppgifter med miniräknare) godtas avrundade svar
+  const same = A.tol ? (a,b,o)=>approxVals(a,b,o,A.tol) : sameVals;
+  if(same(vals,A.values,A.ordered)) return {valid:true, correct:true, msg:null};
+  for(const e of task.errors) if(same(vals,e.values,A.ordered)) return {valid:true, correct:false, msg:e.msg};
   const n=A.values.length;
-  if(vals.length===n && sameVals(vals.map(v=>v.abs()), A.values.map(v=>v.abs()), A.ordered))
+  if(vals.length===n && same(vals.map(v=>v.abs()), A.values.map(v=>v.abs()), A.ordered))
     return {valid:true, correct:false, msg:'Du har rätt siffror men fel tecken. Kolla tecknen: minus gånger minus blir plus.'};
   if(n>1 && !A.ordered && vals.length<n && vals.every(v=>A.values.some(w=>w.eq(v))))
     return {valid:true, correct:false, msg:'Det du skrev stämmer, men det finns '+n+' lösningar. Skriv alla, med ; emellan.'};
@@ -1929,6 +1966,297 @@ def('elever',10,'Två elevers fel',()=>{
       && evalCs([1,pA,qA],s1).isZero() && evalCs([1,pA,qA],s2).isZero()
       && evalCs([1,pB,Pr],t1).isZero() && evalCs([1,pB,Pr],t2).isZero() && qA!==Pr && pB!==pA,
   };
+});
+
+/* =====================================================================
+   KAPITLEN UR BOKEN (nivå 21–24): 2.1 Andragradsekvationer,
+   2.2 Andragradsfunktioner, 2.3 Potenser och exponentialfunktioner,
+   2.4 Logaritmer. Egna uppgifter i samma stil som läroboken.
+   calc: true betyder att miniräknaren finns. Avrundade svar godtas
+   inom answer.tol (sätts med num(..., {tol})).
+   ===================================================================== */
+const rnd=(x,d)=>Math.round(x*10**d)/10**d;
+const dc=(x,d)=>{ const r=rnd(x,d); return (Object.is(r,-0)?0:r).toFixed(d).replace('.','{,}'); };   // decimaltal i TeX
+const dcF=(x,d)=>parseNum(rnd(x,d).toFixed(d));                                      // avrundat svar som bråk
+const TOL={1:0.051, 2:0.0051, 3:0.00051};
+const lg=Math.log10;
+const sq=v=>v<0?`(${v})`:String(v);
+
+// ---------- 2.1 Andragradsekvationer ----------
+def('b-kvrot',21,'Kvadratrotsmetoden',()=>{
+  const v=rand();
+  if(v<0.34){
+    const a=pick([1,1,2,3,5]), k=ri(2,12), c=a*k*k;
+    return {diff:1, prompt:`Lös ekvationen $${a===1?'':a}x^2 = ${c}$ med kvadratrotsmetoden.`,
+      answer:num([k,-k],`x = \\pm ${k}`),
+      errors:[{values:[k], msg:`Glöm inte den negativa roten. Både $${k}^2$ och $(-${k})^2$ är $${k*k}$.`}],
+      steps:[a>1?`Dela båda sidor med $${a}$: $x^2 = ${k*k}$`:`$x^2 = ${c}$`,
+        `Vilka tal blir $${k*k}$ när de kvadreras? Både $${k}$ och $-${k}$.`,`$x = \\pm\\sqrt{${k*k}} = \\pm ${k}$`,
+        `Kontroll: $${a===1?'':a+'\\cdot '}(-${k})^2 = ${c}$ ✓`],
+      verify:()=>a*k*k===c};
+  }
+  if(v<0.67){
+    const a=pick([2,3,4,5]), k=ri(2,9), b=nzi(-30,30), c=a*k*k+b;
+    return {diff:2, prompt:`Lös ekvationen $${a}x^2${plus(b)} = ${c}$.`,
+      answer:num([k,-k],`x = \\pm ${k}`),
+      errors:[{values:[k], msg:`Glöm inte den negativa roten: $x^2 = ${k*k}$ har två lösningar.`}],
+      steps:[`Flytta över $${b}$: $${a}x^2 = ${c}${plus(-b)} = ${a*k*k}$`,`Dela med $${a}$: $x^2 = ${k*k}$`,`$x = \\pm ${k}$`,
+        `Kontroll: $${a}\\cdot ${k}^2${plus(b)} = ${a*k*k}${plus(b)} = ${c}$ ✓`],
+      verify:()=>a*k*k+b===c};
+  }
+  const p=nzi(-9,9), k=ri(1,10), x1=-p+k, x2=-p-k;
+  return {diff:3, prompt:`Lös ekvationen $(x${plus(p)})^2 = ${k*k}$.`,
+    answer:num([x1,x2],`x_1 = ${x1},\\ x_2 = ${x2}`),
+    errors:[{values:[x1], msg:`Det finns två lösningar: $x${plus(p)} = ${k}$ och $x${plus(p)} = -${k}$.`},{values:[p+k,p-k], msg:`Tecknet: $x${plus(p)} = ${k}$ ger $x = ${k}${plus(-p)}$.`}],
+    steps:[`Det som kvadreras, $x${plus(p)}$, måste vara $${k}$ eller $-${k}$.`,`$x${plus(p)} = ${k}$ ger $x = ${x1}$`,`$x${plus(p)} = -${k}$ ger $x = ${x2}$`,
+      `Kontroll: $(${x2}${plus(p)})^2 = (-${k})^2 = ${k*k}$ ✓`],
+    verify:()=>(x1+p)**2===k*k && (x2+p)**2===k*k && x1!==x2};
+});
+def('b-nollprod',21,'Bryt ut x',()=>{
+  const r=nzi(-12,12), a=pick([1,1,2,3,-1]), form=rand()<0.5;
+  const prompt = form ? `Lös ekvationen $${poly([a,-a*r,0])} = 0$.` : `Lös ekvationen $${a===1?'':a===-1?'-':a}x^2 = ${mono(a*r,'x')}$.`;
+  return {diff:form?1:2, prompt,
+    answer:num([0,r],`x_1 = 0,\\ x_2 = ${r}`),
+    errors:[{values:[r], msg:'Dela aldrig med $x$. Då försvinner lösningen $x = 0$. Bryt ut $x$ i stället.'},{values:[0,-r], msg:`Tecknet: $x${plus(-r)} = 0$ ger $x = ${r}$.`}],
+    steps:[form?'Båda termerna innehåller $x$. Bryt ut det.':`Flytta allt till vänster: $${poly([a,-a*r,0])} = 0$`,
+      `$${a===1?'':a===-1?'-':a}x(x${plus(-r)}) = 0$`,'Nollproduktmetoden: $x = 0$ eller $x'+plus(-r)+' = 0$',`$x_1 = 0$ och $x_2 = ${r}$`,
+      `Kontroll med $x = ${r}$: $${a}\\cdot ${sq(r)}^2 - ${sq(a*r)}\\cdot ${sq(r)} = 0$ ✓`],
+    verify:()=>a*r*r-a*r*r===0};
+});
+def('b-pqdec',21,'pq-formeln med miniräknare',()=>{
+  let h,q,D; do{ h=nzi(-6,6); q=nzi(-20,15); D=h*h-q; } while(D<=0 || Number.isInteger(Math.sqrt(D)));
+  const p=2*h, s=Math.sqrt(D), x1=-h+s, x2=-h-s;
+  return {diff:2, calc:true, prompt:`Lös ekvationen $${poly([1,p,q])} = 0$. Svara med två decimaler.`,
+    answer:num([dcF(x1,2),dcF(x2,2)],`x_1 \\approx ${dc(x1,2)},\\ x_2 \\approx ${dc(x2,2)}`,{tol:TOL[2],hint:'Två svar med två decimaler, t.ex. 1,73; -3,73'}),
+    errors:[{values:[dcF(h+s,2),dcF(h-s,2)], msg:`Teckenfel i $-\\frac{p}{2}$. Med $p = ${p}$ är $-\\frac{p}{2} = ${-h}$.`}],
+    steps:[`$p = ${p}$ och $q = ${q}$`,`$-\\frac{p}{2} = ${-h}$ och $\\left(\\frac{p}{2}\\right)^2 = ${h*h}$`,`Under rottecknet: $${h*h}${plus(-q)} = ${D}$`,
+      `$x = ${-h} \\pm \\sqrt{${D}}$. Med miniräknaren är $\\sqrt{${D}} \\approx ${dc(s,3)}$`,`$x_1 \\approx ${dc(x1,2)}$ och $x_2 \\approx ${dc(x2,2)}$`,
+      `Kontroll: $\\pm$ tar ut varandra i summan, så $x_1 + x_2$ ska bli $${-p}$. Här: $${dc(x1,2)} + ${sq(dc(x2,2))} \\approx ${dc(x1+x2,2)}$ ✓`],
+    verify:()=>Math.abs(x1*x1+p*x1+q)<1e-9 && Math.abs(x2*x2+p*x2+q)<1e-9};
+});
+def('b-ord',21,'Problemlösning med andragradsekvation',()=>{
+  if(rand()<0.5){
+    const n=ri(5,40), N=n*(n+1);
+    return {diff:2, prompt:`Produkten av två på varandra följande positiva heltal är $${N}$. Vilka är talen?`,
+      answer:num([n,n+1],`${n} \\text{ och } ${n+1}`,{hint:'Två tal: skriv dem med ; emellan'}),
+      errors:[{values:[n], msg:`Det är två tal, $${n}$ och $${n+1}$.`}],
+      steps:['Kalla det minsta talet $x$. Nästa tal är $x + 1$.',`$x(x + 1) = ${N}$ ger $x^2 + x - ${N} = 0$`,
+        `pq-formeln: $x = -\\frac{1}{2} \\pm \\sqrt{\\frac{1}{4} + ${N}} = -\\frac{1}{2} \\pm \\frac{${2*n+1}}{2}$`,`$x = ${n}$ (den negativa roten stryks, talen ska vara positiva)`,
+        `Kontroll: $${n}\\cdot ${n+1} = ${N}$ ✓`],
+      verify:()=>n*(n+1)===N};
+  }
+  const x=ri(4,20), k=ri(2,9), A=x*(x+k);
+  return {diff:3, prompt:`En rektangel har sidorna $x$ cm och $(x + ${k})$ cm. Arean är $${A}$ cm². Hur lång är den kortaste sidan?`,
+    answer:num([x],`${x} \\text{ cm}`),
+    errors:[{values:[x+k], msg:'Det är den längsta sidan. Frågan gäller den kortaste, alltså $x$.'},{values:[-x-k], msg:'En längd kan inte vara negativ. Stryk den negativa roten.'}],
+    steps:[`Arean: $x(x + ${k}) = ${A}$, alltså $x^2 + ${k}x - ${A} = 0$`,`pq-formeln: $x = -\\frac{${k}}{2} \\pm \\sqrt{\\frac{${k*k}}{4} + ${A}}$`,
+      `$\\frac{${k*k}}{4} + ${A} = \\frac{${k*k+4*A}}{4}$ och roten ur det är $\\frac{${2*x+k}}{2}$`,`$x = ${x}$ eller $x = ${-x-k}$. En längd är positiv, så $x = ${x}$`,
+      `Kontroll: $${x}\\cdot ${x+k} = ${A}$ ✓`],
+    verify:()=>x*(x+k)===A && (k*k+4*A)===(2*x+k)**2};
+});
+
+// ---------- 2.2 Andragradsfunktioner ----------
+def('b-sym',22,'Symmetrilinje',()=>{
+  const v=rand();
+  if(v<0.4){
+    let r1=nzi(-9,9), r2=nzi(-9,9,[0,r1]); const m=F(r1+r2,2);
+    return {diff:1, prompt:`Bestäm symmetrilinjen till $y = (x${plus(-r1)})(x${plus(-r2)})$ utan att multiplicera ihop.`,
+      answer:num([m],`x = ${m.tex()}`),
+      errors:[{values:[F(-r1-r2,2)], msg:`Nollställena är $${r1}$ och $${r2}$. Tecknet byts i parentesen.`}],
+      steps:[`Nollställena är $x = ${r1}$ och $x = ${r2}$.`,'Symmetrilinjen ligger mitt emellan nollställena.',`$x = \\frac{${r1}${plus(r2)}}{2} = ${m.tex()}$`,
+        `Kontroll: avståndet till båda nollställena är lika, $${F(Math.abs(r1*2-(r1+r2)),2).tex()}$ ✓`],
+      verify:()=>m.eq(F(r1+r2,2))};
+  }
+  const a=v<0.75?1:pick([2,-2,3,-1,4]), b=nzi(-12,12), c=nzi(-9,9), m=F(-b,2*a);
+  return {diff:a===1?1:2, prompt:`Bestäm symmetrilinjen till $y = ${poly([a,b,c])}$.`,
+    answer:num([m],`x = ${m.tex()}`),
+    errors:[{values:[F(b,2*a)], msg:'Glöm inte minustecknet: $x = -\\frac{b}{2a}$.'}],
+    steps:[`För $y = ax^2 + bx + c$ ligger symmetrilinjen i $x = -\\frac{b}{2a}$.`,`Här är $a = ${a}$ och $b = ${b}$.`,
+      `$x = -\\frac{${b}}{2\\cdot ${sq(a)}} = ${m.tex()}$`,`Kontroll: $y$ är lika stort på samma avstånd åt båda hållen, till exempel i $x = ${m.sub(1).tex()}$ och $x = ${m.add(1).tex()}$ ✓`],
+    verify:()=>{ const f=x=>Frac.of(x).mul(x).mul(a).add(Frac.of(x).mul(b)).add(c); return f(m.sub(1)).eq(f(m.add(1))); }};
+});
+def('b-extrem',22,'Extrempunkt',()=>{
+  const a=pick([1,-1,2,-2,1,-1]), h=nzi(-5,5), k=nzi(-9,9), b=-2*a*h, c=a*h*h+k, typ=a>0?'minsta':'största';
+  return {diff:2, prompt:`Bestäm koordinaterna för extrempunkten till $y = ${poly([a,b,c])}$. Ange $x$ först. Är det ett största eller minsta värde?`,
+    answer:num([h,k],`(${h},\\ ${k}) \\text{, ${typ} värde}`,{ordered:true,hint:'Skriv x; y'}),
+    errors:[{values:[k,h], msg:'Ordningen: $x$-koordinaten först, sedan $y$.'}],
+    steps:[`Symmetrilinjen: $x = -\\frac{b}{2a} = -\\frac{${b}}{2\\cdot ${sq(a)}} = ${h}$`,`Extrempunkten ligger på symmetrilinjen. Sätt in $x = ${h}$:`,
+      `$y = ${a}\\cdot ${sq(h)}^2${plus(b)}\\cdot ${sq(h)}${plus(c)} = ${a*h*h}${plus(b*h)}${plus(c)} = ${k}$`,
+      `$a = ${a}$ är ${a>0?'positivt, så parabeln öppnar uppåt och punkten är ett minsta':'negativt, så parabeln öppnar nedåt och punkten är ett största'} värde.`,
+      `Kontroll: $y = ${a===1?'':a===-1?'-':a}(x${plus(-h)})^2${plus(k)}$ ger samma polynom när man multiplicerar ut ✓`],
+    verify:()=>a*h*h+b*h+c===k};
+});
+def('b-modell',22,'Kastbana: högsta punkt och nedslag',()=>{
+  const h0=ri(1,20);
+  if(rand()<0.4){
+    const v=pick([10,20,30]), t=v/10, H=h0+v*v/20;
+    return {diff:2, prompt:`En boll kastas uppåt. Höjden är $h(t) = ${h0} + ${v}t - 5t^2$ meter efter $t$ sekunder. Hur högt når bollen?`,
+      answer:num([H],`${H} \\text{ m}`),
+      errors:[{values:[t], msg:`$${t}$ s är tiden då bollen är högst. Frågan gäller höjden.`}],
+      steps:[`Toppen ligger på symmetrilinjen: $t = -\\frac{b}{2a} = -\\frac{${v}}{2\\cdot(-5)} = ${t}$`,`$h(${t}) = ${h0} + ${v}\\cdot ${t} - 5\\cdot ${t}^2 = ${h0} + ${v*t} - ${5*t*t} = ${H}$`,
+        `Svar: bollen når $${H}$ m`,`Kontroll: $h(${t-1}) = h(${t+1}) = ${h0+v*(t-1)-5*(t-1)**2}$, symmetriskt kring $t = ${t}$ ✓`],
+      verify:()=>h0+v*(t-1)-5*(t-1)**2===h0+v*(t+1)-5*(t+1)**2};
+  }
+  let v,D,s; do{ v=ri(5,25); D=v*v+20*h0; s=Math.sqrt(D); } while(Number.isInteger(s));
+  const T=(v+s)/10;
+  return {diff:3, calc:true, prompt:`En boll kastas uppåt. Höjden är $h(t) = ${h0} + ${v}t - 5t^2$ meter efter $t$ sekunder. När slår bollen i marken? Svara med två decimaler.`,
+    answer:num([dcF(T,2)],`t \\approx ${dc(T,2)} \\text{ s}`,{tol:TOL[2]}),
+    errors:[{values:[dcF((v-s)/10,2)], msg:'Det är den negativa roten. Tiden efter kastet är positiv.'}],
+    steps:['I marken är höjden $0$: $-5t^2 + '+v+'t + '+h0+' = 0$',`Gånga med $-1$: $5t^2 - ${v}t - ${h0} = 0$`,
+      `abc-formeln: $t = \\frac{${v} \\pm \\sqrt{${v*v} + ${20*h0}}}{10} = \\frac{${v} \\pm \\sqrt{${D}}}{10}$`,`$\\sqrt{${D}} \\approx ${dc(s,3)}$. Bara plus ger positiv tid: $t \\approx ${dc(T,2)}$`,
+      `Kontroll: $h(${dc(T,2)}) \\approx ${dc(h0+v*rnd(T,2)-5*rnd(T,2)**2,1)}$, alltså nära $0$ ✓`],
+    verify:()=>Math.abs(h0+v*T-5*T*T)<1e-9};
+});
+
+// ---------- 2.3 Potenser och exponentialfunktioner ----------
+def('b-potek',23,'Potensekvationer',()=>{
+  const n=pick([2,3,4,3,5]);
+  if(n%2===0){
+    const r=n===2?ri(2,12):ri(2,4), c=r**n;
+    return {diff:1, prompt:`Lös ekvationen $x^${n} = ${c}$.`, answer:num([r,-r],`x = \\pm ${r}`),
+      errors:[{values:[r], msg:`Jämn exponent: även $(-${r})^${n} = ${c}$. Det finns två lösningar.`}],
+      steps:[`Vilket tal blir $${c}$ upphöjt till $${n}$?`,`$${r}^${n} = ${c}$`,`Exponenten är jämn, så $(-${r})^${n} = ${c}$ också.`,`$x = \\pm ${r}$`,`Kontroll: $(-${r})^${n} = ${c}$ ✓`],
+      verify:()=>(-r)**n===c};
+  }
+  const r=nzi(-5,5,[0,1,-1]), c=r**n;
+  return {diff:2, prompt:`Lös ekvationen $x^${n} = ${c}$.`, answer:num([r],`x = ${r}`),
+    errors:[{values:[r,-r], msg:`Udda exponent: $(${-r})^${n} = ${(-r)**n}$, inte $${c}$. Det finns bara en lösning.`},{values:[-r], msg:`Kolla tecknet: $(${-r})^${n} = ${(-r)**n}$.`}],
+    steps:[`Exponenten $${n}$ är udda. Då har ekvationen exakt en lösning, med samma tecken som $${c}$.`,`$${sq(r)}^${n} = ${c}$`,`$x = ${r}$`,`Kontroll: $${sq(r)}^${n} = ${c}$ ✓`],
+    verify:()=>r**n===c};
+});
+def('b-potcalc',23,'Potensekvation med miniräknare',()=>{
+  const n=pick([3,4,5]); let a,c,x; do{ a=ri(2,9); c=ri(20,900); x=(c/a)**(1/n); } while(Number.isInteger(rnd(x,6)));
+  return {diff:2, calc:true, prompt:`Lös ekvationen $${a}x^${n} = ${c}$. Ange ${n%2===0?'den positiva lösningen':'lösningen'} med två decimaler.`,
+    answer:num([dcF(x,2)],`x \\approx ${dc(x,2)}`,{tol:TOL[2]}),
+    errors:[{values:[dcF((c/a)/n,2)], msg:`Att dela med $${n}$ är inte samma sak som att ta $${n}$:e roten. Upphöj till $\\frac{1}{${n}}$.`}],
+    steps:[`Dela med $${a}$: $x^${n} = \\frac{${c}}{${a}}$`,`Upphöj båda sidor till $\\frac{1}{${n}}$: $x = \\left(\\frac{${c}}{${a}}\\right)^{\\frac{1}{${n}}}$`,
+      `Med miniräknaren: $x \\approx ${dc(x,4)}$`,`Avrundat: $x \\approx ${dc(x,2)}$`,`Kontroll: $${a}\\cdot ${dc(x,4)}^${n} \\approx ${dc(a*rnd(x,4)**n,1)} \\approx ${c}$ ✓`],
+    verify:()=>Math.abs(a*x**n-c)<1e-6};
+});
+def('b-potlag',23,'Potenslagar',()=>{
+  const v=rand();
+  if(v<0.5){
+    const p=ri(2,9), q=ri(1,8), r=ri(1,9), e=p+q-r;
+    return {diff:1, prompt:`Skriv $\\frac{x^{${p}}\\cdot x^{${q}}}{x^{${r}}}$ som en potens av $x$. Ange exponenten.`,
+      answer:num([e],`x^{${e}}`,{hint:'Skriv exponenten, t.ex. 7 eller -2'}),
+      errors:[{values:[p*q-r], msg:'Vid multiplikation adderas exponenterna, de multipliceras inte.'},{values:[p+q+r], msg:'Vid division subtraheras exponenterna.'}],
+      steps:['Multiplikation med samma bas: addera exponenterna.',`$x^{${p}}\\cdot x^{${q}} = x^{${p+q}}$`,`Division: subtrahera. $\\frac{x^{${p+q}}}{x^{${r}}} = x^{${p+q}-${r}} = x^{${e}}$`,
+        `Kontroll med $x = 2$: $\\frac{2^{${p}}\\cdot 2^{${q}}}{2^{${r}}} = ${F(2**(p+q),2**r).tex()}$ och $2^{${e}} = ${F(2**(p+q),2**r).tex()}$ ✓`],
+      verify:()=>2**(p+q)/2**r===2**e};
+  }
+  if(v<0.8){
+    const p=ri(2,5), q=ri(2,4), r=nzi(-6,6), e=p*q+r;
+    return {diff:2, prompt:`Skriv $(y^{${p}})^{${q}}\\cdot y^{${r}}$ som en potens av $y$. Ange exponenten.`,
+      answer:num([e],`y^{${e}}`,{hint:'Skriv exponenten'}),
+      errors:[{values:[p+q+r], msg:'En potens upphöjd till något: exponenterna multipliceras, $(y^a)^b = y^{ab}$.'}],
+      steps:['Potens av potens: multiplicera exponenterna.',`$(y^{${p}})^{${q}} = y^{${p*q}}$`,`Multiplikation: addera. $y^{${p*q}}\\cdot y^{${r}} = y^{${e}}$`,
+        `Kontroll med $y = 2$: $(2^{${p}})^{${q}}\\cdot 2^{${r}} = 2^{${e}}$ ✓`],
+      verify:()=>p*q+r===e};
+  }
+  const a=pick([2,3,4]), b=pick([3,4,6].filter(x=>x!==a)), e=F(1,a).add(F(1,b));
+  return {diff:3, prompt:`Skriv $x^{\\frac{1}{${a}}}\\cdot x^{\\frac{1}{${b}}}$ som en potens av $x$. Ange exponenten som ett bråk.`,
+    answer:num([e],`x^{${e.tex()}}`,{hint:'Skriv exponenten som bråk, t.ex. 5/6'}),
+    errors:[{values:[F(1,a*b)], msg:'Exponenterna adderas, de multipliceras inte.'},{values:[F(2,a+b)], msg:`Bråk adderas med gemensam nämnare: $\\frac{1}{${a}} + \\frac{1}{${b}} = ${e.tex()}$.`}],
+    steps:['Samma bas: addera exponenterna.',`$\\frac{1}{${a}} + \\frac{1}{${b}} = \\frac{${b}}{${a*b}} + \\frac{${a}}{${a*b}} = ${e.tex()}$`,`Svar: $x^{${e.tex()}}$`,
+      `Kontroll med $x = 2$: $2^{\\frac{1}{${a}}}\\cdot 2^{\\frac{1}{${b}}} \\approx ${dc(2**(1/a)*2**(1/b),3)}$ och $2^{${e.tex()}} \\approx ${dc(2**e.num(),3)}$ ✓`],
+    verify:()=>Math.abs(2**(1/a)*2**(1/b)-2**e.num())<1e-9};
+});
+def('b-exp',23,'Exponentialfunktioner',()=>{
+  const v=rand();
+  if(v<0.35){
+    const up=rand()<0.5, pct=up?pick([2,3,5,8,12,15,30]):pick([1,2,3,4,8,15]), a=up?1+pct/100:1-pct/100, ad=dc(a,2), C=pick([80,100,400,1200,5000]);
+    if(rand()<0.5) return {diff:1, prompt:`En mängd ${up?'ökar':'minskar'} med $${pct}$ % per år. Vilken förändringsfaktor $a$ ska stå i $y = ${C}\\cdot a^x$?`,
+      answer:num([parseNum(rnd(a,2).toFixed(2))],`a = ${ad}`,{tol:0.0001,hint:'Skriv ett decimaltal, t.ex. 1,05'}),
+      errors:[{values:[parseNum(rnd(up?1-pct/100:1+pct/100,2).toFixed(2))], msg:`${up?'Ökning':'Minskning'} betyder att faktorn är ${up?'större':'mindre'} än $1$.`},{values:[parseNum((pct/100).toFixed(2))], msg:`Det är förändringen. Faktorn är $1 ${up?'+':'-'} ${dc(pct/100,2)}$.`}],
+      steps:[`Varje år blir mängden $100\\,\\% ${up?'+':'-'} ${pct}\\,\\% = ${up?100+pct:100-pct}\\,\\%$ av året innan.`,`$${up?100+pct:100-pct}\\,\\% = ${ad}$`,`$a = ${ad}$`,
+        `Kontroll: $${C}\\cdot ${ad} = ${dc(C*a,2)}$, och det är $${pct}$ % ${up?'mer':'mindre'} än $${C}$ ✓`],
+      verify:()=>Math.abs(a-(up?1+pct/100:1-pct/100))<1e-12};
+    return {diff:1, prompt:`$y = ${C}\\cdot ${ad}^x$. Med hur många procent ${up?'ökar':'minskar'} $y$ när $x$ ökar med $1$?`,
+      answer:num([pct],`${pct}\\,\\%`,{tol:0.0001,hint:'Skriv antalet procent'}),
+      errors:[{values:[up?100+pct:100-pct], msg:`$${ad}$ betyder att $y$ blir $${up?100+pct:100-pct}$ % av värdet innan. Förändringen är skillnaden mot $100$ %.`}],
+      steps:[`Förändringsfaktorn är $a = ${ad}$.`,`$${ad} = ${up?100+pct:100-pct}\\,\\%$`,`$${up?100+pct:100-pct}\\,\\% - 100\\,\\% = ${up?'':'-'}${pct}\\,\\%$`,`Kontroll: $${C}\\cdot ${ad} = ${dc(C*a,2)}$ ✓`],
+      verify:()=>Math.abs(Math.abs(a-1)*100-pct)<1e-9};
+  }
+  if(v<0.75){
+    const C=pick([80,100,250,400,1200,5000]), a=pick([1.03,1.05,1.08,1.3,0.95,0.92,0.97,0.85]), n=ri(3,15), y=C*a**n;
+    return {diff:2, calc:true, prompt:`$y = ${C}\\cdot ${dc(a,2)}^x$. Beräkna $y$ när $x = ${n}$. Svara med en decimal.`,
+      answer:num([dcF(y,1)],`y \\approx ${dc(y,1)}`,{tol:TOL[1]}),
+      errors:[{values:[dcF(C*a*n,1)], msg:`$${dc(a,2)}^{${n}}$ betyder $${dc(a,2)}$ gånger sig själv $${n}$ gånger, inte gånger $${n}$.`}],
+      steps:[`Sätt in $x = ${n}$: $y = ${C}\\cdot ${dc(a,2)}^{${n}}$`,`Potensen först, med miniräknaren: $${dc(a,2)}^{${n}} \\approx ${dc(a**n,4)}$`,
+        `$y \\approx ${C}\\cdot ${dc(a**n,4)} \\approx ${dc(y,1)}$`,`Kontroll: ${a>1?'ökning, så $y$ ska vara större än':'minskning, så $y$ ska vara mindre än'} $${C}$. Det stämmer ✓`],
+      verify:()=>a>1?y>C:y<C};
+  }
+  const a=ri(2,5), m=ri(1,6), C=a*m, n=C*a;
+  return {diff:3, prompt:`För $f(x) = C\\cdot a^x$ gäller $f(-1) = ${m}$ och $f(1) = ${n}$. Bestäm $C$ och $a$ ($a > 0$). Ange $C$ först.`,
+    answer:num([C,a],`C = ${C},\\ a = ${a}`,{ordered:true,hint:'Skriv C; a'}),
+    errors:[{values:[a,C], msg:'Ordningen: $C$ först, sedan $a$.'},{values:[m,a], msg:`$C$ är $f(0)$, inte $f(-1)$. $C = f(-1)\\cdot a$.`}],
+    steps:[`$f(1) = Ca = ${n}$ och $f(-1) = \\frac{C}{a} = ${m}$`,`Dela den första med den andra: $\\frac{Ca}{C/a} = a^2 = \\frac{${n}}{${m}} = ${a*a}$`,`$a > 0$, så $a = ${a}$`,`$C = ${m}\\cdot ${a} = ${C}$`,
+      `Kontroll: $f(1) = ${C}\\cdot ${a} = ${n}$ och $f(-1) = \\frac{${C}}{${a}} = ${m}$ ✓`],
+    verify:()=>C/a===m && C*a===n};
+});
+
+// ---------- 2.4 Logaritmer ----------
+def('b-lg',24,'Tiologaritmer',()=>{
+  const k=nzi(-4,6,[0]), shown=k>=0?String(10**k):'0{,}'+'0'.repeat(-k-1)+'1';
+  if(rand()<0.7) return {diff:1, prompt:`Bestäm $\\lg ${shown}$ utan miniräknare.`, answer:num([k],`\\lg ${shown} = ${k}`),
+    errors:[{values:[-k], msg:'Kolla tecknet: tal mindre än $1$ har negativ logaritm.'}],
+    steps:['$\\lg a$ är den exponent som $10$ ska upphöjas till för att bli $a$.',`$${shown} = 10^{${k}}$`,`Alltså är $\\lg ${shown} = ${k}$`,`Kontroll: $10^{${k}} = ${shown}$ ✓`],
+    verify:()=>Math.abs(lg(10**k)-k)<1e-12};
+  const c=ri(2,99);
+  return {diff:1, prompt:`Bestäm $10^{\\lg ${c}}$.`, answer:num([c],`${c}`),
+    errors:[{values:[F(Math.round(lg(c)*100),100)], msg:'$10^{\\lg c}$ och $\\lg$ tar ut varandra. Svaret är $c$ självt.'}],
+    steps:['$\\lg c$ är exponenten som gör att $10$ blir $c$.',`Upphöjer man $10$ till just den exponenten blir det $${c}$.`,`$10^{\\lg ${c}} = ${c}$`,`Kontroll: $\\lg ${c} \\approx ${dc(lg(c),4)}$ och $10^{${dc(lg(c),4)}} \\approx ${c}$ ✓`],
+    verify:()=>Math.abs(10**lg(c)-c)<1e-9};
+});
+def('b-lgdef',24,'Lös lg-ekvationer',()=>{
+  if(rand()<0.5){
+    const k=ri(-3,4), x=10**k, xs=k>=0?String(x):'0{,}'+'0'.repeat(-k-1)+'1';
+    return {diff:1, prompt:`Lös ekvationen $\\lg x = ${k}$.`, answer:num([parseNum(x.toFixed(Math.max(0,-k)))],`x = ${xs}`,{tol:1e-9,hint:'Skriv talet, t.ex. 1000 eller 0,01'}),
+      errors:[{values:[10*k||1], msg:`$\\lg x = ${k}$ betyder $x = 10^{${k}}$, inte $10\\cdot ${sq(k)}$.`}],
+      steps:['Definitionen: $\\lg x = k$ betyder att $x = 10^k$.',`$x = 10^{${k}}$`,`$x = ${xs}$`,`Kontroll: $\\lg ${xs} = ${k}$ ✓`],
+      verify:()=>Math.abs(lg(x)-k)<1e-12};
+  }
+  const k=ri(1,3), a=pick([2,4,5]), x=F(10**k,a);
+  return {diff:2, prompt:`Lös ekvationen $\\lg ${a}x = ${k}$.`, answer:num([x],`x = ${x.tex()}`),
+    errors:[{values:[10**k], msg:`$10^{${k}} = ${10**k}$ är $${a}x$. Dela med $${a}$.`},{values:[F(k,a)], msg:`Dela inte med $${a}$ först: $\\lg ${a}x$ är logaritmen av hela $${a}x$.`}],
+    steps:[`Definitionen: $\\lg ${a}x = ${k}$ betyder att $${a}x = 10^{${k}} = ${10**k}$`,`Dela med $${a}$: $x = \\frac{${10**k}}{${a}} = ${x.tex()}$`,`Svar: $x = ${x.tex()}$`,`Kontroll: $${a}\\cdot ${x.tex()} = ${10**k}$ och $\\lg ${10**k} = ${k}$ ✓`],
+    verify:()=>x.mul(a).eq(10**k)};
+});
+def('b-10x',24,'Exponentialekvationer med lg',()=>{
+  if(rand()<0.45){
+    let c; do{ c=pick([ri(2,99),ri(101,9999),parseFloat((ri(1,99)/1000).toFixed(3))]); } while(Number.isInteger(lg(c)));
+    const x=lg(c), cs=dc(c,c<1?3:0);
+    return {diff:2, calc:true, prompt:`Lös ekvationen $10^x = ${cs}$. Svara med tre decimaler.`, answer:num([dcF(x,3)],`x = \\lg ${cs} \\approx ${dc(x,3)}`,{tol:TOL[3]}),
+      errors:[{values:[dcF(10*c,3)], msg:'Använd logaritmen: $10^x = c$ ger $x = \\lg c$.'}],
+      steps:['Definitionen: $10^x = c$ betyder $x = \\lg c$.',`$x = \\lg ${cs}$`,`Med miniräknaren: $x \\approx ${dc(x,3)}$`,`Kontroll: $10^{${dc(x,3)}} \\approx ${dc(10**rnd(x,3),c<1?4:1)} \\approx ${cs}$ ✓`],
+      verify:()=>Math.abs(10**x-c)<1e-9};
+  }
+  let a,b,c,x; do{ a=pick([2,3,4,5,25]); b=pick([2,3]); c=a*ri(2,60); x=lg(c/a)/b; } while(Number.isInteger(lg(c/a)));
+  return {diff:3, calc:true, prompt:`Lös ekvationen $${a}\\cdot 10^{${b}x} = ${c}$. Svara med två decimaler.`, answer:num([dcF(x,2)],`x = \\frac{\\lg ${c/a}}{${b}} \\approx ${dc(x,2)}`,{tol:TOL[2]}),
+    errors:[{values:[dcF(lg(c/a),2)], msg:`Det är $${b}x$. Dela med $${b}$ också.`},{values:[dcF(lg(c)/b,2)], msg:`Dela först båda sidor med $${a}$.`}],
+    steps:[`Dela med $${a}$: $10^{${b}x} = ${c/a}$`,`Definitionen: $${b}x = \\lg ${c/a}$`,`$x = \\frac{\\lg ${c/a}}{${b}}$`,`Med miniräknaren: $\\lg ${c/a} \\approx ${dc(lg(c/a),4)}$, så $x \\approx ${dc(x,2)}$`,
+      `Kontroll: $${a}\\cdot 10^{${b}\\cdot ${dc(x,4)}} \\approx ${dc(a*10**(b*rnd(x,4)),1)} \\approx ${c}$ ✓`],
+    verify:()=>Math.abs(a*10**(b*x)-c)<1e-6};
+});
+def('b-expek',24,'Tillväxt och halveringstid',()=>{
+  if(rand()<0.6){
+    const C=pick([20,50,80,100,500]), pct=pick([5,8,10,20,30]), a=1+pct/100, k=pick([2,3,5,10]), x=lg(k)/lg(a);
+    return {diff:3, calc:true, prompt:`En mängd är $${C}$ och ökar med $${pct}$ % per vecka. Efter hur många veckor har mängden blivit $${k}$ gånger så stor? Svara med två decimaler.`,
+      answer:num([dcF(x,2)],`x = \\frac{\\lg ${k}}{\\lg ${dc(a,2)}} \\approx ${dc(x,2)}`,{tol:TOL[2]}),
+      errors:[{values:[dcF(k/a,2)], msg:'Exponenten är okänd. Logaritmera båda sidor.'},{values:[dcF(lg(C*k)/lg(a),2)], msg:`Dela först med $${C}$: $${dc(a,2)}^x = ${k}$.`}],
+      steps:[`Modellen: $y = ${C}\\cdot ${dc(a,2)}^x$. Vi vill ha $y = ${C*k}$.`,`$${C}\\cdot ${dc(a,2)}^x = ${C*k}$. Dela med $${C}$: $${dc(a,2)}^x = ${k}$`,
+        `Logaritmera: $x\\cdot\\lg ${dc(a,2)} = \\lg ${k}$`,`$x = \\frac{\\lg ${k}}{\\lg ${dc(a,2)}} \\approx \\frac{${dc(lg(k),4)}}{${dc(lg(a),4)}} \\approx ${dc(x,2)}$`,
+        `Kontroll: $${dc(a,2)}^{${dc(x,2)}} \\approx ${dc(a**rnd(x,2),2)} \\approx ${k}$ ✓`],
+      verify:()=>Math.abs(a**x-k)<1e-9};
+  }
+  const T=pick([6,10,12,24,42]), left=pick([20,30,40,60,70]), f=left/100, h=T*lg(0.5)/lg(f);
+  return {diff:3, calc:true, prompt:`Efter $${T}$ timmar finns $${left}$ % kvar av ett läkemedel, som avtar exponentiellt. Hur lång är halveringstiden? Svara med en decimal.`,
+    answer:num([dcF(h,1)],`\\approx ${dc(h,1)} \\text{ timmar}`,{tol:TOL[1]}),
+    errors:[{values:[dcF(T*left/50,1)], msg:'Avtagandet är exponentiellt, inte linjärt. Använd $a^{T} = '+dc(f,2)+'$ och logaritmer.'}],
+    steps:[`Kalla faktorn per timme $a$: $a^{${T}} = ${dc(f,2)}$`,`Halveringstiden $h$ uppfyller $a^h = 0{,}5$`,`Logaritmera båda: $${T}\\lg a = \\lg ${dc(f,2)}$ och $h\\lg a = \\lg 0{,}5$`,
+      `Dela: $h = ${T}\\cdot\\frac{\\lg 0{,}5}{\\lg ${dc(f,2)}} \\approx ${T}\\cdot\\frac{${dc(lg(0.5),4)}}{${dc(lg(f),4)}} \\approx ${dc(h,1)}$`,
+      `Kontroll: ${left<50?`mindre än hälften är kvar, så halveringstiden ska vara kortare än $${T}$ h ✓`:`mer än hälften är kvar, så halveringstiden ska vara längre än $${T}$ h ✓`}`],
+    verify:()=>left<50?h<T:h>T};
 });
 
 /* =====================================================================
@@ -3198,8 +3526,14 @@ const LEVELS=[
   {n:15, name:'Fler funktioner för Df och Vf', time:50, black:true, course:'Matte 3'},
   {n:16, name:'Grafernas transformationer', time:50, black:true, course:'Matte 3'},
   {n:17, name:'Bevis', time:75, black:true, course:'Matte 5'},
+  // Kapitlen ur boken. Påverkar inte medaljer, Black eller nivå upp.
+  {n:21, name:'2.1 Andragradsekvationer', time:60, book:true},
+  {n:22, name:'2.2 Andragradsfunktioner', time:60, book:true},
+  {n:23, name:'2.3 Potenser och exponentialfunktioner', time:75, book:true},
+  {n:24, name:'2.4 Logaritmer', time:80, book:true},
 ];
 const BLACK_LEVELS=LEVELS.filter(L=>L.black).map(L=>L.n);
+const BOOK_LEVELS=LEVELS.filter(L=>L.book).map(L=>L.n);
 TYPES.boss.special=true;
 const typesFor = level => Object.values(TYPES).filter(t=>t.level===level && !t.und && !t.special).map(t=>t.id);
 const undTypesFor = level => Object.values(TYPES).filter(t=>t.level===level && t.und).map(t=>t.id);
@@ -3651,6 +3985,107 @@ function methodFor(t){
   return {how:[], trap:null, topic:learnTopic(WORLD_TOPIC[t.level]), lesson:null};
 }
 
+// ---------- Lär dig: kapitlen ur boken ----------
+Object.assign(LEARN,{
+21:[
+  {id:'l21-kvrot', title:'Kvadratrotsmetoden och problemlösning', cards:['nollprodukt'],
+   easy:['Saknas $x$-termen kan du lösa ekvationen med kvadratrotsmetoden: få $x^2$ ensamt och dra roten ur.',
+     '$x^2 = 25$ ger $x = \\pm 5$. Glöm inte minus, för $(-5)^2 = 25$ också.',
+     'Står det en hel parentes i kvadrat, som $(x - 5)^2 = 16$, gäller samma sak: parentesen är $4$ eller $-4$.'],
+   ex:{prompt:'Lös $(x - 5)^2 = 16$.', steps:['Det som kvadreras, $x - 5$, måste vara $4$ eller $-4$','$x - 5 = 4$ ger $x = 9$','$x - 5 = -4$ ger $x = 1$','Kontroll: $(1 - 5)^2 = (-4)^2 = 16$ ✓']},
+   help:[['Kvadratrotsmetoden är att göra tvärtom mot att kvadrera. Vilket tal gånger sig självt blir $25$? Både $5$ och $-5$.',
+       'Därför får man nästan alltid två svar: ett positivt och ett negativt.'],
+     ['Steg 1: få $x^2$, eller parentesen i kvadrat, ensam på ena sidan. Steg 2: skriv $\\pm\\sqrt{\\ }$ av talet på andra sidan.',
+       'Steg 3: finns det en parentes, lös två små ekvationer, en med plus och en med minus.']],
+   adv:['I en problemlösningsuppgift ger ekvationen ibland en lösning som inte passar verkligheten. En längd eller ett antal kan inte vara negativt. Stryk den lösningen och skriv varför.',
+     'Två på varandra följande heltal kan kallas $x$ och $x + 1$. Två på varandra följande udda tal kan kallas $x$ och $x + 2$.'],
+   quiz:{q:'Lös $2x^2 = 72$.', options:[{t:'$x = \\pm 6$', ok:true, msg:'Rätt: $x^2 = 36$ och $x = \\pm 6$.'},{t:'$x = 6$', msg:'Det finns en negativ lösning också: $(-6)^2 = 36$.'},{t:'$x = \\pm 36$', msg:'Du glömde dra roten ur: $x^2 = 36$ ger $x = \\pm 6$.'},{t:'$x = \\pm 18$', msg:'$72$ ska delas med $2$, och sedan ska roten dras ur.'}]}}
+],
+22:[
+  {id:'l22-extrem', title:'Symmetrilinje och extrempunkt', cards:['symmetri'],
+   easy:['En parabel är symmetrisk kring en lodrät linje, symmetrilinjen. Toppen eller botten, extrempunkten, ligger på den.',
+     'För $y = ax^2 + bx + c$ ligger symmetrilinjen i $x = -\\frac{b}{2a}$. Har du nollställena ligger den mitt emellan dem.',
+     'Sätt in $x$-värdet i funktionen så får du extrempunktens $y$-värde. Är $a > 0$ är det ett minsta värde, är $a < 0$ ett största.'],
+   ex:{prompt:'Bestäm extrempunkten till $y = x^2 - 6x + 5$.', steps:['$a = 1$ och $b = -6$, så $x = -\\frac{-6}{2} = 3$','$y = 9 - 18 + 5 = -4$','Extrempunkten är $(3, -4)$','$a = 1 > 0$, så det är ett minsta värde','Kontroll: nollställena $1$ och $5$ har mitten $3$ ✓']},
+   help:[['Tänk på en glad mun ($a > 0$) eller en ledsen mun ($a < 0$). Den glada har en botten, den ledsna har en topp.',
+       'Botten eller toppen ligger alltid mitt på, där parabeln vänder.'],
+     ['Steg 1: läs av $a$ och $b$. Steg 2: räkna ut $x = -\\frac{b}{2a}$. Var noga med minustecknet.',
+       'Steg 3: sätt in det $x$ i formeln och räkna ut $y$. Svaret är punkten $(x, y)$.']],
+   adv:['Med kvadratkomplettering kan $y = x^2 - 6x + 5$ skrivas $y = (x - 3)^2 - 4$. Då syns extrempunkten $(3, -4)$ direkt, eftersom kvadraten är minst $0$.',
+     'I en kastbana $h(t) = h_0 + vt - 5t^2$ ger extrempunkten både när bollen är högst och hur högt den når.'],
+   quiz:{q:'Var ligger symmetrilinjen för $y = 2x^2 + 8x - 1$?', options:[{t:'$x = -2$', ok:true, msg:'Rätt: $-\\frac{8}{2\\cdot 2} = -2$.'},{t:'$x = 2$', msg:'Glöm inte minustecknet i $-\\frac{b}{2a}$.'},{t:'$x = -4$', msg:'Dela med $2a = 4$, inte bara med $2$.'},{t:'$x = -1$', msg:'$-1$ är konstanttermen, inte symmetrilinjen.'}]}}
+],
+23:[
+  {id:'l23-pot', title:'Potenser och potensekvationer', cards:[],
+   easy:['Potenslagarna: $x^a\\cdot x^b = x^{a+b}$, $\\frac{x^a}{x^b} = x^{a-b}$ och $(x^a)^b = x^{ab}$.',
+     'En potensekvation har $x$ i basen, till exempel $x^3 = 27$. Lös den genom att upphöja till ett bråk: $x = 27^{\\frac{1}{3}} = 3$.',
+     'Jämn exponent ger två lösningar: $x^4 = 16$ ger $x = \\pm 2$. Udda exponent ger en: $x^3 = -8$ ger $x = -2$.'],
+   ex:{prompt:'Lös $6x^4 = 810$ och ange den positiva lösningen.', steps:['Dela med $6$: $x^4 = 135$','Upphöj till $\\frac{1}{4}$: $x = 135^{\\frac{1}{4}}$','Med miniräknaren: $x \\approx 3{,}41$','Kontroll: $6\\cdot 3{,}41^4 \\approx 811$ ✓']},
+   help:[['$x^3$ betyder $x\\cdot x\\cdot x$. $x^3 = 27$ frågar: vilket tal gånger sig självt tre gånger blir $27$? Svaret är $3$.',
+       'Att upphöja till $\\frac{1}{3}$ är samma sak som att ta tredje roten. Det gör miniräknaren åt dig.'],
+     ['Steg 1: få $x$-potensen ensam, alltså dela bort talet framför. Steg 2: upphöj till $1$ delat med exponenten.',
+       'Steg 3: är exponenten jämn, glöm inte den negativa lösningen. Kolla alltid genom att sätta in svaret.']],
+   adv:['$x^{\\frac{1}{2}} = \\sqrt{x}$ och $x^{-1} = \\frac{1}{x}$. Negativa och bråkexponenter följer samma lagar.',
+     'Potensekvation och exponentialekvation är olika: i $x^3 = 50$ är $x$ basen, i $3^x = 50$ är $x$ exponenten. Den andra löser du med logaritmer.'],
+   quiz:{q:'Vad blir $\\frac{x^4\\cdot x^5}{x^2}$?', options:[{t:'$x^7$', ok:true, msg:'Rätt: $4 + 5 - 2 = 7$.'},{t:'$x^{10}$', msg:'Exponenterna vid multiplikation adderas: $4 + 5 = 9$, inte $4\\cdot 5$.'},{t:'$x^{11}$', msg:'Vid division subtraheras exponenten: $9 - 2 = 7$.'},{t:'$x^{18}$', msg:'Exponenterna multipliceras inte. Addera vid multiplikation, subtrahera vid division.'}]}},
+  {id:'l23-exp', title:'Exponentialfunktioner', cards:[],
+   easy:['En exponentialfunktion $y = C\\cdot a^x$ beskriver något som ändras med samma procent varje gång.',
+     '$C$ är startvärdet, när $x = 0$. $a$ är förändringsfaktorn.',
+     'Ökning med $5$ % ger $a = 1{,}05$. Minskning med $5$ % ger $a = 0{,}95$.'],
+   ex:{prompt:'$80$ sniglar ökar med $30$ % per vecka. Hur många är de efter $3$ veckor?', steps:['$C = 80$ och $a = 1{,}30$','$y = 80\\cdot 1{,}3^x$','$y(3) = 80\\cdot 1{,}3^3 = 80\\cdot 2{,}197 \\approx 176$','Kontroll: varje vecka blir det fler, så svaret ska vara större än $80$ ✓']},
+   help:[['Tänk på pengar på banken med ränta. Varje år blir det lite mer, och nästa år räknas räntan på det nya beloppet.',
+       'Därför gångrar man med samma faktor varje gång: $80\\cdot 1{,}3\\cdot 1{,}3\\cdot 1{,}3$.'],
+     ['Förändringsfaktorn räknar du så här: $100$ % plus eller minus ändringen, skrivet som decimaltal. $100 + 30 = 130$ % är $1{,}30$.',
+       'Sätt sedan in i $y = C\\cdot a^x$ och räkna potensen först med miniräknaren.']],
+   adv:['Med två punkter kan du bestämma både $C$ och $a$. $f(-1) = 1$ och $f(1) = 9$ ger $a^2 = 9$, alltså $a = 3$ och $C = 3$.',
+     'Exponentiell tillväxt går till slut alltid förbi linjär tillväxt, hur stor den linjära ökningen än är.'],
+   quiz:{q:'$y = 100\\cdot 0{,}977^x$. Med hur många procent minskar $y$ per steg?', options:[{t:'$2{,}3$ %', ok:true, msg:'Rätt: $100 - 97{,}7 = 2{,}3$.'},{t:'$97{,}7$ %', msg:'$y$ blir $97{,}7$ % av värdet innan. Minskningen är skillnaden mot $100$ %.'},{t:'$0{,}977$ %', msg:'$0{,}977$ är faktorn, inte procenten.'},{t:'$23$ %', msg:'$1 - 0{,}977 = 0{,}023 = 2{,}3$ %.'}]}}
+],
+24:[
+  {id:'l24-lg', title:'Tiologaritmer', cards:[],
+   easy:['$\\lg a$ är den exponent som $10$ ska upphöjas till för att bli $a$.',
+     '$\\lg 1000 = 3$ eftersom $10^3 = 1000$. $\\lg 0{,}01 = -2$ eftersom $10^{-2} = 0{,}01$.',
+     'Definitionen åt andra hållet: $\\lg x = 2$ betyder $x = 10^2 = 100$.'],
+   ex:{prompt:'Lös $3\\lg 4x = 6$.', steps:['Dela med $3$: $\\lg 4x = 2$','Definitionen: $4x = 10^2 = 100$','$x = 25$','Kontroll: $3\\lg 100 = 3\\cdot 2 = 6$ ✓']},
+   help:[['En logaritm svarar på en fråga: hur många nollor? $\\lg 1000$ frågar hur många gånger man ska gånga $10$ med sig själv för att få $1000$. Tre gånger.',
+       'Tal mellan $0$ och $1$ får negativ logaritm, eftersom man då delar med $10$ i stället.'],
+     ['Står det $\\lg$ av något lika med ett tal, skriv om: det inne i $\\lg$ är lika med $10$ upphöjt till talet.',
+       'Lös sedan den vanliga ekvationen som blir kvar.']],
+   adv:['Logaritmlagarna: $\\lg ab = \\lg a + \\lg b$, $\\lg\\frac{a}{b} = \\lg a - \\lg b$ och $\\lg a^p = p\\lg a$.',
+     'Den sista lagen är nyckeln till att lösa ekvationer där $x$ står i exponenten.'],
+   quiz:{q:'Vad är $\\lg 0{,}001$?', options:[{t:'$-3$', ok:true, msg:'Rätt: $10^{-3} = 0{,}001$.'},{t:'$3$', msg:'$10^3 = 1000$. Tal mindre än $1$ ger negativ logaritm.'},{t:'$-2$', msg:'Räkna decimalerna: $0{,}001$ har tre, så $10^{-3}$.'},{t:'$0{,}001$', msg:'Logaritmen är exponenten, inte talet självt.'}]}},
+  {id:'l24-ekv', title:'Exponentialekvationer med lg', cards:[],
+   easy:['Står $x$ i exponenten, som i $10^x = 18$, löser du med logaritmen: $x = \\lg 18 \\approx 1{,}255$.',
+     'Är basen något annat än $10$, som $1{,}3^x = 10$, logaritmerar du båda sidor: $x\\lg 1{,}3 = \\lg 10$.',
+     'Dela sedan: $x = \\frac{\\lg 10}{\\lg 1{,}3}$ och räkna med miniräknaren.'],
+   ex:{prompt:'Lös $5400\\cdot 0{,}85^x = 2500$ med två decimaler.', steps:['Dela med $5400$: $0{,}85^x = \\frac{2500}{5400} \\approx 0{,}463$','Logaritmera: $x\\lg 0{,}85 = \\lg 0{,}463$','$x = \\frac{\\lg 0{,}463}{\\lg 0{,}85} \\approx 4{,}74$','Kontroll: $5400\\cdot 0{,}85^{4{,}74} \\approx 2500$ ✓']},
+   help:[['$x$ sitter fast uppe i exponenten. Logaritmen är verktyget som plockar ner den: $\\lg a^x = x\\lg a$.',
+       'Efter det är det en vanlig ekvation där $x$ gångras med ett tal.'],
+     ['Steg 1: dela bort talet framför potensen. Steg 2: skriv $\\lg$ framför båda sidor. Steg 3: flytta ner $x$.',
+       'Steg 4: dela med $\\lg$ av basen. Steg 5: räkna ut med miniräknaren och avrunda först på slutet.']],
+   adv:['Halveringstid: om något har $30$ % kvar efter $42$ timmar är $a^{42} = 0{,}30$. Halveringstiden $h$ uppfyller $a^h = 0{,}5$, och kvoten av de två logaritmerade ekvationerna ger $h = 42\\cdot\\frac{\\lg 0{,}5}{\\lg 0{,}30}$.',
+     'Avrunda inte mellanleden för tidigt. Ett avrundat $\\lg$-värde kan ge ett märkbart fel i slutsvaret.'],
+   quiz:{q:'Vilket är första steget för att lösa $31\\cdot 2^{5x} = 101$?', options:[{t:'Dela båda sidor med $31$', ok:true, msg:'Rätt: få potensen ensam innan du logaritmerar.'},{t:'Dela båda sidor med $5$', msg:'$5$ sitter i exponenten. Det hanterar du efter att du logaritmerat.'},{t:'Ta roten ur båda sidor', msg:'Roten hjälper inte när $x$ sitter i exponenten. Logaritmera i stället.'},{t:'Gånga $31$ med $2$', msg:'Potensen räknas före multiplikationen, så $31\\cdot 2$ får inte räknas ihop.'}]}}
+]});
+Object.assign(WORLD_TOPIC,{21:'l21-kvrot',22:'l22-extrem',23:'l23-pot',24:'l24-lg'});
+Object.assign(METHOD,{
+  'b-kvrot':{topic:'l21-kvrot', how:['Få $x^2$, eller parentesen i kvadrat, ensam på ena sidan.','Dra roten ur. Glöm inte $\\pm$: både det positiva och det negativa talet ger samma kvadrat.','Står det en parentes, lös två små ekvationer: en med plus och en med minus.'], trap:'Att bara ta med den positiva roten.'},
+  'b-nollprod':{topic:'l3-noll', how:['Samla allt på en sida så att högerledet är noll.','Bryt ut $x$, som finns i båda termerna.','Nollproduktmetoden ger två lösningar, och den ena är alltid $x = 0$.'], trap:'Att dela med $x$. Då försvinner lösningen $x = 0$.'},
+  'b-pqdec':{topic:'l4-pq', how:['Använd pq-formeln som vanligt, men låt miniräknaren ta roten ur.','Räkna med flera decimaler och avrunda först på slutet.'], trap:'Att avrunda roten för tidigt, så att svaret blir en hundradel fel.'},
+  'b-ord':{topic:'l21-kvrot', how:['Inför en variabel för det okända och skriv de andra storheterna med den, till exempel $x$ och $x + 1$.','Ställ upp ekvationen, samla allt på en sida och lös med pq-formeln.','Pröva lösningarna mot verkligheten. En längd eller ett antal positiva tal kan inte vara negativt.'], trap:'Att ta med en negativ lösning som inte passar i uppgiften.'},
+  'b-sym':{topic:'l22-extrem', how:['Har du nollställena: symmetrilinjen ligger mitt emellan dem.','Har du $y = ax^2 + bx + c$: symmetrilinjen är $x = -\\frac{b}{2a}$.'], trap:'Att glömma minustecknet i $-\\frac{b}{2a}$, eller att bara dela med $2$ när $a$ inte är $1$.'},
+  'b-extrem':{topic:'l22-extrem', how:['Extrempunkten ligger på symmetrilinjen, $x = -\\frac{b}{2a}$.','Sätt in $x$ i funktionen för att få $y$.','$a > 0$ ger ett minsta värde och $a < 0$ ett största.'], trap:'Att byta plats på $x$ och $y$, eller att tappa ett tecken när $x$ är negativt.'},
+  'b-modell':{topic:'l22-extrem', how:['Högsta höjden: toppen ligger på symmetrilinjen. Sätt in den tiden i formeln.','Nedslaget: sätt höjden lika med noll och lös andragradsekvationen. Bara den positiva tiden gäller.'], trap:'Att svara med tiden när frågan gäller höjden, eller tvärtom.'},
+  'b-potek':{topic:'l23-pot', how:['Vilket tal blir talet i högerledet när det upphöjs till exponenten?','Jämn exponent ger två lösningar, $\\pm$. Udda exponent ger en lösning med samma tecken som högerledet.'], trap:'Att glömma den negativa lösningen vid jämn exponent.'},
+  'b-potcalc':{topic:'l23-pot', how:['Dela bort talet framför potensen så att $x^n$ står ensamt.','Upphöj båda sidor till $\\frac{1}{n}$ och räkna med miniräknaren.'], trap:'Att dela med exponenten i stället för att upphöja till $\\frac{1}{n}$.'},
+  'b-potlag':{topic:'l23-pot', how:['Multiplikation med samma bas: addera exponenterna.','Division: subtrahera exponenterna.','Potens av en potens: multiplicera exponenterna.'], trap:'Att multiplicera exponenterna vid vanlig multiplikation.'},
+  'b-exp':{topic:'l23-exp', how:['$y = C\\cdot a^x$: $C$ är startvärdet och $a$ förändringsfaktorn.','Förändringsfaktor: $100$ % plus eller minus ändringen, skrivet som decimaltal.','Räkna potensen först, sedan gånger $C$.'], trap:'Att räkna $C\\cdot a\\cdot x$ i stället för $C\\cdot a^x$, eller att blanda ihop faktorn och procenten.'},
+  'b-lg':{topic:'l24-lg', how:['$\\lg a$ är exponenten som $10$ ska upphöjas till för att bli $a$.','Räkna nollor eller decimaler: $1000 = 10^3$ och $0{,}01 = 10^{-2}$.'], trap:'Att få fel tecken för tal mindre än $1$.'},
+  'b-lgdef':{topic:'l24-lg', how:['Definitionen: $\\lg(\\text{något}) = k$ betyder att $\\text{något} = 10^k$.','Lös sedan den vanliga ekvationen som blir kvar.'], trap:'Att dela med talet inne i $\\lg$ innan definitionen används.'},
+  'b-10x':{topic:'l24-ekv', how:['Få potensen $10^{\\ldots}$ ensam.','Definitionen ger exponenten $= \\lg$ av högerledet.','Dela sedan bort det som står framför $x$ i exponenten.'], trap:'Att glömma att dela med talet framför $x$ i exponenten.'},
+  'b-expek':{topic:'l24-ekv', how:['Ställ upp modellen $y = C\\cdot a^x$ och sätt in det du vet.','Dela bort $C$, logaritmera båda sidor och flytta ner $x$: $x\\lg a = \\lg(\\ldots)$.','Dela med $\\lg a$ och räkna med miniräknaren.'], trap:'Att räkna som om förändringen vore linjär.'}
+});
+
 /* =====================================================================
    UTMANING: svåra frågor på A-nivå, inom Matte 2
    Handskrivna. ok() räknar om facit med vanliga tal (oberoende kontroll,
@@ -3946,7 +4381,7 @@ const blackStatus = (S,now) => !S.black.unlocked ? null : rustyWorlds(S,now).len
 function playerLevel(xp){ let l=1; while(xp>=150*l*l) l++; return {level:l, from:150*(l-1)*(l-1), to:150*l*l}; }
 
 root.Core={Frac,F,Poly,parseNum,parseList,check,answerString,generate,makeRound,reviveTask,TYPES,LEVELS,typesFor,undTypesFor,levelInfo,timeFor,setRandom,sameVals,
-  UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,LEARN,methodFor,CHALLENGES,challengeTask,challengesOf,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
+  UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,LEARN,BOOK_LEVELS,approxVals,methodFor,CHALLENGES,challengeTask,challengesOf,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
 })(typeof window!=='undefined'?window:globalThis);
 </script>
 
@@ -4039,7 +4474,7 @@ const ICON={
 };
 
 /* ---------- Världarnas färger ---------- */
-const WORLD_COLOR={1:'#3b82f6',2:'#8b5cf6',3:'#f43f5e',4:'#f97316',5:'#14b8a6',6:'#eab308',7:'#22c55e',8:'#06b6d4',9:'#d946ef',10:'#6366f1'};
+const WORLD_COLOR={21:'#0ea5e9',22:'#10b981',23:'#f59e0b',24:'#ec4899',1:'#3b82f6',2:'#8b5cf6',3:'#f43f5e',4:'#f97316',5:'#14b8a6',6:'#eab308',7:'#22c55e',8:'#06b6d4',9:'#d946ef',10:'#6366f1'};
 const wcol=n=>WORLD_COLOR[n]||'#d4af37';   // Black-världarna (11-17) är guld
 
 /* ---------- Dagar i rad (räknas fram ur historiken) ---------- */
@@ -4155,7 +4590,10 @@ function renderWorlds(){
       <span class="t">${esc(L.name)}<small><span class="stars">${starStr(mi.stars)}</span> · ${C.MEDALS[mi.medal]}${mi.und?' · <span class="stamp">Förstådd</span>':''}${rust?' · <span class="rusttag">Rostig</span>':''}</small></span>
       <span class="medal">${MEDAL_ICON[mi.medal]}</span></button>`;
   }).join('')+`<button class="lvl${S.level===10?' cur':''}" data-w="10" style="--wc:${wcol(10)}"><span class="n">10</span><span class="t">Provnivå<small>Provberedskap: ${C.provGrade(S)||'inte testad'}</small></span><span class="medal">${C.provGrade(S)||'–'}</span></button>`;
+  $('#worldlist').insertAdjacentHTML('beforeend',`<h3 style="margin:18px 0 2px">Kapitel ur boken</h3><p class="small muted" style="margin:0 0 8px">Samma områden som i läroboken, kapitel 2.1–2.4. Miniräknare finns på uppgifterna som behöver en. Påverkar inte medaljerna.</p>`+
+    C.BOOK_LEVELS.map(n=>{ const st=S.stars[n]||{best:0}; return `<button class="lvl" data-bk="${n}" style="--wc:${wcol(n)}"><span class="n">2.${n-20}</span><span class="t">${esc(C.levelInfo(n).name.replace(/^2\.\d /,''))}<small><span class="stars">${starStr(st.best)}</span>${n>=23?' · 🧮 miniräknare':''}</small></span></button>`; }).join(''));
   $$('#worldlist [data-w]').forEach(b=>b.onclick=()=>show('world',+b.dataset.w));
+  $$('#worldlist [data-bk]').forEach(b=>b.onclick=()=>startRound('level',+b.dataset.bk));
 }
 function renderWorld(w){
   const L=C.levelInfo(w), now=Date.now();
@@ -4305,13 +4743,16 @@ function showTask(st){
   $('#g-score').textContent=R.score; $('#g-ins').textContent=R.ins;
   renderCombo(false);
   $('#g-type').innerHTML=t.und?`<span class="ubadge">✦ ${esc(C.UND[t.und])}</span>`:esc(t.typeName);
-  $('#g-diff').innerHTML=(t.diff>1&&!t.time?'<span class="xtime">+ extra tid</span> ':'')+'Svårighet '+t.diff+' '+[1,2,3].map(i=>`<i class="${i<=t.diff?'on':''}"></i>`).join('');
+  $('#g-diff').innerHTML=(t.calc?'<span class="calctag">🧮</span>':'')+(t.diff>1&&!t.time?'<span class="xtime">+ extra tid</span> ':'')+'Svårighet '+t.diff+' '+[1,2,3].map(i=>`<i class="${i<=t.diff?'on':''}"></i>`).join('');
   $('#g-prompt').innerHTML=`<div>${md(t.prompt)}</div>`;
   $('#g-lines').innerHTML=t.lines?`<ol class="sol">${t.lines.map((l,i)=>`<li class="${i===t.mark?'mark':''}"><span class="rn">Rad ${i+1}</span><span>${md(l)}</span></li>`).join('')}</ol>`:'';
   $('#g-fig').innerHTML=t.fig;
   $('#g-feedback').innerHTML='';
   $('#g-parts').innerHTML='';
   renderHintButton();
+  $('#g-tools').innerHTML=t.calc?'<button class="calcbtn" id="b-calc">🧮 Miniräknare</button>':'';
+  if(t.calc) $('#b-calc').onclick=()=>openCalc();
+  closeCalc();
   if(st){
     R.hint=!!st.hint; R.hintPenalty=!!st.hintPenalty;
     if(R.hint && t.steps.length) $('#g-hint').innerHTML=`<div class="hintbox">${md(t.steps[0])}</div>`;
@@ -4494,7 +4935,7 @@ function startTimer(limit,left){
 /* ----- Uppgiften klar ----- */
 function finishTask(timedOut){
   R.done=true; cancelAnimationFrame(R.raf);
-  $('#s-game').classList.add('answered');
+  $('#s-game').classList.add('answered'); closeCalc();
   const t=cur(), used=Math.min(R.limit,(performance.now()-R.t0)/1000);
   // olåsta delar räknas som fel
   const boxes=[...$('#g-parts').children];
@@ -4559,6 +5000,61 @@ function finishTask(timedOut){
   const nb=$('#b-next'); nb.onclick=next;
   setTimeout(()=>{ fb.scrollIntoView({behavior:'smooth',block:'start'}); nb.focus({preventScroll:true}); },60);
 }
+/* ----- Miniräknare: för uppgifter med t.calc ----- */
+const CALC={expr:'', ans:0};
+const CALC_KEYS=[['lg','fn','lg('],['10ˣ','fn','10^('],['√','fn','√('],['x²','fn','^2'],['xʸ','fn','^'],
+  ['7','','7'],['8','','8'],['9','','9'],['(','op','('],[')','op',')'],
+  ['4','','4'],['5','','5'],['6','','6'],['×','op','×'],['÷','op','÷'],
+  ['1','','1'],['2','','2'],['3','','3'],['+','op','+'],['−','op','−'],
+  ['0','','0'],[',','',','],['ANS','fn','ANS'],['⌫','op','DEL'],['C','op','CLR'],
+  ['Infoga i svaret','ins','INS'],['=','eq w2','EQ']];
+// Egen tolk (ingen eval): + − × ÷ ^, parenteser, lg, √, ANS och decimalkomma
+function calcEval(src){
+  const s=src.replace(/ANS/g,'A'); let i=0;
+  const peek=()=>s[i], eat=c=>{ if(s[i]===c){ i++; return true; } return false; };
+  const startsFactor=c=>c!==undefined && /[0-9,.(A√l]/.test(c);
+  function num(){ let j=i; while(/[0-9,.]/.test(s[i]||'')) i++; const t=s.slice(j,i).replace(',','.'); if(!t||isNaN(+t)) throw 0; return +t; }
+  function prim(){
+    if(eat('(')){ const v=expr(); eat(')'); return v; }
+    if(eat('A')) return CALC.ans;
+    if(s.startsWith('lg(',i)){ i+=3; const v=expr(); eat(')'); if(v<=0) throw 'lg'; return Math.log10(v); }
+    if(eat('√')){ const v=eat('(')?(()=>{ const x=expr(); eat(')'); return x; })():unary(); if(v<0) throw 'rot'; return Math.sqrt(v); }
+    return num();
+  }
+  function unary(){ if(eat('−')||eat('-')) return -unary(); return pow(); }
+  function pow(){ const b=prim(); if(eat('^')) return b**unary(); return b; }
+  function term(){ let v=unary(); for(;;){ if(eat('×')) v*=unary(); else if(eat('÷')){ const d=unary(); if(d===0) throw 'noll'; v/=d; } else if(startsFactor(peek())) v*=unary(); else return v; } }
+  function expr(){ let v=term(); for(;;){ if(eat('+')) v+=term(); else if(eat('−')||eat('-')) v-=term(); else return v; } }
+  const v=expr(); if(i<s.length) throw 0; if(!isFinite(v)) throw 0; return v;
+}
+const calcFmt=v=>{ if(Math.abs(v)>=1e12||(Math.abs(v)<1e-6&&v!==0)) return v.toExponential(6).replace('.',','); return String(Math.round(v*1e8)/1e8).replace('.',','); };
+function calcShow(final){
+  $('#calc-expr').textContent=CALC.expr||' ';
+  const r=$('#calc-res'); r.classList.remove('err');
+  if(!CALC.expr){ r.textContent=calcFmt(CALC.ans||0); return; }
+  try{ r.textContent=calcFmt(calcEval(CALC.expr)); }catch(e){ if(final){ r.classList.add('err'); r.textContent=e==='lg'?'lg kräver ett positivt tal':e==='rot'?'Roten ur ett negativt tal finns inte':e==='noll'?'Division med noll':'Uttrycket går inte att räkna ut'; } }
+}
+function calcKey(k){
+  if(k==='CLR') CALC.expr='';
+  else if(k==='DEL') CALC.expr=CALC.expr.endsWith('ANS')?CALC.expr.slice(0,-3):CALC.expr.endsWith('lg(')?CALC.expr.slice(0,-3):CALC.expr.slice(0,-1);
+  else if(k==='EQ'){ try{ CALC.ans=calcEval(CALC.expr); CALC.expr=''; }catch(e){ return calcShow(true); } }
+  else if(k==='INS'){
+    let v; try{ v=CALC.expr?calcEval(CALC.expr):CALC.ans; }catch(e){ return calcShow(true); }
+    const box=$('#g-parts').lastElementChild, inp=box&&box.querySelector('.display');
+    if(inp && !inp.readOnly){ inp.value=(inp.value.trim()?inp.value.replace(/;?\s*$/,'; '):'')+calcFmt(v).replace(/^-/,'-'); closeCalc(); inp.dispatchEvent(new Event('input')); }
+    return;
+  }
+  else CALC.expr+=k;
+  calcShow(false);
+}
+function openCalc(){
+  const k=$('#calc-keys');
+  if(!k.innerHTML){ k.innerHTML=CALC_KEYS.map(([t,c,v])=>`<button class="${c}" data-ck="${esc(v)}">${t}</button>`).join(''); k.querySelectorAll('[data-ck]').forEach(b=>b.onclick=()=>calcKey(b.dataset.ck)); }
+  $('#calc').classList.remove('hidden'); document.body.classList.add('calc-open'); calcShow(false);
+}
+function closeCalc(){ const c=$('#calc'); if(c) c.classList.add('hidden'); document.body.classList.remove('calc-open'); }
+$('#calc-x').onclick=closeCalc;
+
 /* ----- Förklara mer: lugn genomgång efter en uppgift ----- */
 function yourAnswer(p,pr){
   if(!pr) return 'Inget svar, tiden tog slut.';
@@ -4618,7 +5114,7 @@ function runPlace(o){
 function pauseRun(){
   if(!R || R.paused || $('#s-game').classList.contains('hidden')) return;
   if(!R.done){ R.left=timeLeft(); cancelAnimationFrame(R.raf); }
-  R.paused=true; saveRun(); $('#s-game').classList.add('paused');
+  R.paused=true; saveRun(); $('#s-game').classList.add('paused'); closeCalc();
   $('#pm-info').textContent=runPlace(loadRun()||{mode:R.mode,level:R.level,tasks:R.tasks,i:R.i,cur:{done:R.done,part:R.part}})
     +(R.done?'':` · ${fmtLeft(R.left)} kvar`)+(R.streak?` · combo ${R.streak}`:'');
   $('#pm-abort').textContent='Avbryt rundan (räknas inte)'; abortArmed=false;
@@ -4631,6 +5127,7 @@ function unpause(){
   if(!R.done) startTimer(R.limit,R.left);
 }
 function leaveGame(){
+  closeCalc();
   $('#pausemenu').classList.add('hidden'); $('#s-game').classList.remove('paused');
   if(R) cancelAnimationFrame(R.raf);
   R=null; document.body.classList.remove('bossmode');
@@ -4967,11 +5464,13 @@ $('#tb-exit').onclick=exitTest;
 let curTopic={w:1,k:0};
 function renderLearn(){
   const row=(w,L)=>{ const ts=C.LEARN[w], read=ts.filter(t=>S.read[t.id]).length;
-    return `<button class="lvl" data-lw="${w}" style="--wc:${wcol(w)}"><span class="n">${w}</span>
+    return `<button class="lvl" data-lw="${w}" style="--wc:${wcol(w)}"><span class="n">${w>20?'2.'+(w-20):w}</span>
       <span class="t">${esc(L)}<small>${ts.length} avsnitt · ${read===ts.length?'alla lästa':read+' lästa'}</small></span>${read===ts.length?'<span class="ok">✓</span>':''}</button>`; };
   $('#learnbody').innerHTML=`<div class="backrow"><button class="backbtn" data-home>‹ Startsidan</button></div><h2>Lär dig</h2>
     <p class="sub small">Varje avsnitt har en enkel förklaring och ett exempel steg för steg. Tryck på <b>Förstår inte</b> om det inte klickar, eller på <b>Avancerat</b> om du vill veta mer. Allt fungerar utan internet.</p>
     <div class="levels">${[...C.WORLDS,10].map(w=>row(w,worldName(w))).join('')}</div>
+    <h3 style="margin:20px 0 6px">Kapitel ur boken</h3>
+    <div class="levels">${C.BOOK_LEVELS.map(w=>row(w,worldName(w))).join('')}</div>
     <h3 style="margin:20px 0 4px">Överkurs <span class="okb">MATTE 3–5</span></h3>
     ${S.black.unlocked
       ? `<div class="levels">${C.BLACK_LEVELS.map((n,i)=>`<button class="lvl bl" data-lb="${n}"><span class="n">B${i+1}</span><span class="t">${esc(C.levelInfo(n).name)}<small><span class="okb">${esc(C.levelInfo(n).course)}</span>${S.black.lessons[n]?' · läst':''}</small></span></button>`).join('')}</div>`

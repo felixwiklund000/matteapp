@@ -86,14 +86,14 @@ pre{white-space:pre-wrap;word-break:break-word}
   const texOk=t=>{ if(!window.katex) return true; try{ katex.renderToString(t,{throwOnError:true}); return true; }catch(e){ return e.message; } };
   const cardIds=new Set(C.CARDS.map(c=>c.id)), cardsSeen=new Set(), kindsPerWorld={};
   // Kontrollerar en svarsdel (enkel uppgift eller del i en kedja)
-  function checkPart(p,problems,texts){
+  function checkPart(p,problems,texts,book){
     if(p.prompt) texts.push(p.prompt);
     const A=p.answer;
     if(A.kind==='num'){
       texts.push('$'+A.tex+'$');
       const r=C.check(p,C.answerString(p));
       if(!r.valid||!r.correct) problems.add('facit godtas inte av svarskontrollen: '+C.answerString(p));
-      A.values.forEach(v=>{ if(v.d>4||Math.abs(v.n)>300) problems.add('osnyggt svar: '+v.str()); });
+      if(!A.tol) A.values.forEach(v=>{ if(v.d>(book?12:4)||Math.abs(v.n)>(book?10000:300)) problems.add('osnyggt svar: '+v.str()); });
       p.errors.forEach(e=>{ texts.push(e.msg); if(C.sameVals(e.values,A.values,A.ordered)) problems.add('felsvar = facit');
         if(C.check(p,e.values.map(v=>v.str()).join('; ')).correct) problems.add('felsvar godtogs som rätt'); });
     } else if(A.kind==='mc'){
@@ -126,7 +126,7 @@ pre{white-space:pre-wrap;word-break:break-word}
       if(!/^Kontroll/.test(t.steps[t.steps.length-1])) problems.add('sista steget är ingen kontroll');
       const texts=[t.prompt,...t.steps,...(t.lines||[])];
       if(t.lines && t.mark!==undefined && t.mark!==null && !(t.mark>=0&&t.mark<t.lines.length)) problems.add('markerad rad finns inte');
-      t.parts.forEach(p=>checkPart(p,problems,texts));
+      t.parts.forEach(p=>checkPart(p,problems,texts,t.level>20));
       if(t.parts.filter(p=>p.role!=='predict').length<1) problems.add('ingen huvuddel');
       if(t.und){
         if(!C.UND[t.und]) problems.add('okänd förståelsetyp');
@@ -230,7 +230,7 @@ pre{white-space:pre-wrap;word-break:break-word}
   log([1,2,3,4].every(r=>C.CARDS.some(c=>c.r===r)), 'Alla fyra sällsyntheter finns');
 
   /* ---------- Rundor ---------- */
-  for(const L of C.LEVELS.filter(L=>!L.black)){
+  for(const L of C.LEVELS.filter(L=>!L.black&&!L.book)){
     const r=C.makeRound(C.typesFor(L.n),10,C.undTypesFor(L.n),3);
     const und=r.filter(t=>t.und).length;
     log(r.length===10 && r.every(t=>t.level===L.n) && und===3 && !r[0].und, `Runda på nivå ${L.n}: 10 uppgifter varav 3 förståelse`);
@@ -239,7 +239,7 @@ pre{white-space:pre-wrap;word-break:break-word}
   log(pr.length===10 && pr.every(t=>t.type==='pq'||t.type==='fn-ka'), 'Träna på mina fel ger bara de missade typerna');
   const ur=C.makeRound(C.undTypesFor(4),10);
   log(ur.every(t=>t.und), 'Förståelseträning ger bara förståelseuppgifter');
-  log(C.LEVELS.filter(L=>!L.black).every(L=>C.typesFor(L.n).length>0 && C.undTypesFor(L.n).length>0), 'Alla Matte 2-nivåer har både räkne- och förståelseuppgifter');
+  log(C.LEVELS.filter(L=>!L.black&&!L.book).every(L=>C.typesFor(L.n).length>0 && C.undTypesFor(L.n).length>0), 'Alla Matte 2-nivåer har både räkne- och förståelseuppgifter');
 
   /* ---------- Black ---------- */
   const now=Date.now();
