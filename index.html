@@ -165,6 +165,7 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
 @keyframes nofx{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(2px)}}
 .meta{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--muted);margin:0 0 12px;gap:8px;font-weight:800}
 .diff{white-space:nowrap}
+.xtime{color:var(--good);font-weight:800;margin-right:4px}
 .diff i{display:inline-block;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--wc);margin-left:3px}
 .diff i.on{background:var(--wc)}
 .prompt{font-size:1.55rem;line-height:1.55;font-weight:700}
@@ -240,6 +241,11 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
 .steps li{margin:0 0 8px;line-height:1.6}
 .steps li.check{list-style:none;margin-left:-1.4em;padding:8px 10px;background:var(--good-soft);border-radius:10px}
 .stepshead{font-weight:700;margin:14px 0 0}
+.btn.morebtn{margin:14px 0 4px;min-height:50px;font-size:1rem}
+.btn.morebtn.hot{animation:glowhelp 1.6s ease-in-out 2}
+@keyframes glowhelp{50%{box-shadow:0 4px 0 var(--bd),0 0 0 6px color-mix(in srgb,var(--warn) 25%,transparent)}}
+#morebox .lpanel,#morebox .card{margin:10px 0}
+.bigsteps li{font-size:1.05rem;line-height:1.7;margin:0 0 12px}
 .sticky{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom));z-index:2}
 
 .levels{display:grid;gap:10px}
@@ -584,7 +590,8 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
     <button class="btn act" id="b-und" style="--tc:#14b8a6"></button>
     <button class="btn act" id="b-kodex" style="--tc:#a855f7"></button>
     <button class="btn act" id="b-shop" style="--tc:#f43f5e"></button>
-    <button class="btn act wide" id="b-stats" style="--tc:#f59e0b"></button>
+    <button class="btn act" id="b-chal" style="--tc:#e11d48"></button>
+    <button class="btn act" id="b-stats" style="--tc:#f59e0b"></button>
     <button class="btn act wide hidden" id="b-offline" style="--tc:#22c55e"></button>
   </div>
 </section>
@@ -666,6 +673,7 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 <!-- ============ LÄR DIG ============ -->
 <section id="s-learn" class="hidden"><div id="learnbody"></div></section>
 <section id="s-topic" class="hidden"><div id="topicbody"></div></section>
+<section id="s-chal" class="hidden"><div id="chalbody"></div></section>
 
 <!-- ============ KONTO ============ -->
 <section id="s-account" class="hidden"><div id="accountbody"></div></section>
@@ -3196,7 +3204,9 @@ TYPES.boss.special=true;
 const typesFor = level => Object.values(TYPES).filter(t=>t.level===level && !t.und && !t.special).map(t=>t.id);
 const undTypesFor = level => Object.values(TYPES).filter(t=>t.level===level && t.und).map(t=>t.id);
 const levelInfo = n => LEVELS.find(L=>L.n===n);
-const timeFor = (level,und) => Math.round(levelInfo(level).time*(und?1.5:1));
+// Svårare uppgifter får mer tänketid: svårighet 2 ger 30 % mer och svårighet 3 ger 70 % mer.
+const DIFF_TIME={1:1, 2:1.3, 3:1.7};
+const timeFor = (level,und,diff=1) => Math.round(levelInfo(level).time*(und?1.5:1)*(DIFF_TIME[diff]||1));
 
 /* ---------- Skapa och kontrollera uppgifter ---------- */
 function normPart(p){
@@ -3582,6 +3592,294 @@ const LEARN={
 ]};
 
 /* =====================================================================
+   FÖRKLARA MER: metoden bakom varje uppgiftstyp
+   how: hur man tänker, med enkla ord. trap: det vanligaste felet.
+   topic: avsnittet i Lär dig med grunderna.
+   Förståelseuppgifterna förklaras per sort (UND_METHOD), Black-världarna
+   med sina lektioner (LESSONS).
+   ===================================================================== */
+const METHOD={
+  'ins-lin':{topic:'l1-ins', how:['$f(4)$ betyder: ta formeln och skriv $4$ överallt där det står $x$.','Räkna sedan i rätt ordning: först gånger, sist plus och minus.','Är talet negativt skriver du det inom parentes, så att tecknen blir rätt.'], trap:'Att räkna plus eller minus före gånger, eller att tappa ett minustecken på vägen.'},
+  'ins-kvad':{topic:'l1-neg', how:['Byt varje $x$ mot talet, med parentes om talet är negativt.','Räkna potensen först: $(-3)^2 = (-3)\\cdot(-3) = 9$.','Sedan gånger, och sist plus och minus.'], trap:'Att skriva $-3^2 = -9$ i stället för $(-3)^2 = 9$. Utan parentes kvadreras bara siffran.'},
+  'ins-los':{topic:'l1-los', how:['Här är frågan omvänd: du vet vad som ska komma ut och söker $x$.','Sätt formeln lika med talet. Då får du en ekvation.','Lös den genom att göra samma sak på båda sidor. Flytta först bort talet utan $x$, och dela sedan med talet framför $x$.'], trap:'Att sätta in talet som $x$ i stället för att sätta formeln lika med talet.'},
+  'par-tva':{topic:'l2-tva', how:['Varje term i första parentesen gångras med varje term i den andra. Två termer gånger två termer ger fyra produkter.','Skriv upp alla fyra produkterna innan du slår ihop något.','Slå sist ihop de två $x$-termerna, eftersom de är av samma sort.'], trap:'Att glömma en av de fyra produkterna, eller att få fel tecken på talet utan $x$.'},
+  'par-en':{topic:'l2-en', how:['Det som står framför parentesen gångras med varje term inuti den.','Ta tecknet först: lika tecken ger plus och olika tecken ger minus. Sedan siffrorna, och sist bokstäverna: $x\\cdot x = x^2$.'], trap:'Att bara gånga in i den första termen.'},
+  'par-a':{topic:'l2-en', how:['En bokstav framför parentesen gångras in i varje term, precis som ett tal.','Samma bokstav gånger sig själv blir en kvadrat: $a\\cdot a = a^2$.'], trap:'Att glömma att $a\\cdot a = a^2$, eller att bara gånga in i den första termen.'},
+  'par-kvad':{topic:'l2-tva', how:['Kvadrat betyder gånger sig själv: $(-4a)^2 = (-4a)\\cdot(-4a)$.','Kvadrera talet och bokstaven var för sig: $(-4)^2 = 16$ och $a\\cdot a = a^2$.','Minus gånger minus blir plus, så talet framför $a^2$ blir alltid positivt.'], trap:'Att bara kvadrera bokstaven, eller att gånga med två i stället för att kvadrera.'},
+  'rot-faktor':{topic:'l3-noll', how:['En produkt är noll bara om någon av faktorerna är noll.','Ta en parentes i taget och fråga: vilket $x$ gör just den här parentesen till noll?','Varje parentes ger en lösning. Tecknet byts: $(x + 2)$ blir noll när $x = -2$.'], trap:'Att behålla tecknet och svara $x = 2$ för parentesen $(x + 2)$.'},
+  'rot-bygg':{topic:'l3-bygg', how:['Varje rot $r$ ger en parentes $(x - r)$, som blir noll precis när $x = r$.','Gångra ihop parenteserna. Läs sedan av $b$, talet framför $x$, och $c$, talet utan $x$.'], trap:'Att inte byta tecken: roten $-5$ ger $(x + 5)$, inte $(x - 5)$.'},
+  'rot-andra':{topic:'l3-bygg', how:['I $x^2 + bx + c = 0$ är talet $c$ lika med rötterna gånger varandra.','Du känner den ena roten. Den andra är därför $c$ delat med den kända roten.','Kontrollera genom att sätta in den nya roten i ekvationen.'], trap:'Att tappa tecknet när du delar. Negativt delat med negativt blir positivt.'},
+  'pq':{topic:'l4-pq', how:['Läs av $p$, talet framför $x$, och $q$, talet utan $x$. Ta med tecknen.','Räkna ut $-\\frac{p}{2}$. Räkna sedan det som står under rottecknet: $\\left(\\frac{p}{2}\\right)^2 - q$.','Dra roten ur. Lösningarna är $-\\frac{p}{2}$ plus roten och $-\\frac{p}{2}$ minus roten.'], trap:'Teckenfel när $q$ är negativt. Är $q = -16$ blir det $+16$ under rottecknet.'},
+  'pq-dela':{topic:'l4-dela', how:['pq-formeln kräver att det står $1$ framför $x^2$. Dela därför först alla termer med talet framför $x^2$.','Sedan är det en vanlig pq-uppgift: läs av $p$ och $q$ och använd formeln.'], trap:'Att bara dela $x^2$-termen, eller att använda pq-formeln utan att dela först.'},
+  'abc':{topic:'l4-dela', how:['Står det ett tal $a$ framför $x^2$ kan du använda abc-formeln direkt.','Läs av $a$, $b$ och $c$ med tecken. Räkna först $b^2 - 4ac$, det som står under rottecknet.','Dela till sist hela täljaren, både $-b$ och roten, med $2a$. Förkorta om det går.'], trap:'Att bara dela roten med $2a$ och glömma $-b$, eller teckenfel i $-4ac$.'},
+  'df-tallinje':{topic:'l5-int', how:['Titta på pricken. Fylld betyder att talet är med ($\\le$ eller $\\ge$). Ofylld betyder att det inte är med ($<$ eller $>$).','Titta på linjen. Går den åt vänster är $x$ mindre än talet, går den åt höger är $x$ större.'], trap:'Att blanda ihop fylld och ofylld prick, eller åt vilket håll tecknet ska peka.'},
+  'df-graf':{topic:'l5-dfvf', how:['$D_f$: titta längs $x$-axeln. Var börjar och slutar grafen åt sidorna?','$V_f$: titta längs $y$-axeln. Hur lågt och hur högt går grafen? En topp eller en botten räknas, inte bara ändpunkterna.','Fylld prick betyder att ändpunkten är med, ofylld att den inte är med.'], trap:'Att blanda ihop $x$ och $y$, eller att bara titta på ändpunkterna när grafen har en topp.'},
+  'fn-ka':{topic:'l6-ka', how:['Byt varje $x$ mot hela uttrycket, med parentes runt. $f(2a)$ ger $(2a)$ överallt där det stod $x$.','Räkna sedan ut. Kvadrera både talet och bokstaven: $(2a)^2 = 4a^2$.'], trap:'Att skriva $2a^2$ i stället för $(2a)^2 = 4a^2$.'},
+  'fn-xk':{topic:'l6-xk', how:['Byt varje $x$ mot $(x + k)$, med parentes.','Multiplicera ut: kvadreringsregeln för $(x + k)^2$ och vanlig multiplikation för resten.','Slå sist ihop termer av samma sort: $x^2$-termer, $x$-termer och tal var för sig.'], trap:'Att glömma mittentermen i $(x + k)^2$, eller att ett minustecken framför en parentes bara byter tecken på den första termen.'},
+  'fn-ff':{topic:'l6-xk', how:['Räkna inifrån och ut. Börja med det inre, till exempel $f(-1)$.','Svaret stoppar du sedan in i $f$ en gång till.'], trap:'Att kvadrera eller dubbla det inre svaret i stället för att sätta in det i funktionen.'},
+  'k-lin':{topic:'l7-k', how:['Ledtråden, till exempel $f(1) = 1$, säger vad som kommer ut när man sätter in ett visst tal.','Sätt in talet i formeln och sätt det lika med värdet. Då får du en ekvation där bara konstanten är okänd.','Lös ekvationen.'], trap:'Att blanda ihop vilket tal som är $x$ och vilket som är funktionsvärdet.'},
+  'k-kvad':{topic:'l7-k', how:['Sätt in $x$-värdet i formeln och sätt det lika med funktionsvärdet.','Räkna ut allt som går att räkna ut. Då står bara konstanten kvar som okänd.','Lös ekvationen.'], trap:'Teckenfel med negativa tal i kvadrat: $(-1)^2 = 1$.'},
+  'k-tva':{topic:'l7-k', how:['Två okända konstanter kräver två ekvationer. Sätt in båda punkterna.','Dra den ena ekvationen från den andra. Då försvinner allt som är lika i båda, och bara en okänd blir kvar.'], trap:'Teckenfel när $x = -1$: $(-1)^2 = 1$, men $b\\cdot(-1) = -b$.'},
+  'graf-skar':{topic:'l8-skar', how:['Där graferna skär varandra är $f(x)$ och $g(x)$ lika.','Läs av $x$-koordinaterna för skärningspunkterna. Det är svaret.'], trap:'Att svara med $y$-värdena i stället för $x$-värdena.'},
+  'graf-olikhet':{topic:'l8-olik', how:['Hitta skärningspunkterna. Där byter graferna plats.','$f(x) < g(x)$ betyder att grafen till $f$ ligger under grafen till $g$. Läs av för vilka $x$ det gäller.','Vid $<$ eller $>$ är skärningspunkterna inte med.'], trap:'Att ta området där $f$ ligger ovanför i stället för under, eller att ta med skärningspunkterna.'},
+  'mod-formel':{topic:'l9-mod', how:['Rita en skiss och skriv ut längden på varje sida.','Staketet räcker till alla sidor utom den mot väggen. Det som blir kvar efter de två sidorna som är $x$ långa är längden på den tredje sidan.','Arean är den ena sidan gånger den andra.'], trap:'Att dra bort $x$ bara en gång. Det finns två sidor som är $x$ långa.'},
+  'mod-varde':{topic:'l9-mod', how:['Sätt in talet i formeln, precis som vid vanlig insättning.','Räkna parentesen först. Inne i parentesen går gånger före minus.'], trap:'Att räkna i fel ordning inne i parentesen.'},
+  'mod-df':{topic:'l9-mod', how:['Fråga dig: vilka $x$ är möjliga i verkligheten?','En längd måste vara större än noll. Det gäller både $x$ och den andra sidan.','Varje villkor ger en gräns. Tillsammans blir de ett intervall.'], trap:'Att ta med gränserna. När $x = 0$ eller när den andra sidan är $0$ finns ingen hage.'},
+  'mod-max':{topic:'l9-max', how:['Arean är noll i nollställena. Toppen ligger mitt emellan dem, eftersom parabeln är symmetrisk.','Räkna ut mitten och sätt in den i formeln. Svara med det som efterfrågas, här arean och inte $x$.'], trap:'Att svara med $x$-värdet i stället för den största arean.'},
+  'mod-vf':{topic:'l9-max', how:['$V_f$ är alla areor som går att få.','Den största arean finns vid toppen, mitt emellan nollställena. Är det $x$-värdet tillåtet är det största värdet med.','Ändpunkterna är inte tillåtna, så arean blir aldrig exakt $0$.'], trap:'Att ta med $0$, eller att utesluta det största värdet.'},
+  'koef':{topic:'l10-prov', how:['Sätt in eller multiplicera ut tills båda sidor har formen $(\\text{tal})\\cdot x + (\\text{tal})$.','Talen framför $x$ måste vara lika, och talen utan $x$ måste vara lika. Det ger två ekvationer.','Lös dem en i taget. Kontrollera villkoren i uppgiften, till exempel $a > 0$.'], trap:'Att glömma ett villkor som $a > 0$, eller att para ihop fel termer.'},
+  'elever':{topic:'l3-bygg', how:['Den som skrev av $q$ fel har ändå rätt $p$. Den som skrev av $p$ fel har ändå rätt $q$.','Bygg en ekvation ur varje elevs rötter med $(x - r_1)(x - r_2)$. Ta $p$ från den ena eleven och $q$ från den andra.'], trap:'Att ta både $p$ och $q$ från samma elev.'}
+};
+const UND_METHOD={
+  varfor:{how:['Frågan gäller varför ett steg ser ut som det gör. Tänk efter vilken regel som används just där.','Prova gärna med ett enkelt tal: vad skulle hända om steget gjordes på något annat sätt?'], trap:'Att välja ett svar som låter bra men inte förklarar just det steget.'},
+  felet:{how:['Gå igenom raderna en i taget och jämför varje rad med raden före.','Det första felet är den första raden som inte följer av raden före. Raderna efter kan vara rätt räknade, men de bygger vidare på felet.','Ett säkert knep: sätt in ett enkelt tal, till exempel $x = 1$, i varje rad. Där värdet ändras sitter felet.'], trap:'Att peka på en senare rad som ser konstig ut, fast felet kom tidigare.'},
+  forutsag:{how:['Gissa först, utan att räkna klart. Titta på vilken term som är störst och vilket tecken den har.','Räkna sedan ut och jämför med gissningen.'], trap:'Att låta en liten term styra gissningen. Kvadrattermen väger ofta tyngst.'},
+  koppla:{how:['Formel, graf och tabell visar samma funktion på olika sätt.','Kontrollera några enkla saker: vad är $f(0)$, och var skär grafen $y$-axeln? Stiger eller sjunker grafen?'], trap:'Att bara titta på en sak. Kontrollera minst två punkter.'},
+  ordna:{how:['Börja med det som är givet i uppgiften.','Varje rad ska följa direkt ur raden före. Fråga för varje rad: vad måste stå före för att den här ska gå att skriva?'], trap:'Att lägga svaret eller kontrollen för tidigt.'},
+  fraga:{how:['Läs frågeordet noga. ”Hur stor” vill ha ett värde. ”När” eller ”för vilket” vill ha ett $x$ eller ett $t$. ”Vilka värden” vill ha en mängd.'], trap:'Att räkna rätt men svara på en annan fråga.'},
+  tvavagar:{how:['Samma ekvation kan lösas på flera sätt, till exempel genom faktorisering och med pq-formeln.','Alla korrekta metoder ger samma rötter. Får du olika svar har något gått fel.'], trap:'Att tro att olika metoder kan ge olika svar.'}
+};
+const WORLD_TOPIC={1:'l1-ins',2:'l2-en',3:'l3-noll',4:'l4-pq',5:'l5-dfvf',6:'l6-ka',7:'l7-k',8:'l8-skar',9:'l9-mod',10:'l10-prov'};
+const learnTopic = id => Object.values(LEARN).flat().find(t=>t.id===id) || null;
+// Metod, vanligt fel och Lär dig-avsnitt för en uppgift (även sparade och utmaningsuppgifter)
+function methodFor(t){
+  if(t.method) return {how:t.method, trap:t.trap||null, topic:learnTopic(WORLD_TOPIC[t.level]), lesson:null};
+  if(t.und) return {...UND_METHOD[t.und], topic:learnTopic(WORLD_TOPIC[t.level]), lesson:null};
+  const m=METHOD[t.type];
+  if(m) return {how:m.how, trap:m.trap, topic:learnTopic(m.topic), lesson:null};
+  if(LESSONS[t.level]) return {how:LESSONS[t.level].idea, trap:null, topic:null, lesson:t.level};
+  return {how:[], trap:null, topic:learnTopic(WORLD_TOPIC[t.level]), lesson:null};
+}
+
+/* =====================================================================
+   UTMANING: svåra frågor på A-nivå, inom Matte 2
+   Handskrivna. ok() räknar om facit med vanliga tal (oberoende kontroll,
+   körs i testerna). Svaren skrivs som tal eller bråk i text.
+   ===================================================================== */
+const CHALLENGES=[
+  // ---------- 1 Insättning ----------
+  {id:'c1a', w:1, prompt:'$f(x) = x^2 - 3x + 1$. Bestäm alla $x$ som uppfyller $f(x) = f(2x)$.',
+   values:['0','1'], tex:'x_1 = 0,\\ x_2 = 1', hint:'Två svar: skriv dem med ; emellan',
+   ok:v=>{ const f=x=>x*x-3*x+1; return v.every(x=>Math.abs(f(x)-f(2*x))<1e-9); },
+   errors:[{values:['1'], msg:'$x = 1$ stämmer, men det finns en lösning till. Dela aldrig med $x$, flytta allt till en sida och faktorisera.'}],
+   how:['$f(2x)$ betyder att varje $x$ byts mot $(2x)$.','Sätt de två uttrycken lika med varandra och samla allt på en sida.','Det som blir kvar går att faktorisera, och då ger nollproduktmetoden svaren.'],
+   trap:'Att dela båda sidor med $x$. Då försvinner lösningen $x = 0$.',
+   steps:['$f(2x) = (2x)^2 - 3\\cdot 2x + 1 = 4x^2 - 6x + 1$','Ekvationen blir $x^2 - 3x + 1 = 4x^2 - 6x + 1$','Flytta allt till högerledet: $0 = 3x^2 - 3x$','Bryt ut $3x$: $3x(x - 1) = 0$','Nollproduktmetoden: $x = 0$ eller $x = 1$','Kontroll: $f(1) = -1$ och $f(2) = 4 - 6 + 1 = -1$ ✓']},
+  {id:'c1b', w:1, prompt:'$f(x) = 3x + k$ och $f(f(2)) = 37$. Bestäm $k$.',
+   values:['19/4'], tex:'k = \\frac{19}{4}',
+   ok:v=>{ const k=v[0], f=x=>3*x+k; return Math.abs(f(f(2))-37)<1e-9; },
+   errors:[{values:['31/3'], msg:'Du har räknat som om $f(2) = 2$. Räkna först $f(2) = 6 + k$ och sätt in hela det uttrycket.'}],
+   how:['Räkna inifrån och ut, men med $k$ kvar som en okänd.','$f(2)$ blir ett uttryck med $k$. Sätt in hela det uttrycket i $f$ en gång till.','Sätt resultatet lika med $37$ och lös ut $k$.'],
+   trap:'Att glömma att $k$ läggs till två gånger, en gång i varje insättning.',
+   steps:['Inre värdet: $f(2) = 3\\cdot 2 + k = 6 + k$','Yttre: $f(6 + k) = 3(6 + k) + k = 18 + 3k + k = 18 + 4k$','Ekvationen: $18 + 4k = 37$','$4k = 19$, alltså $k = \\frac{19}{4}$','Kontroll: $f(2) = 6 + \\frac{19}{4} = \\frac{43}{4}$ och $3\\cdot\\frac{43}{4} + \\frac{19}{4} = \\frac{129 + 19}{4} = \\frac{148}{4} = 37$ ✓']},
+  {id:'c1c', w:1, prompt:'$f(x) = x^2 + bx + c$ uppfyller $f(1) = f(5)$ och $f(3) = -2$. Beräkna $f(0)$.',
+   values:['7'], tex:'f(0) = 7',
+   ok:v=>{ const b=-6, c=7, f=x=>x*x+b*x+c; return f(1)===f(5) && f(3)===-2 && v[0]===f(0); },
+   errors:[{values:['-2'], msg:'$-2$ är $f(3)$. Frågan gäller $f(0)$, som är konstanten $c$.'}],
+   how:['$f(1) = f(5)$ betyder att två punkter ligger på samma höjd. Parabeln är symmetrisk kring linjen mitt emellan dem.','Symmetrilinjen ger $b$, och $f(3) = -2$ ger sedan $c$.','$f(0)$ är konstanttermen $c$.'],
+   trap:'Att försöka lösa med tre okända. Symmetrin ger $b$ direkt.',
+   steps:['$f(1) = f(5)$, så symmetrilinjen ligger mitt emellan: $x = \\frac{1 + 5}{2} = 3$','För $x^2 + bx + c$ ligger symmetrilinjen i $x = -\\frac{b}{2}$, så $-\\frac{b}{2} = 3$ och $b = -6$','$f(3) = 9 - 18 + c = -2$ ger $c = 7$','$f(0) = c = 7$','Kontroll: $f(1) = 1 - 6 + 7 = 2$ och $f(5) = 25 - 30 + 7 = 2$ ✓']},
+  // ---------- 2 Tecken och parenteser ----------
+  {id:'c2a', w:2, prompt:'Förenkla $(2x - 3)^2 - (2x + 3)^2$.',
+   options:[{t:'$-24x$',ok:true},{t:'$0$',msg:'$4x^2$-termerna och talen $9$ tar ut varandra, men $x$-termerna gör det inte: $-12x - 12x = -24x$.'},{t:'$-12x$',msg:'Båda mittentermerna räknas. Minustecknet framför andra parentesen gör $+12x$ till $-12x$, så det blir $-12x - 12x$.'},{t:'$8x^2 - 24x + 18$',msg:'Minustecknet framför den andra parentesen gäller alla dess termer, så $4x^2$ och $9$ tar ut varandra.'}],
+   how:['Utveckla båda kvadraterna med kvadreringsregeln.','Sätt den andra inom parentes, för minustecknet framför gäller alla dess termer.','Slå ihop termer av samma sort.'],
+   trap:'Att bara byta tecken på den första termen i den andra parentesen.',
+   steps:['$(2x - 3)^2 = 4x^2 - 12x + 9$','$(2x + 3)^2 = 4x^2 + 12x + 9$','Skillnaden: $4x^2 - 12x + 9 - (4x^2 + 12x + 9)$','$= 4x^2 - 12x + 9 - 4x^2 - 12x - 9 = -24x$','Kontroll med $x = 1$: $(-1)^2 - 5^2 = 1 - 25 = -24$ ✓']},
+  {id:'c2b', w:2, prompt:'Beräkna utan miniräknare: $1001^2 - 999^2$.',
+   values:['4000'], tex:'4000',
+   ok:v=>v[0]===1001*1001-999*999,
+   errors:[{values:['4'], msg:'$1001 - 999 = 2$, men $1001 + 999 = 2000$. Produkten är $2\\cdot 2000$.'}],
+   how:['Konjugatregeln baklänges: $a^2 - b^2 = (a - b)(a + b)$.','Med $a = 1001$ och $b = 999$ blir båda parenteserna lätta att räkna.'],
+   trap:'Att försöka kvadrera de stora talen. Det går, men är långsamt och lätt att räkna fel på.',
+   steps:['Konjugatregeln: $a^2 - b^2 = (a - b)(a + b)$','$1001^2 - 999^2 = (1001 - 999)(1001 + 999)$','$= 2\\cdot 2000 = 4000$','Kontroll med kvadreringsregeln: $1001^2 = 1002001$ och $999^2 = 998001$, och skillnaden är $4000$ ✓']},
+  {id:'c2c', w:2, prompt:'Bestäm $a$ och $b$ så att $(x + a)^2 + b = x^2 - 10x + 31$ för alla $x$. Ange $a$ först.',
+   values:['-5','6'], ordered:true, tex:'a = -5,\\ b = 6', hint:'Skriv a; b',
+   ok:v=>{ const [a,b]=v; return [0,1,2,7].every(x=>(x+a)**2+b===x*x-10*x+31); },
+   errors:[{values:['5','6'], msg:'Med $a = 5$ blir mittentermen $+10x$. Den ska vara $-10x$, så $a = -5$.'},{values:['-5','31'], msg:'$(x - 5)^2$ ger redan $25$, så $b = 31 - 25 = 6$.'}],
+   how:['Utveckla vänsterledet: $(x + a)^2 + b = x^2 + 2ax + a^2 + b$.','Jämför koefficienterna. Talen framför $x$ ska vara lika, och talen utan $x$ ska vara lika.'],
+   trap:'Att glömma att $a^2$ också bidrar till talet utan $x$.',
+   steps:['Utveckla: $x^2 + 2ax + a^2 + b$','$x$-termen: $2a = -10$, alltså $a = -5$','Talet utan $x$: $a^2 + b = 31$, alltså $25 + b = 31$ och $b = 6$','Kontroll: $(x - 5)^2 + 6 = x^2 - 10x + 25 + 6 = x^2 - 10x + 31$ ✓']},
+  // ---------- 3 Rötter och faktorform ----------
+  {id:'c3a', w:3, prompt:'Lös ekvationen $x^3 - 4x = 0$.',
+   values:['0','2','-2'], tex:'x_1 = 0,\\ x_2 = 2,\\ x_3 = -2', hint:'Tre svar: skriv dem med ; emellan',
+   ok:v=>v.length===3 && new Set(v).size===3 && v.every(x=>x**3-4*x===0),
+   errors:[{values:['2','-2'], msg:'Du har delat med $x$. Då försvinner lösningen $x = 0$. Bryt ut $x$ i stället.'}],
+   how:['Bryt ut den gemensamma faktorn $x$.','Det som blir kvar i parentesen är en konjugatregel som går att faktorisera vidare.','Varje faktor ger en lösning.'],
+   trap:'Att dela med $x$. Då tappar man lösningen $x = 0$.',
+   steps:['Bryt ut $x$: $x(x^2 - 4) = 0$','Konjugatregeln: $x^2 - 4 = (x - 2)(x + 2)$','$x(x - 2)(x + 2) = 0$','Nollproduktmetoden: $x = 0$, $x = 2$ eller $x = -2$','Kontroll med $x = -2$: $(-8) - 4\\cdot(-2) = -8 + 8 = 0$ ✓']},
+  {id:'c3b', w:3, prompt:'Ekvationen $x^2 + bx + 12 = 0$ har två rötter där den ena är tre gånger så stor som den andra. Bestäm alla möjliga värden på $b$.',
+   values:['-8','8'], tex:'b = -8 \\text{ eller } b = 8', hint:'Två svar: skriv dem med ; emellan',
+   ok:v=>v.length===2 && v.every(b=>{ const d=b*b/4-12; if(d<0) return false; const r1=-b/2+Math.sqrt(d), r2=-b/2-Math.sqrt(d); return Math.abs(r1-3*r2)<1e-9||Math.abs(r2-3*r1)<1e-9; }),
+   errors:[{values:['-8'], msg:'Rötterna kan också vara negativa: $-2$ och $-6$ ger $b = 8$.'}],
+   how:['Kalla rötterna $r$ och $3r$. Ekvationen kan då skrivas $(x - r)(x - 3r) = 0$.','Talet utan $x$ är rötterna gånger varandra, så $3r^2 = 12$.','Båda tecknen på $r$ fungerar. Varje $r$ ger ett $b$.'],
+   trap:'Att bara ta med den positiva lösningen till $r^2 = 4$.',
+   steps:['Rötterna är $r$ och $3r$: $(x - r)(x - 3r) = x^2 - 4rx + 3r^2$','Talet utan $x$: $3r^2 = 12$, så $r^2 = 4$ och $r = 2$ eller $r = -2$','$x$-termen: $b = -4r$','$r = 2$ ger $b = -8$ (rötterna $2$ och $6$). $r = -2$ ger $b = 8$ (rötterna $-2$ och $-6$)','Kontroll: $x^2 - 8x + 12 = (x - 2)(x - 6)$ och $6 = 3\\cdot 2$ ✓']},
+  {id:'c3c', w:3, prompt:'Lös ekvationen $(x - 3)^2 = 2(x - 3)$.',
+   values:['3','5'], tex:'x_1 = 3,\\ x_2 = 5', hint:'Två svar: skriv dem med ; emellan',
+   ok:v=>v.length===2 && v.every(x=>(x-3)**2===2*(x-3)),
+   errors:[{values:['5'], msg:'Du har delat med $(x - 3)$. Då försvinner lösningen $x = 3$, där parentesen är noll.'}],
+   how:['Dela inte med $(x - 3)$, den kan vara noll.','Flytta allt till vänsterledet och bryt ut den gemensamma faktorn $(x - 3)$.'],
+   trap:'Att dela båda sidor med $(x - 3)$ och tappa lösningen $x = 3$.',
+   steps:['Flytta över: $(x - 3)^2 - 2(x - 3) = 0$','Bryt ut $(x - 3)$: $(x - 3)\\big((x - 3) - 2\\big) = 0$','Förenkla: $(x - 3)(x - 5) = 0$','$x = 3$ eller $x = 5$','Kontroll med $x = 5$: $2^2 = 4$ och $2\\cdot 2 = 4$ ✓']},
+  // ---------- 4 pq- och abc-formeln ----------
+  {id:'c4a', w:4, prompt:'För vilket värde på $k$ har ekvationen $x^2 + 6x + k = 0$ exakt en lösning?',
+   values:['9'], tex:'k = 9',
+   ok:v=>9-v[0]===0,
+   errors:[{values:['3'], msg:'Under rottecknet står $\\left(\\frac{6}{2}\\right)^2 - k = 9 - k$. Det är noll när $k = 9$.'},{values:['36'], msg:'Halva $p$ är $3$, och $3^2 = 9$. Det är $9 - k$ som ska vara noll.'}],
+   how:['Exakt en lösning betyder att det som står under rottecknet i pq-formeln är noll.','Ställ upp det uttrycket och sätt det lika med noll.'],
+   trap:'Att glömma att halvera $p$ innan du kvadrerar.',
+   steps:['pq-formeln: $p = 6$ och $q = k$','Under rottecknet: $\\left(\\frac{6}{2}\\right)^2 - k = 9 - k$','Exakt en lösning kräver $9 - k = 0$, alltså $k = 9$','Då blir ekvationen $x^2 + 6x + 9 = (x + 3)^2 = 0$, med den enda lösningen $x = -3$','Kontroll: $(-3)^2 + 6\\cdot(-3) + 9 = 9 - 18 + 9 = 0$ ✓']},
+  {id:'c4b', w:4, prompt:'Lös ekvationen $(x + 1)(x - 3) = 2x - 7$.',
+   values:['2'], tex:'x = 2', hint:'Skriv lösningen. Finns det bara en, skriv ett tal.',
+   ok:v=>v.length===1 && (v[0]+1)*(v[0]-3)===2*v[0]-7,
+   errors:[{values:['-1','3'], msg:'Nollproduktmetoden fungerar bara när högerledet är noll. Multiplicera ut och samla allt på en sida först.'}],
+   how:['Högerledet är inte noll, så nollproduktmetoden fungerar inte direkt.','Multiplicera ut, samla allt på en sida och lös med pq-formeln eller genom att känna igen en kvadrat.'],
+   trap:'Att sätta varje parentes lika med noll fast högerledet inte är noll.',
+   steps:['Multiplicera ut: $x^2 - 3x + x - 3 = x^2 - 2x - 3$','Ekvationen: $x^2 - 2x - 3 = 2x - 7$','Samla allt till vänster: $x^2 - 4x + 4 = 0$','Det är en kvadrat: $(x - 2)^2 = 0$, alltså $x = 2$ (en dubbelrot)','Kontroll: $(2 + 1)(2 - 3) = -3$ och $2\\cdot 2 - 7 = -3$ ✓']},
+  {id:'c4c', w:4, prompt:'Lös ekvationen $\\frac{x^2}{2} - \\frac{x}{3} = \\frac{1}{6}$.',
+   values:['1','-1/3'], tex:'x_1 = 1,\\ x_2 = -\\frac{1}{3}', hint:'Två svar: skriv dem med ; emellan, t.ex. 2; -1/3',
+   ok:v=>v.length===2 && v.every(x=>Math.abs(x*x/2-x/3-1/6)<1e-9),
+   errors:[{values:['-1','1/3'], msg:'Teckenfel. Kontrollera med $x = 1$: $\\frac{1}{2} - \\frac{1}{3} = \\frac{1}{6}$. Alltså är $x = 1$ en lösning.'}],
+   how:['Bli av med bråken genom att gånga alla termer med minsta gemensamma nämnaren, $6$.','Samla allt på en sida och använd abc-formeln, eller dela med talet framför $x^2$ och använd pq-formeln.'],
+   trap:'Att bara gånga en del av termerna med $6$.',
+   steps:['Gånga alla termer med $6$: $3x^2 - 2x = 1$','Samla allt på en sida: $3x^2 - 2x - 1 = 0$','abc-formeln med $a = 3$, $b = -2$, $c = -1$: $x = \\frac{2 \\pm \\sqrt{4 + 12}}{6} = \\frac{2 \\pm 4}{6}$','$x_1 = \\frac{6}{6} = 1$ och $x_2 = \\frac{-2}{6} = -\\frac{1}{3}$','Kontroll med $x = -\\frac{1}{3}$: $\\frac{1}{18} + \\frac{1}{9} = \\frac{1}{18} + \\frac{2}{18} = \\frac{3}{18} = \\frac{1}{6}$ ✓']},
+  // ---------- 5 Definitions- och värdemängd ----------
+  {id:'c5a', w:5, prompt:'$f(x) = 5 - (x - 2)^2$ har definitionsmängden $-1 \\le x \\le 4$. Vilken är värdemängden?',
+   options:[{t:'$-4 \\le y \\le 5$',ok:true},{t:'$1 \\le y \\le 5$',msg:'Ändpunkten $x = -1$ ger $f(-1) = 5 - 9 = -4$, som är lägre än $1$.'},{t:'$-4 \\le y \\le 1$',msg:'Toppen $x = 2$ ligger i intervallet och ger $f(2) = 5$.'},{t:'$y \\le 5$',msg:'Definitionsmängden är begränsad, så $y$ kan inte bli hur lågt som helst.'}],
+   how:['Parabeln öppnar nedåt och har sin topp där parentesen är noll.','Kolla om toppen ligger i definitionsmängden. Räkna sedan ut värdet i båda ändpunkterna.','Det lägsta och det högsta av de här värdena är gränserna för värdemängden.'],
+   trap:'Att bara räkna i ändpunkterna och missa toppen, eller tvärtom.',
+   steps:['Toppen ligger där $x - 2 = 0$, alltså vid $x = 2$. Den ligger i intervallet och ger $f(2) = 5$','Vänster ändpunkt: $f(-1) = 5 - (-3)^2 = 5 - 9 = -4$','Höger ändpunkt: $f(4) = 5 - 2^2 = 1$','Lägsta värdet är $-4$ och högsta är $5$. Ändpunkterna är med','Svar: $-4 \\le y \\le 5$. Kontroll: $f(0) = 1$ ligger mellan $-4$ och $5$ ✓']},
+  {id:'c5b', w:5, prompt:'En rektangel har omkretsen $20$ cm. Den ena sidan är $x$ cm och arean är $A(x)$. Ange definitionsmängd och värdemängd.',
+   options:[{t:'$0 < x < 10$ och $0 < A \\le 25$',ok:true},{t:'$0 < x < 20$ och $0 < A \\le 100$',msg:'Omkretsen är $2x + 2y = 20$, så den andra sidan är $10 - x$. Därför måste $x < 10$.'},{t:'$0 \\le x \\le 10$ och $0 \\le A \\le 25$',msg:'En sida kan inte vara noll. Därför är gränserna inte med, och arean blir aldrig exakt $0$.'},{t:'$0 < x < 10$ och $0 < A < 25$',msg:'$x = 5$ är tillåtet och ger arean $25$. Därför är $25$ med.'}],
+   how:['Ta fram den andra sidan ur omkretsen. Båda sidorna måste vara större än noll, och det ger definitionsmängden.','Arean är en parabel med nollställen i ändarna. Toppen ligger mitt emellan och ger största arean.'],
+   trap:'Att ta med ändpunkterna. En sida som är $0$ cm ger ingen rektangel.',
+   steps:['Omkretsen: $2x + 2y = 20$ ger den andra sidan $y = 10 - x$','Båda sidorna större än noll: $x > 0$ och $10 - x > 0$, alltså $0 < x < 10$','Arean: $A(x) = x(10 - x)$. Nollställena är $0$ och $10$, så toppen ligger vid $x = 5$','$A(5) = 5\\cdot 5 = 25$. Ändpunkterna är inte med, så arean blir aldrig $0$','Svar: $0 < x < 10$ och $0 < A \\le 25$. Kontroll: $A(2) = 16$ ligger i intervallet ✓']},
+  {id:'c5c', w:5, prompt:'$f(x) = x^2 - 4x$ har definitionsmängden $a \\le x \\le 5$ och värdemängden $-4 \\le y \\le 5$. Vilket är det minsta möjliga värdet på $a$?',
+   values:['-1'], tex:'a = -1',
+   ok:v=>{ const a=v[0], f=x=>x*x-4*x; let lo=Infinity, hi=-Infinity; for(let x=a;x<=5+1e-9;x+=0.001){ lo=Math.min(lo,f(x)); hi=Math.max(hi,f(x)); } return Math.abs(lo+4)<1e-3 && Math.abs(hi-5)<1e-3 && f(a-0.01)>5; },
+   errors:[{values:['2'], msg:'Med $a = 2$ fungerar det, men $a$ kan vara mindre. Så länge $f(a) \\le 5$ blir det högsta värdet fortfarande $5$.'},{values:['5'], msg:'Vänster ändpunkt måste vara till vänster om toppen vid $x = 2$, annars nås aldrig $-4$.'}],
+   how:['Lägsta värdet $-4$ finns i vändpunkten $x = 2$, så $2$ måste vara med: $a \\le 2$.','Högsta värdet $5$ finns redan vid $x = 5$. När $a$ minskar får man inte gå så långt att $f(a)$ blir större än $5$.','Lös $f(a) = 5$ för att hitta gränsen.'],
+   trap:'Att bara tänka på vändpunkten och glömma att värdet vid vänstra ändpunkten också måste vara högst $5$.',
+   steps:['Vändpunkten: $f(x) = (x - 2)^2 - 4$, alltså minst $-4$ vid $x = 2$. Den måste vara med, så $a \\le 2$','$f(5) = 25 - 20 = 5$, så det högsta värdet $5$ nås redan vid högra ändpunkten','Om $a$ blir för litet blir $f(a)$ större än $5$. Gränsen är $f(a) = 5$: $a^2 - 4a - 5 = 0$','$(a - 5)(a + 1) = 0$, så $a = -1$ (lösningen $a = 5$ ligger till höger om toppen)','Svar: det minsta möjliga är $a = -1$. Kontroll: $f(-1) = 1 + 4 = 5$, och för $a < -1$ blir $f(a) > 5$ ✓']},
+  // ---------- 6 f(något) ----------
+  {id:'c6a', w:6, prompt:'$f(x) = x^2 - 2x$. Lös ekvationen $f(x + 1) = f(x)$.',
+   values:['1/2'], tex:'x = \\frac{1}{2}',
+   ok:v=>{ const f=x=>x*x-2*x; return Math.abs(f(v[0]+1)-f(v[0]))<1e-9; },
+   errors:[{values:['1'], msg:'Sätt in och kontrollera: $f(2) = 0$ men $f(1) = -1$. De är inte lika.'}],
+   how:['Bestäm $f(x + 1)$ genom att byta varje $x$ mot $(x + 1)$ och förenkla.','Sätt det lika med $f(x)$. $x^2$-termerna tar ut varandra, och det blir en vanlig förstagradsekvation.'],
+   trap:'Att skriva $f(x + 1) = f(x) + 1$. En funktion kan inte delas upp så.',
+   steps:['$f(x + 1) = (x + 1)^2 - 2(x + 1) = x^2 + 2x + 1 - 2x - 2 = x^2 - 1$','Ekvationen: $x^2 - 1 = x^2 - 2x$','$x^2$ tar ut varandra: $-1 = -2x$','$x = \\frac{1}{2}$','Kontroll: $f(\\frac{3}{2}) = \\frac{9}{4} - 3 = -\\frac{3}{4}$ och $f(\\frac{1}{2}) = \\frac{1}{4} - 1 = -\\frac{3}{4}$ ✓']},
+  {id:'c6b', w:6, prompt:'$f(x) = 2x^2 - 3$. Förenkla $f(x + h) - f(x)$.',
+   options:[{t:'$4xh + 2h^2$',ok:true},{t:'$2h^2$',msg:'Mittentermen i $(x + h)^2$ ger $2\\cdot 2xh = 4xh$.'},{t:'$4xh + 2h^2 - 6$',msg:'$-3$ i $f(x + h)$ och $-3$ i $f(x)$ tar ut varandra när man drar bort $f(x)$.'},{t:'$2h^2 - 3$',msg:'Både mittentermen $4xh$ och konstanterna saknas eller är fel. Utveckla $2(x + h)^2$ noga.'}],
+   how:['Bestäm $f(x + h)$ genom att byta varje $x$ mot $(x + h)$.','Dra bort hela $f(x)$, med parentes, och förenkla.'],
+   trap:'Att glömma mittentermen i $(x + h)^2$, eller att $-3$ och $-(-3)$ tar ut varandra.',
+   steps:['$f(x + h) = 2(x + h)^2 - 3 = 2(x^2 + 2xh + h^2) - 3 = 2x^2 + 4xh + 2h^2 - 3$','$f(x + h) - f(x) = 2x^2 + 4xh + 2h^2 - 3 - (2x^2 - 3)$','$= 4xh + 2h^2$','Kontroll med $x = 1$ och $h = 1$: $f(2) - f(1) = 5 - (-1) = 6$ och $4 + 2 = 6$ ✓']},
+  {id:'c6c', w:6, prompt:'$f(x) = ax + b$ och $f(f(x)) = 4x - 9$ för alla $x$. Det finns två funktioner som fungerar. Ange $b$ för båda.',
+   values:['-3','9'], tex:'b = -3 \\text{ eller } b = 9', hint:'Två svar: skriv dem med ; emellan',
+   ok:v=>v.length===2 && [[2,-3],[-2,9]].every(([a,b])=>v.includes(b) && [0,1,5].every(x=>a*(a*x+b)+b===4*x-9)),
+   errors:[{values:['-3'], msg:'$a^2 = 4$ har två lösningar. $a = -2$ ger också en funktion som fungerar.'}],
+   how:['Sätt in $f(x)$ i $f$: $f(f(x)) = a(ax + b) + b$.','Jämför koefficienterna med $4x - 9$. Det ger en ekvation för $a$ och en för $b$.','Glöm inte att $a^2 = 4$ har två lösningar.'],
+   trap:'Att bara ta $a = 2$ och missa $a = -2$.',
+   steps:['$f(f(x)) = a(ax + b) + b = a^2x + ab + b$','$x$-termen: $a^2 = 4$, så $a = 2$ eller $a = -2$','Talet utan $x$: $ab + b = -9$, alltså $b(a + 1) = -9$','$a = 2$: $3b = -9$, så $b = -3$. $a = -2$: $-b = -9$, så $b = 9$','Kontroll: $f(x) = -2x + 9$ ger $f(f(x)) = -2(-2x + 9) + 9 = 4x - 9$ ✓']},
+  // ---------- 7 Hitta konstanten ----------
+  {id:'c7a', w:7, prompt:'$f(x) = x^2 + kx + 9$. För vilka $k$ har grafen exakt en gemensam punkt med $x$-axeln?',
+   values:['6','-6'], tex:'k = 6 \\text{ eller } k = -6', hint:'Två svar: skriv dem med ; emellan',
+   ok:v=>v.length===2 && v.every(k=>k*k/4-9===0),
+   errors:[{values:['6'], msg:'Både $k = 6$ och $k = -6$ ger $\\left(\\frac{k}{2}\\right)^2 = 9$.'},{values:['3','-3'], msg:'Under rottecknet står $\\left(\\frac{k}{2}\\right)^2 - 9$. Det ger $\\frac{k}{2} = \\pm 3$, alltså $k = \\pm 6$.'}],
+   how:['En gemensam punkt med $x$-axeln betyder att $f(x) = 0$ har exakt en lösning.','Det som står under rottecknet i pq-formeln ska alltså vara noll.'],
+   trap:'Att glömma att halvera $k$, eller att bara ta med den positiva lösningen.',
+   steps:['$f(x) = 0$ med pq-formeln: $p = k$ och $q = 9$','Under rottecknet: $\\left(\\frac{k}{2}\\right)^2 - 9$','Exakt en lösning: $\\left(\\frac{k}{2}\\right)^2 = 9$, alltså $\\frac{k}{2} = 3$ eller $\\frac{k}{2} = -3$','$k = 6$ eller $k = -6$','Kontroll: $x^2 + 6x + 9 = (x + 3)^2$ och $x^2 - 6x + 9 = (x - 3)^2$ har båda en enda rot ✓']},
+  {id:'c7b', w:7, prompt:'Parabeln $y = ax^2 + bx + c$ går genom punkterna $(0, 6)$, $(1, 0)$ och $(3, 0)$. Bestäm $a$, $b$ och $c$ i den ordningen.',
+   values:['2','-8','6'], ordered:true, tex:'a = 2,\\ b = -8,\\ c = 6', hint:'Skriv a; b; c',
+   ok:v=>{ const [a,b,c]=v, y=x=>a*x*x+b*x+c; return y(0)===6 && y(1)===0 && y(3)===0; },
+   errors:[{values:['1','-4','3'], msg:'$(x - 1)(x - 3)$ ger $3$ när $x = 0$, men grafen ska gå genom $(0, 6)$. Du behöver faktorn $a = 2$ framför.'}],
+   how:['Punkterna $(1, 0)$ och $(3, 0)$ är nollställen. Därför kan parabeln skrivas $y = a(x - 1)(x - 3)$.','Punkten $(0, 6)$ ger sedan $a$.','Multiplicera ut för att få $b$ och $c$.'],
+   trap:'Att glömma faktorn $a$ framför parenteserna.',
+   steps:['Nollställena $1$ och $3$ ger $y = a(x - 1)(x - 3)$','Punkten $(0, 6)$: $6 = a\\cdot(-1)\\cdot(-3) = 3a$, alltså $a = 2$','$y = 2(x - 1)(x - 3) = 2(x^2 - 4x + 3) = 2x^2 - 8x + 6$','$a = 2$, $b = -8$ och $c = 6$','Kontroll: $x = 3$ ger $18 - 24 + 6 = 0$ ✓']},
+  {id:'c7c', w:7, prompt:'$f(x) = kx^2 + 4x + k$ där $k > 0$. För vilket $k$ har ekvationen $f(x) = 0$ exakt en lösning?',
+   values:['2'], tex:'k = 2',
+   ok:v=>{ const k=v[0]; return k>0 && 16-4*k*k===0; },
+   errors:[{values:['-2'], msg:'Ekvationen fungerar med $k = -2$ också, men uppgiften kräver $k > 0$.'},{values:['4'], msg:'Kontrollera: med $k = 4$ blir $b^2 - 4ac = 16 - 64 < 0$, alltså inga lösningar.'}],
+   how:['Exakt en lösning betyder att det under rottecknet är noll.','Med abc-formeln är det $b^2 - 4ac$, där $a = k$, $b = 4$ och $c = k$.','Lös ekvationen för $k$ och använd villkoret $k > 0$.'],
+   trap:'Att glömma villkoret $k > 0$.',
+   steps:['$a = k$, $b = 4$ och $c = k$','Under rottecknet: $b^2 - 4ac = 16 - 4k^2$','Exakt en lösning: $16 - 4k^2 = 0$, alltså $k^2 = 4$','$k = 2$ eller $k = -2$. Villkoret $k > 0$ ger $k = 2$','Kontroll: $2x^2 + 4x + 2 = 2(x + 1)^2$, med den enda roten $x = -1$ ✓']},
+  // ---------- 8 Två grafer ----------
+  {id:'c8a', w:8, prompt:'Linjen $y = x + m$ och parabeln $y = x^2 - 3x + 6$ ska ha exakt en gemensam punkt. Bestäm $m$.',
+   values:['2'], tex:'m = 2',
+   ok:v=>{ const m=v[0]; return 4-(6-m)===0; },
+   errors:[{values:['6'], msg:'Sätt uttrycken lika: $x^2 - 4x + 6 - m = 0$. Under rottecknet står $4 - (6 - m)$, som är noll när $m = 2$.'}],
+   how:['Gemensamma punkter finns där uttrycken är lika. Sätt $x + m = x^2 - 3x + 6$.','Samla allt på en sida. Exakt en gemensam punkt betyder exakt en lösning, alltså noll under rottecknet.'],
+   trap:'Att glömma att flytta över både $x$ och $m$ innan pq-formeln används.',
+   steps:['Sätt lika: $x^2 - 3x + 6 = x + m$','Samla allt till vänster: $x^2 - 4x + (6 - m) = 0$','Under rottecknet: $\\left(\\frac{-4}{2}\\right)^2 - (6 - m) = 4 - 6 + m = m - 2$','Exakt en lösning: $m - 2 = 0$, alltså $m = 2$','Kontroll: $x^2 - 4x + 4 = (x - 2)^2$. Linjen tangerar parabeln i $(2, 4)$ ✓']},
+  {id:'c8b', w:8, prompt:'Lös olikheten $x^2 - 2x < 3$.',
+   options:[{t:'$-1 < x < 3$',ok:true},{t:'$x < -1$ eller $x > 3$',msg:'Där är $x^2 - 2x - 3 > 0$. Olikheten frågar var det är mindre än noll, alltså mellan rötterna.'},{t:'$-1 \\le x \\le 3$',msg:'Vid $x = -1$ och $x = 3$ är $x^2 - 2x = 3$, och olikheten är strikt.'},{t:'$x < 3$',msg:'Kontrollera $x = -2$: $4 + 4 = 8$, som inte är mindre än $3$. Det finns en undre gräns också.'}],
+   how:['Flytta över allt till en sida: $x^2 - 2x - 3 < 0$.','Hitta nollställena. Parabeln öppnar uppåt, så den är negativ mellan nollställena.'],
+   trap:'Att välja området utanför nollställena, eller att ta med gränserna.',
+   steps:['Flytta över: $x^2 - 2x - 3 < 0$','Faktorisera: $(x - 3)(x + 1) < 0$, med nollställena $-1$ och $3$','Parabeln öppnar uppåt, så den ligger under $x$-axeln mellan nollställena','Svar: $-1 < x < 3$','Kontroll med $x = 0$: $0 < 3$ stämmer. Med $x = 4$: $8 < 3$ stämmer inte ✓']},
+  {id:'c8c', w:8, prompt:'$f(x) = x^2$ och $g(x) = 2x + 8$. Hur långt är det mellan skärningspunkternas $x$-värden?',
+   values:['6'], tex:'6',
+   ok:v=>{ const xs=[4,-2]; return xs.every(x=>x*x===2*x+8) && v[0]===Math.abs(xs[0]-xs[1]); },
+   errors:[{values:['2'], msg:'Skärningarna är $x = 4$ och $x = -2$. Avståndet är $4 - (-2) = 6$, inte $4 - 2$.'}],
+   how:['Skärningspunkterna finns där $f(x) = g(x)$. Lös ekvationen.','Avståndet mellan två tal är det större minus det mindre.'],
+   trap:'Teckenfel i avståndet: $4 - (-2) = 6$.',
+   steps:['$x^2 = 2x + 8$ ger $x^2 - 2x - 8 = 0$','$(x - 4)(x + 2) = 0$, så $x = 4$ eller $x = -2$','Avståndet: $4 - (-2) = 6$','Kontroll: $f(4) = 16 = g(4)$ och $f(-2) = 4 = g(-2)$ ✓']},
+  // ---------- 9 Modellering ----------
+  {id:'c9a', w:9, prompt:'En boll kastas uppåt. Höjden är $h(t) = 1 + 20t - 5t^2$ meter efter $t$ sekunder. Hur länge är bollen högre än $16$ m?',
+   values:['2'], tex:'2 \\text{ s}',
+   ok:v=>{ const h=t=>1+20*t-5*t*t; return h(1)===16 && h(3)===16 && h(2)>16 && v[0]===2; },
+   errors:[{values:['1','3'], msg:'$1$ och $3$ är tidpunkterna när bollen är exakt $16$ m upp. Frågan gäller hur länge, alltså tiden mellan dem.'},{values:['3'], msg:'Bollen passerar $16$ m på väg upp vid $t = 1$ och på väg ner vid $t = 3$. Tiden däremellan är $2$ s.'}],
+   how:['Ställ upp olikheten $h(t) > 16$ och lös motsvarande ekvation $h(t) = 16$.','Bollen är över $16$ m mellan de två lösningarna. Hur länge är skillnaden mellan dem.'],
+   trap:'Att svara med tidpunkterna i stället för hur länge.',
+   steps:['$1 + 20t - 5t^2 = 16$ ger $-5t^2 + 20t - 15 = 0$','Dela med $-5$: $t^2 - 4t + 3 = 0$','$(t - 1)(t - 3) = 0$, så $t = 1$ eller $t = 3$','Mellan $t = 1$ och $t = 3$ är bollen högre än $16$ m. Det är $2$ sekunder','Kontroll: $h(2) = 1 + 40 - 20 = 21 > 16$ ✓']},
+  {id:'c9b', w:9, prompt:'Ett kafé säljer $x$ bullar per dag till priset $100 - 2x$ kr styck. Hur många bullar ska säljas för att intäkten ska bli så stor som möjligt, och hur stor blir den? Ange antalet först.',
+   values:['25','1250'], ordered:true, tex:'25 \\text{ bullar och } 1250 \\text{ kr}', hint:'Skriv antal; intäkt',
+   ok:v=>{ const R=x=>x*(100-2*x); return v[0]===25 && v[1]===R(25) && R(24)<R(25) && R(26)<R(25); },
+   errors:[{values:['50','0'], msg:'Vid $x = 50$ är priset $0$ kr. Toppen ligger mitt emellan nollställena $0$ och $50$.'},{values:['25','50'], msg:'$50$ kr är priset vid $25$ bullar. Intäkten är antal gånger pris: $25\\cdot 50$.'}],
+   how:['Intäkt är antal gånger pris: $R(x) = x(100 - 2x)$.','Nollställena är $x = 0$ och $x = 50$. Toppen ligger mitt emellan.','Räkna ut intäkten i toppen.'],
+   trap:'Att svara med priset i stället för intäkten.',
+   steps:['Intäkten: $R(x) = x(100 - 2x)$','Nollställen: $x = 0$ och $100 - 2x = 0$, alltså $x = 50$','Toppen mitt emellan: $x = 25$','$R(25) = 25\\cdot(100 - 50) = 25\\cdot 50 = 1250$ kr','Kontroll: $R(24) = 24\\cdot 52 = 1248$ och $R(26) = 26\\cdot 48 = 1248$, båda mindre ✓']},
+  {id:'c9c', w:9, prompt:'Med $40$ m staket ska en rektangulär hage byggas mot en lång vägg (väggen är den fjärde sidan). Hagen ska dessutom delas i två delar med ett staket som går rakt ut från väggen. Hur stor kan hagens totala area bli som mest?',
+   values:['400/3'], tex:'\\frac{400}{3} \\text{ m}^2', time:240,
+   ok:v=>{ const A=x=>x*(40-3*x); return Math.abs(v[0]-A(20/3))<1e-9 && A(6)<v[0] && A(7)<v[0]; },
+   errors:[{values:['200'], msg:'$200$ m² får man om mittstaketet glöms bort. Det finns tre sträckor som går ut från väggen, alltså $3x$.'},{values:['20/3'], msg:'$\\frac{20}{3}$ är sidan $x$. Frågan gäller den största arean.'}],
+   how:['Rita en skiss. Tre staketbitar går rakt ut från väggen: två sidor och mittstaketet. Kalla var och en $x$.','Det som blir kvar av staketet går parallellt med väggen: $40 - 3x$.','Arean är en parabel. Toppen ligger mitt emellan nollställena.'],
+   trap:'Att glömma mittstaketet och bara räkna med två sträckor som är $x$ långa.',
+   steps:['Tre bitar är $x$ långa: $3x$. Den långa sidan blir $40 - 3x$','Arean: $A(x) = x(40 - 3x)$','Nollställen: $x = 0$ och $x = \\frac{40}{3}$. Toppen: $x = \\frac{20}{3}$','$A(\\frac{20}{3}) = \\frac{20}{3}\\cdot(40 - 20) = \\frac{20}{3}\\cdot 20 = \\frac{400}{3}$ m²','Kontroll: $\\frac{400}{3} \\approx 133$, och $A(6) = 6\\cdot 22 = 132$ samt $A(7) = 7\\cdot 19 = 133$, båda lite mindre ✓']},
+  // ---------- 10 Provnivå (blandat) ----------
+  {id:'c10a', w:10, prompt:'Lös ekvationen $(x^2 - 5x)^2 - 2(x^2 - 5x) - 24 = 0$.',
+   values:['6','-1','1','4'], tex:'x = -1,\\ 1,\\ 4,\\ 6', hint:'Fyra svar: skriv dem med ; emellan', time:270,
+   ok:v=>v.length===4 && new Set(v).size===4 && v.every(x=>{ const u=x*x-5*x; return u*u-2*u-24===0; }),
+   errors:[{values:['6','-4'], msg:'$6$ och $-4$ är värdena på $x^2 - 5x$. Varje värde ger en ny andragradsekvation för $x$.'},{values:['6','-1'], msg:'Det finns två fall. $x^2 - 5x = -4$ ger också lösningarna $1$ och $4$.'}],
+   how:['Samma uttryck, $x^2 - 5x$, förekommer två gånger. Kalla det $u$.','Då blir det en vanlig andragradsekvation i $u$.','Varje lösning för $u$ ger en ny andragradsekvation för $x$.'],
+   trap:'Att stanna vid värdena på $u$, eller att bara lösa ett av fallen.',
+   steps:['Sätt $u = x^2 - 5x$: $u^2 - 2u - 24 = 0$','$(u - 6)(u + 4) = 0$, så $u = 6$ eller $u = -4$','$x^2 - 5x = 6$: $x^2 - 5x - 6 = (x - 6)(x + 1) = 0$, så $x = 6$ eller $x = -1$','$x^2 - 5x = -4$: $x^2 - 5x + 4 = (x - 1)(x - 4) = 0$, så $x = 1$ eller $x = 4$','Kontroll med $x = 4$: $u = 16 - 20 = -4$ och $16 + 8 - 24 = 0$ ✓']},
+  {id:'c10b', w:10, prompt:'Summan av två tal är $14$ och summan av deras kvadrater är $106$. Bestäm talen.',
+   values:['5','9'], tex:'5 \\text{ och } 9', hint:'Två tal: skriv dem med ; emellan',
+   ok:v=>v.length===2 && v[0]+v[1]===14 && v[0]*v[0]+v[1]*v[1]===106,
+   errors:[{values:['7','7'], msg:'$7^2 + 7^2 = 98$, inte $106$.'}],
+   how:['Kalla talen $x$ och $14 - x$, så används villkoret om summan direkt.','Villkoret om kvadraterna ger en andragradsekvation.'],
+   trap:'Att glömma mittentermen när $(14 - x)^2$ utvecklas.',
+   steps:['Talen är $x$ och $14 - x$','$x^2 + (14 - x)^2 = 106$ ger $x^2 + 196 - 28x + x^2 = 106$','$2x^2 - 28x + 90 = 0$. Dela med $2$: $x^2 - 14x + 45 = 0$','$(x - 5)(x - 9) = 0$, så talen är $5$ och $9$','Kontroll: $5 + 9 = 14$ och $25 + 81 = 106$ ✓']},
+  {id:'c10c', w:10, prompt:'$f(x) = x^2 + bx + c$ har sitt minsta värde $-1$ när $x = 3$. Lös ekvationen $f(x) = 8$.',
+   values:['0','6'], tex:'x_1 = 0,\\ x_2 = 6', hint:'Två svar: skriv dem med ; emellan',
+   ok:v=>{ const f=x=>(x-3)**2-1; return v.length===2 && v.every(x=>f(x)===8); },
+   errors:[{values:['6'], msg:'Parabeln är symmetrisk kring $x = 3$. Om $6$ är en lösning är $0$ det också.'}],
+   how:['Minsta värdet $-1$ vid $x = 3$ betyder att $f(x) = (x - 3)^2 - 1$.','Sätt det lika med $8$ och lös. Kvadraten kan lösas direkt med roten ur.'],
+   trap:'Att bara ta den positiva roten när $(x - 3)^2 = 9$.',
+   steps:['Vändpunkten $(3, -1)$ ger $f(x) = (x - 3)^2 - 1$','$f(x) = 8$: $(x - 3)^2 - 1 = 8$, alltså $(x - 3)^2 = 9$','$x - 3 = 3$ eller $x - 3 = -3$','$x = 6$ eller $x = 0$','Kontroll: $f(0) = 9 - 1 = 8$ ✓']}
+];
+function challengeTask(q){
+  const t={type:'ch-'+q.id, level:q.w, typeName:'Utmaning · A-nivå', und:null, card:null, diff:3, time:q.time||210,
+    prompt:q.prompt, steps:q.steps.slice(), fig:'', lines:null, method:q.how, trap:q.trap, chal:q.id};
+  const part = q.options
+    ? {answer:mcOpts(q.options)}
+    : {answer:num(q.values.map(parseNum), q.tex, {ordered:!!q.ordered, hint:q.hint||''}), errors:(q.errors||[]).map(e=>({values:e.values.map(parseNum), msg:e.msg}))};
+  t.parts=[normPart(part)]; t.answer=t.parts[0].answer; t.errors=t.parts[0].errors;
+  return t;
+}
+const challengesOf = w => CHALLENGES.filter(q=>q.w===w);
+
+/* =====================================================================
    PROGRESSION: stjärnor, medaljer, Förstådd, Provberedskap, rost
    Rena funktioner av sparat läge, så att de går att testa.
    ===================================================================== */
@@ -3590,7 +3888,7 @@ const MEDALS=['Ingen medalj','Brons','Silver','Guld','Diamant'];
 const starsFor = c => c>=9?3:c>=8?2:c>=6?1:0;
 function freshState(){
   return {v:2, level:1, passed:{}, best:{}, low:{level:0,count:0}, rounds:0, answered:0, correct:0, bestStreak:0, totalTime:0, types:{}, history:[],
-    xp:0, insights:0, insightsEarned:0, hintsUsed:0, stars:{}, und:{}, cards:{}, worldLast:{}, read:{},
+    xp:0, insights:0, insightsEarned:0, hintsUsed:0, stars:{}, und:{}, cards:{}, worldLast:{}, read:{}, chal:{},
     skin:{owned:['standard'], active:'standard'},
     black:{unlocked:false, beaten:false, name:'', theme:false, lessons:{}, attempts:0, unlockedAt:0}};
 }
@@ -3599,7 +3897,7 @@ function migrate(old){
   const f=freshState();
   for(const k in old) if(old[k]!==undefined) S[k]=old[k];
   S.skin=Object.assign({},f.skin,old.skin||{}); S.black=Object.assign({},f.black,old.black||{});
-  for(const k of ['stars','und','cards','worldLast','passed','best','types','read']) S[k]=Object.assign({},old[k]||{});
+  for(const k of ['stars','und','cards','worldLast','passed','best','types','read','chal']) S[k]=Object.assign({},old[k]||{});
   if(!Array.isArray(S.history)) S.history=[];
   if(!old.v || old.v<2){
     const now=Date.now();
@@ -3648,7 +3946,7 @@ const blackStatus = (S,now) => !S.black.unlocked ? null : rustyWorlds(S,now).len
 function playerLevel(xp){ let l=1; while(xp>=150*l*l) l++; return {level:l, from:150*(l-1)*(l-1), to:150*l*l}; }
 
 root.Core={Frac,F,Poly,parseNum,parseList,check,answerString,generate,makeRound,reviveTask,TYPES,LEVELS,typesFor,undTypesFor,levelInfo,timeFor,setRandom,sameVals,
-  UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,LEARN,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
+  UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,LEARN,methodFor,CHALLENGES,challengeTask,challengesOf,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
 })(typeof window!=='undefined'?window:globalThis);
 </script>
 
@@ -3724,6 +4022,7 @@ function renderThemeBtn(){ const b=$('#b-theme-mode'); if(b) b.innerHTML=isLight
 const svgI=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 const ICON={
   play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z" fill="currentColor"/></svg>',
+  trophy:svgI('<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>'),
   book:svgI('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M9 7h7M9 11h5"/>'),
   map:svgI('<path d="M9 4 3 6.5v13L9 17l6 2.5 6-2.5V4l-6 2.5z"/><path d="M9 4v13M15 6.5v13"/>'),
   spark:svgI('<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/>'),
@@ -3768,10 +4067,10 @@ function openModal(html){ const m=$('#modal'); m.innerHTML=`<div class="inner">$
 function bindCards(root){ root.querySelectorAll('[data-card]').forEach(b=>b.onclick=()=>{ const c=C.CARDS.find(x=>x.id===b.dataset.card); openModal(cardHTML(c,true,{big:true})); }); }
 
 /* ---------- Skärmar ---------- */
-const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test','account','learn','topic'];
+const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test','account','learn','topic','chal'];
 let curWorld=1;
 // Mobilens tillbaka-gest går tillbaka i appen. Sidor man bläddrar mellan läggs i webbläsarens historik.
-const NAV=['worlds','world','kodex','shop','stats','black','bworld','lesson','account','learn','topic'];
+const NAV=['worlds','world','kodex','shop','stats','black','bworld','lesson','account','learn','topic','chal'];
 function show(name,arg,fromHistory){
   if(!fromHistory){
     if(NAV.includes(name)) history.pushState({s:name,arg:arg===undefined?null:arg},'');
@@ -3792,6 +4091,7 @@ function show(name,arg,fromHistory){
   if(name==='test') renderTest();
   if(name==='account') renderAccount();
   if(name==='learn') renderLearn();
+  if(name==='chal') renderChal();
   if(name==='topic'){ if(arg) curTopic=arg; renderTopic(); }
 }
 $$('[data-home]').forEach(b=>b.onclick=()=>show('home'));
@@ -3830,6 +4130,8 @@ function renderHome(){
   $('#b-kodex').innerHTML=act(ICON.cards,'Kodex',`${nCards} av ${C.CARDS.length} kort`);
   $('#b-shop').innerHTML=act(ICON.bag,'Butik','Teman för ✦');
   $('#b-stats').innerHTML=act(ICON.chart,'Statistik','Se hur det går');
+  const nChal=C.CHALLENGES.filter(q=>S.chal[q.id]).length;
+  $('#b-chal').innerHTML=act(ICON.trophy,'Utmaning',`A-nivå · ${nChal} av ${C.CHALLENGES.length}`);
   renderOfflineBtn();
   renderThemeBtn(); renderAccountBtn();
   renderHomeSpecial(); renderResumeCard();
@@ -3842,6 +4144,7 @@ $('#b-kodex').onclick=()=>show('kodex');
 $('#b-shop').onclick=()=>show('shop');
 $('#b-stats').onclick=()=>show('stats');
 $('#b-learn').onclick=()=>show('learn');
+$('#b-chal').onclick=()=>show('chal');
 
 /* ---------- Världar ---------- */
 function renderWorlds(){
@@ -3971,6 +4274,7 @@ let R=null;
 const cur=()=>R.tasks[R.i];
 function snapshot(){ const o={}; C.WORLDS.forEach(w=>{ const m=C.medalInfo(S,w); o[w]={medal:m.medal,und:m.und}; }); return o; }
 function startRound(mode,level,typeIds){
+  if(mode==='challenge') return startChallenge(typeIds);
   let tasks;
   if(mode==='und') tasks=C.makeRound(C.undTypesFor(level),10);
   else if(mode==='practice') tasks=C.makeRound(typeIds,10);
@@ -3988,7 +4292,7 @@ function enterGame(){
   $('#s-game').style.setProperty('--wc',R.mode==='boss'?'#d4af37':wcol(R.level));
   show('game');
 }
-function taskLimit(t){ return t.time || C.timeFor(t.level,!!t.und); }
+function taskLimit(t){ return t.time || C.timeFor(t.level,!!t.und,t.diff); }
 
 // st: sparat läge för en påbörjad uppgift (från en pausad runda)
 function showTask(st){
@@ -4001,7 +4305,7 @@ function showTask(st){
   $('#g-score').textContent=R.score; $('#g-ins').textContent=R.ins;
   renderCombo(false);
   $('#g-type').innerHTML=t.und?`<span class="ubadge">✦ ${esc(C.UND[t.und])}</span>`:esc(t.typeName);
-  $('#g-diff').innerHTML='Svårighet '+t.diff+' '+[1,2,3].map(i=>`<i class="${i<=t.diff?'on':''}"></i>`).join('');
+  $('#g-diff').innerHTML=(t.diff>1&&!t.time?'<span class="xtime">+ extra tid</span> ':'')+'Svårighet '+t.diff+' '+[1,2,3].map(i=>`<i class="${i<=t.diff?'on':''}"></i>`).join('');
   $('#g-prompt').innerHTML=`<div>${md(t.prompt)}</div>`;
   $('#g-lines').innerHTML=t.lines?`<ol class="sol">${t.lines.map((l,i)=>`<li class="${i===t.mark?'mark':''}"><span class="rn">Rad ${i+1}</span><span>${md(l)}</span></li>`).join('')}</ol>`:'';
   $('#g-fig').innerHTML=t.fig;
@@ -4036,7 +4340,7 @@ function renderCombo(pop){
   el.classList.toggle('zero',R.streak===0); el.classList.toggle('hot',R.streak>=3);
   if(pop){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 }
-function runTitle(){ return R.mode==='practice'?'Träna fel':R.mode==='und'?'Förståelse':R.level<=10?'Nivå '+R.level:esc(C.levelInfo(R.level).name); }
+function runTitle(){ return R.mode==='challenge'?'Utmaning':R.mode==='practice'?'Träna fel':R.mode==='und'?'Förståelse':R.level<=10?'Nivå '+R.level:esc(C.levelInfo(R.level).name); }
 
 /* ----- Ledtråd ----- */
 function renderHintButton(){
@@ -4203,6 +4507,7 @@ function finishTask(timedOut){
   if(ok){
     pts = t.und ? 60 : 50+Math.round(100*(1-used/R.limit));
     pts += Math.min(50,10*R.streak);
+    if(R.mode==='challenge') pts*=2;
     if(R.hintPenalty) pts=Math.round(pts/2);
     R.streak++;
   } else R.streak=0;
@@ -4219,7 +4524,8 @@ function finishTask(timedOut){
   R.results.push({type:t.type,name:t.typeName,und:t.und,ok,time:used,timedOut});
   S.answered++; if(ok) S.correct++; S.totalTime+=used;
   S.bestStreak=Math.max(S.bestStreak,R.streak);
-  const ts=S.types[t.type]||(S.types[t.type]={n:0,c:0,time:0}); ts.n++; if(ok) ts.c++; ts.time+=used;
+  if(t.chal){ if(ok) S.chal[t.chal]=S.chal[t.chal]||Date.now(); }
+  else { const ts=S.types[t.type]||(S.types[t.type]={n:0,c:0,time:0}); ts.n++; if(ok) ts.c++; ts.time+=used; }
   save();
 
   $('#g-score').textContent=R.score; $('#g-ins').textContent=R.ins;
@@ -4242,14 +4548,48 @@ function finishTask(timedOut){
       ${head}${facit}${tip}
       ${ins?`<div class="insgain">+${ins} ✦ Insikter${predOk&&ins>2?' (varav 2 för rätt förutsägelse)':''}</div>`:''}
       ${newCard?`<div class="newcard"><div class="lbl">Nytt Kodex-kort!</div>${cardHTML(newCard,true,{reveal:true})}</div>`:''}
+      <button class="btn lhelp morebtn${ok?'':' hot'}" id="b-more">📖 Förklara mer, steg för steg</button><div id="morebox"></div>
       <div class="stepshead">${ok?'Så här kan man tänka':'Så här löser du den'}</div>
       <ol class="steps">${t.steps.map((s,i)=>`<li class="${i===last&&/^Kontroll/.test(s)?'check':''}">${md(s)}</li>`).join('')}</ol>
     </div>
     <button class="btn primary sticky" id="b-next">${nextLabel()}</button>`;
   bindCards(fb);
+  $('#b-more').onclick=()=>toggleExplain(t);
   saveRun();
   const nb=$('#b-next'); nb.onclick=next;
   setTimeout(()=>{ fb.scrollIntoView({behavior:'smooth',block:'start'}); nb.focus({preventScroll:true}); },60);
+}
+/* ----- Förklara mer: lugn genomgång efter en uppgift ----- */
+function yourAnswer(p,pr){
+  if(!pr) return 'Inget svar, tiden tog slut.';
+  const A=p.answer;
+  if(A.kind==='mc'){ const o=A.options[pr.input]; return o ? (o.h?'alternativ '+(pr.input+1):md(o.t)) : '–'; }
+  if(A.kind==='order') return 'din ordning, se ovan';
+  return '<span class="num">'+esc(String(pr.input).trim()||'–')+'</span>';
+}
+function toggleExplain(t){
+  const box=$('#morebox'), btn=$('#b-more');
+  if(box.innerHTML){ box.innerHTML=''; btn.classList.remove('on'); return; }
+  btn.classList.add('on');
+  const m=C.methodFor(t), mains=t.parts.map((p,i)=>({p,pr:R.partRes[i]})).filter(x=>x.p.role!=='predict');
+  const wrong=mains.filter(x=>!(x.pr&&x.pr.res.correct));
+  const msgs=wrong.map(x=>x.pr&&x.pr.res.msg).filter(Boolean);
+  let shown=1;
+  box.innerHTML=`
+    ${wrong.length?`<div class="lpanel help"><h4>Ditt svar och rätt svar</h4>${wrong.map(x=>`<p>${t.parts.length>1&&x.p.prompt?md(x.p.prompt)+'<br>':''}Du svarade: ${yourAnswer(x.p,x.pr)}<br>Rätt svar: ${md(facitOf(x.p))}</p>`).join('')}
+      ${msgs.map(s=>`<p><b>Det här gick fel:</b> ${md(s)}</p>`).join('')}</div>`:''}
+    ${m.how.length?`<div class="lpanel adv"><h4>Så tänker du</h4>${m.how.map(p=>`<p>${md(p)}</p>`).join('')}${m.trap?`<p><b>Vanligt fel:</b> ${md(m.trap)}</p>`:''}</div>`:''}
+    <div class="card"><b>Lösningen, ett steg i taget</b><ol class="exsteps bigsteps" id="mx-steps"></ol>
+      <div class="row"><button class="btn" id="mx-next">Nästa steg</button><button class="btn ghost" id="mx-all">Visa alla</button></div></div>
+    ${m.topic?`<button class="btn ghost" id="mx-basics">Repetera grunderna: ${md(m.topic.title)}</button><div id="mx-basicsbox"></div>`:''}`;
+  const steps=t.steps, draw=()=>{ $('#mx-steps').innerHTML=steps.slice(0,shown).map(s=>`<li>${md(s)}</li>`).join('');
+    if(shown>=steps.length){ const r=$('#mx-next'); if(r) r.closest('.row').remove(); } };
+  draw();
+  $('#mx-next').onclick=()=>{ shown++; draw(); };
+  $('#mx-all').onclick=()=>{ shown=steps.length; draw(); };
+  const bb=$('#mx-basics'); if(bb) bb.onclick=()=>{ const x=$('#mx-basicsbox');
+    x.innerHTML=x.innerHTML?'':`<div class="card ltext" style="--wc:${wcol(Math.min(t.level,10))}">${m.topic.easy.map(p=>`<p>${md(p)}</p>`).join('')}</div>`; };
+  box.firstElementChild.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function nextLabel(){ return R.i<R.tasks.length-1?'Nästa':R.mode==='boss'?'Se hur det gick':'Se resultatet'; }
 function next(){ if(R.i<R.tasks.length-1){ R.i++; showTask(); window.scrollTo(0,0); } else endRound(); }
@@ -4261,7 +4601,7 @@ const timeLeft=()=>R.paused ? R.left : Math.max(0,R.limit-(performance.now()-R.t
 function saveRun(){
   if(!R) return;
   const o={v:1, savedAt:Date.now(), mode:R.mode, level:R.level, ids:R.ids||null, tasks:R.tasks, i:R.i, score:R.score, ins:R.ins, streak:R.streak,
-    results:R.results, newCards:R.newCards, before:R.before, plBefore:R.plBefore, sBefore:R.sBefore||null,
+    results:R.results, newCards:R.newCards, chal:R.chal||null, before:R.before, plBefore:R.plBefore, sBefore:R.sBefore||null,
     cur:{done:!!R.done, part:R.part||0, partRes:R.partRes||[], hint:!!R.hint, hintPenalty:!!R.hintPenalty, limit:R.limit, left:R.done?0:timeLeft()}};
   try{ localStorage.setItem(runKey(),JSON.stringify(o)); }catch(e){}
 }
@@ -4272,7 +4612,7 @@ function clearRun(){ try{ localStorage.removeItem(runKey()); }catch(e){} }
 function runPlace(o){
   const t=o.tasks[o.i]||o.tasks[0], n=o.tasks.length, at=Math.min(n,o.i+(o.cur.done?2:1));
   if(o.mode==='boss') return `Slutbossen · steg ${Math.min(o.cur.part+1,t.parts.length)} av ${t.parts.length}`;
-  const where = o.mode==='practice' ? 'Träna fel' : (o.mode==='und'?'Förståelse · ':'')+worldName(o.level);
+  const where = o.mode==='challenge' ? 'Utmaning · '+(o.chal==='mix'?'blandat':worldName(o.level)) : o.mode==='practice' ? 'Träna fel' : (o.mode==='und'?'Förståelse · ':'')+worldName(o.level);
   return `${where} · uppgift ${at} av ${n}`;
 }
 function pauseRun(){
@@ -4377,8 +4717,9 @@ function endRound(){
   save();
 
   const missedIds=Object.keys(missed);
+  const mode=R.mode;
   const newCards=R.newCards.map(id=>C.CARDS.find(c=>c.id===id));
-  $('#e-title').textContent=R.mode==='practice'?'Träningsrundan klar':R.mode==='und'?'Förståelserundan klar':`${runTitle()} klar`;
+  $('#e-title').textContent=R.mode==='challenge'?'Utmaningen klar':R.mode==='practice'?'Träningsrundan klar':R.mode==='und'?'Förståelserundan klar':`${runTitle()} klar`;
   $('#endbody').innerHTML=`
     ${counts?`<div class="bigstars" aria-label="${stars} stjärnor">${[0,1,2].map(i=>`<i>${i<stars?'★':'☆'}</i>`).join('')}</div>`:''}
     ${banner}
@@ -4394,14 +4735,14 @@ function endRound(){
       ${missedIds.length?`<p style="margin:12px 0 4px"><b>Det här missade du:</b></p><ul class="list">${missedIds.map(id=>`<li><span>${missed[id].und?'✦ ':''}${esc(missed[id].name)}</span><span class="muted">${missed[id].n} st</span></li>`).join('')}</ul>`
         :'<p style="margin:12px 0 0">Alla rätt. Snyggt!</p>'}
     </div>
-    ${missedIds.length?'<button class="btn primary" id="e-practice">Träna på mina fel</button>':''}
+    ${missedIds.length&&mode!=='challenge'?'<button class="btn primary" id="e-practice">Träna på mina fel</button>':''}
     ${leveled?`<button class="btn ${missedIds.length?'':'primary'}" id="e-next">Fortsätt till nivå ${S.level}</button>`:''}
     ${downTo?`<button class="btn" id="e-down">Gå ned till nivå ${downTo}</button>`:''}
     <button class="btn" id="e-again">${R.mode==='practice'?'Träna samma fel igen':R.mode==='und'?'En förståelserunda till':'Spela '+runTitle().toLowerCase()+' igen'}</button>
     <button class="btn ghost" id="e-home">Till startsidan</button>`;
   bindCards($('#endbody'));
-  const ids=R.ids, mode=R.mode, level=R.level;
-  if(missedIds.length) $('#e-practice').onclick=()=>startRound('practice',level,missedIds);
+  const ids=R.ids, level=R.level;
+  if(missedIds.length&&mode!=='challenge') $('#e-practice').onclick=()=>startRound('practice',level,missedIds);
   if(leveled) $('#e-next').onclick=()=>startRound('level',S.level);
   if(downTo) $('#e-down').onclick=()=>{ S.level=downTo; S.low={level:0,count:0}; save(); startRound('level',downTo); };
   $('#e-again').onclick=()=>startRound(mode,level,ids);
@@ -4694,6 +5035,30 @@ function renderTopic(){
   $('#l-back').onclick=()=>show('learn');
   $('#l-back-top').onclick=()=>show('learn');
   $('#l-home-top').onclick=()=>show('home');
+}
+
+/* =====================================================================
+   UTMANING: handskrivna A-nivåfrågor per område (Core.CHALLENGES)
+   Körs i spelmotorn med mode 'challenge', så paus, timer och
+   "Förklara mer" fungerar som vanligt. Påverkar inte stjärnor och medaljer.
+   ===================================================================== */
+function startChallenge(w){
+  const qs = w==='mix' ? [...C.WORLDS,10].map(x=>shuffleArr(C.challengesOf(x))[0]) : C.challengesOf(w);
+  startRun({mode:'challenge', level:w==='mix'?10:w, ids:w, chal:w, tasks:qs.map(C.challengeTask)});
+}
+function renderChal(){
+  const all=C.CHALLENGES.length, done=C.CHALLENGES.filter(q=>S.chal[q.id]).length;
+  $('#chalbody').innerHTML=`<div class="backrow"><button class="backbtn" data-home>‹ Startsidan</button></div>
+    <h2>Utmaning <span class="okb">A-NIVÅ</span></h2>
+    <p class="sub small">Riktigt svåra frågor, men bara sådant som ingår i Matte 2. Du får gott om tid, och efter varje fråga kan du trycka på <b>Förklara mer</b> för en lugn genomgång. Utmaningar påverkar inte stjärnor och medaljer.</p>
+    <div class="card"><div class="kprog"><b>${done} av ${all} lösta</b><span class="muted small">${Math.round(100*done/all)} %</span></div><div class="xpbar"><div style="width:${Math.max(3,100*done/all)}%"></div></div></div>
+    <button class="btn primary" id="ch-mix">Blandat prov: en fråga från varje område</button>
+    <div class="levels">${[...C.WORLDS,10].map(w=>{ const qs=C.challengesOf(w), d=qs.filter(q=>S.chal[q.id]).length;
+      return `<button class="lvl" data-cw="${w}" style="--wc:${wcol(w)}"><span class="n">${w}</span><span class="t">${esc(worldName(w))}<small>${qs.length} frågor · ${d} lösta</small></span>${d===qs.length?'<span class="ok">🏆</span>':''}</button>`; }).join('')}</div>
+    <button class="btn ghost" data-home style="margin-top:14px">Tillbaka</button>`;
+  $$('#chalbody [data-home]').forEach(b=>b.onclick=()=>show('home'));
+  $$('#chalbody [data-cw]').forEach(b=>b.onclick=()=>startChallenge(+b.dataset.cw));
+  $('#ch-mix').onclick=()=>startChallenge('mix');
 }
 
 /* =====================================================================

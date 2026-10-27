@@ -179,6 +179,47 @@ pre{white-space:pre-wrap;word-break:break-word}
     log(problems.size===0, `Lär dig: ${n} avsnitt med korrekt TeX, ett rätt svar per fråga och kända kort`, [...problems].slice(0,4).join(' | '));
   }
 
+  /* ---------- Förklara mer och mer tid för svåra uppgifter ---------- */
+  {
+    const problems=new Set();
+    for(const [id,d] of Object.entries(C.TYPES)){
+      if(d.special) continue;
+      const t=C.generate(id), m=C.methodFor(t);
+      if(!m.how || !m.how.length) problems.add(id+': saknar metod');
+      if(d.level<=10 && !m.topic) problems.add(id+': saknar Lär dig-avsnitt');
+      for(const s of [...(m.how||[]), m.trap||'']){
+        if((String(s).match(/\$/g)||[]).length%2) problems.add(id+': udda antal $');
+        for(const x of mathOf(s)){ const ok=texOk(x); if(ok!==true) problems.add(id+': KaTeX-fel '+x); }
+      }
+    }
+    log(problems.size===0,'Förklara mer: varje uppgiftstyp har metod och korrekt TeX',[...problems].slice(0,4).join(' | '));
+    eq(C.timeFor(1,false,3)>C.timeFor(1,false,2) && C.timeFor(1,false,2)>C.timeFor(1,false,1),true,'Svårare uppgifter får mer tid');
+  }
+  /* ---------- Utmaning ---------- */
+  {
+    const problems=new Set(), ids=new Set();
+    for(const w of [...C.WORLDS,10]) if(C.challengesOf(w).length<3) problems.add('värld '+w+' har för få utmaningar');
+    for(const q of C.CHALLENGES){
+      if(ids.has(q.id)) problems.add('dubblett '+q.id); ids.add(q.id);
+      const t=C.challengeTask(q), A=t.answer;
+      if(A.kind==='num'){
+        if(!C.check(t,C.answerString(t)).correct) problems.add(q.id+': facit godtas inte');
+        if(!q.ok(A.values.map(v=>v.num()))) problems.add(q.id+': oberoende kontroll av facit misslyckades');
+        (q.errors||[]).forEach(e=>{ if(C.check(t,e.values.join('; ')).correct) problems.add(q.id+': felsvar godtas som rätt'); });
+        if(t.errors.length!==(q.errors||[]).length) problems.add(q.id+': ett felsvar är lika med facit');
+      } else if(A.options.filter(o=>o.ok).length!==1) problems.add(q.id+': ska ha exakt ett rätt alternativ');
+      if(t.steps.length<4 || !/^Kontroll|Kontroll:/.test(t.steps[t.steps.length-1])) problems.add(q.id+': lösningen ska sluta med en kontroll');
+      const texts=[q.prompt,...q.steps,...q.how,q.trap,q.tex?'$'+q.tex+'$':'',...(q.options||[]).flatMap(o=>[o.t,o.msg||'']),...(q.errors||[]).map(e=>e.msg)];
+      for(const s of texts){
+        if((String(s).match(/\$/g)||[]).length%2) problems.add(q.id+': udda antal $ i: '+s);
+        for(const x of mathOf(s)){ const ok=texOk(x); if(ok!==true) problems.add(q.id+': KaTeX-fel '+x+' ('+ok+')'); }
+      }
+      const back=C.reviveTask(JSON.parse(JSON.stringify(t)));
+      if(A.kind==='num' && !C.check(back,C.answerString(back)).correct) problems.add(q.id+': fungerar inte efter paus');
+    }
+    log(problems.size===0,`Utmaning: ${C.CHALLENGES.length} frågor med kontrollerat facit`,[...problems].slice(0,5).join(' | '));
+  }
+
   /* ---------- Förståelse och Kodex ---------- */
   log(cardsSeen.size===cardIds.size, 'Alla Kodex-kort går att vinna', [...cardIds].filter(c=>!cardsSeen.has(c)).join(', '));
   C.WORLDS.forEach(w=>log((kindsPerWorld[w]||new Set()).size>=2, `Värld ${w} har minst två sorters förståelseuppgifter (krävs för Förstådd)`));
