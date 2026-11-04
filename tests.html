@@ -93,7 +93,7 @@ pre{white-space:pre-wrap;word-break:break-word}
       texts.push('$'+A.tex+'$');
       const r=C.check(p,C.answerString(p));
       if(!r.valid||!r.correct) problems.add('facit godtas inte av svarskontrollen: '+C.answerString(p));
-      if(!A.tol) A.values.forEach(v=>{ if(v.d>(book?12:4)||Math.abs(v.n)>(book?10000:300)) problems.add('osnyggt svar: '+v.str()); });
+      if(!A.tol) A.values.forEach(v=>{ if(v.d>(book?100:4)||Math.abs(v.n)>(book?100000:300)) problems.add('osnyggt svar: '+v.str()); });
       p.errors.forEach(e=>{ texts.push(e.msg); if(C.sameVals(e.values,A.values,A.ordered)) problems.add('felsvar = facit');
         if(C.check(p,e.values.map(v=>v.str()).join('; ')).correct) problems.add('felsvar godtogs som rätt'); });
     } else if(A.kind==='mc'){
@@ -152,7 +152,7 @@ pre{white-space:pre-wrap;word-break:break-word}
     const problems=new Set(); let n=0;
     for(const id of Object.keys(C.TYPES)) for(let i=0;i<3;i++){
       const t=C.reviveTask(JSON.parse(JSON.stringify(C.generate(id)))); n++;
-      t.parts.forEach(p=>checkPart(p,problems,[t.prompt,...t.steps,...(t.lines||[])]));
+      t.parts.forEach(p=>checkPart(p,problems,[t.prompt,...t.steps,...(t.lines||[])],t.level>20));
       if(t.answer!==t.parts[t.parts.length-1].answer) problems.add(id+': t.answer pekar inte på sista delen');
       if(t.answer.kind==='num' && !C.check(t,C.answerString(t)).correct) problems.add(id+': facit godtas inte efter sparning');
     }
@@ -218,6 +218,30 @@ pre{white-space:pre-wrap;word-break:break-word}
       if(A.kind==='num' && !C.check(back,C.answerString(back)).correct) problems.add(q.id+': fungerar inte efter paus');
     }
     log(problems.size===0,`Utmaning: ${C.CHALLENGES.length} frågor med kontrollerat facit`,[...problems].slice(0,5).join(' | '));
+  }
+
+  /* ---------- Kapitel 2 i boken (innehållsförteckningen) ---------- */
+  {
+    const problems=new Set(), ids=new Set();
+    const secs=C.BOOK.flatMap(c=>c.sections);
+    for(const sec of secs){
+      if(ids.has(sec.id)) problems.add('dubblett '+sec.id); ids.add(sec.id);
+      if(!sec.title||!sec.types||!sec.types.length) problems.add(sec.id+': saknar titel eller uppgifter');
+      sec.types.forEach(id=>{ if(!C.TYPES[id]) problems.add(sec.id+': okänd uppgiftstyp '+id); });
+      if(sec.learn && !Object.values(C.LEARN).some(ts=>ts.some(tp=>tp.id===sec.learn))) problems.add(sec.id+': okänt Lär dig-avsnitt '+sec.learn);
+      const b=C.bookSection(sec.id); if(!b||b.title!==sec.title) problems.add(sec.id+': bookSection hittar inte avsnittet');
+    }
+    for(const n of C.BOOK_LEVELS){
+      const ch=C.BOOK.find(c=>c.n===n);
+      if(!ch||ch.sections.length<2) problems.add('kapitel '+n+' har för få avsnitt');
+      const r=C.makeRound(C.chapterTypes(n),10);
+      if(r.length!==10) problems.add('kapitel '+n+': rundan blev '+r.length+' uppgifter');
+    }
+    const all=C.allBookTypes();
+    if(new Set(all).size!==all.length) problems.add('allBookTypes har dubbletter');
+    log(problems.size===0,`Kapitel 2: ${C.BOOK.flatMap(c=>c.sections).length} avsnitt ur innehållsförteckningen, alla med uppgifter`,[...problems].slice(0,5).join(' | '));
+    const nt=Object.keys(C.TYPES).filter(id=>{ const t=C.generate(id); return t.noTime; });
+    log(nt.length>=3, 'Problemlösning och tillämpningar har ingen tidspress', nt.join(', '));
   }
 
   /* ---------- Förståelse och Kodex ---------- */

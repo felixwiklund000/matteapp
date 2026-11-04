@@ -133,6 +133,7 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
 .wchip{display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--wc) 22%,var(--card));color:var(--ink);border:1px solid color-mix(in srgb,var(--wc) 55%,transparent);
   border-radius:999px;padding:3px 10px 3px 6px;white-space:nowrap;font-weight:800;font-size:.82rem;max-width:44%;overflow:hidden;text-overflow:ellipsis}
 .wchip .wdot{flex:0 0 10px;box-shadow:none}
+.wchip .wtxt{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .rprog{flex:1;display:flex;gap:3px;min-width:40px}
 .rprog i{flex:1;height:6px;border-radius:4px;background:var(--line);transition:background .3s}
 .rprog i.ok{background:var(--good)}.rprog i.no{background:var(--bad)}.rprog i.now{background:var(--wc);animation:blink 1.2s ease-in-out infinite}
@@ -166,6 +167,11 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
 .meta{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--muted);margin:0 0 12px;gap:8px;font-weight:800}
 .diff{white-space:nowrap}
 .xtime{color:var(--good);font-weight:800;margin-right:4px}
+.timetext.notime{min-width:0;font-size:.8rem;color:var(--muted);font-weight:700;flex:1;text-align:left}
+.timetoggle{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 12px;margin:0 0 14px}
+.timetoggle small{display:block;color:var(--muted);font-size:.78rem;font-weight:600;margin-top:2px}
+.tt-btn{flex:0 0 64px;min-height:38px;border:0;border-radius:999px;font-weight:900;background:var(--raised);color:var(--muted)}
+.tt-btn.on{background:var(--good);color:#fff}
 .diff i{display:inline-block;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--wc);margin-left:3px}
 .diff i.on{background:var(--wc)}
 .prompt{font-size:1.55rem;line-height:1.55;font-weight:700}
@@ -246,6 +252,17 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
 @keyframes glowhelp{50%{box-shadow:0 4px 0 var(--bd),0 0 0 6px color-mix(in srgb,var(--warn) 25%,transparent)}}
 #morebox .lpanel,#morebox .card{margin:10px 0}
 .bigsteps li{font-size:1.05rem;line-height:1.7;margin:0 0 12px}
+.xsec{margin:10px 0;padding:14px 16px;border-radius:var(--radius);border:1px solid var(--line);background:var(--bg)}
+.xsec h4,.xsteps h4{margin:0 0 8px;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:900;color:var(--muted)}
+.xq{font-size:1.05rem;line-height:1.6}
+.xhow{margin:0;padding-left:1.3em}.xhow li{margin:0 0 8px;line-height:1.6}
+.xtrap{margin-top:10px!important;padding-top:10px;border-top:1px dashed color-mix(in srgb,var(--accent) 40%,transparent)}
+.xsteps ol{list-style:none;counter-reset:st;padding:0;margin:4px 0 12px}
+.xsteps li{counter-increment:st;position:relative;padding:10px 12px 10px 46px;margin:0 0 8px;border-radius:12px;background:var(--raised);font-size:1.05rem;line-height:1.65;animation:fadein .35s both}
+.xsteps li::before{content:counter(st);position:absolute;left:10px;top:10px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--wc,var(--accent));color:#fff;font:800 .85rem/1 var(--num)}
+.xsteps li.check{background:var(--good-soft)}
+.xsteps li.check::before{content:"✓";background:var(--good)}
+#morebox>.btn{margin:10px 0}
 .sticky{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom));z-index:2}
 
 .levels{display:grid;gap:10px}
@@ -500,6 +517,21 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 .calc-keys .w2{grid-column:span 2}
 body.calc-open #s-game{padding-bottom:380px}
 
+/* ===== Kapitel 2 i boken ===== */
+.bchap{border-top:5px solid var(--wc)}
+.bchap-h{display:flex;align-items:center;gap:12px;margin:0 0 8px}
+.bchap-h .n{flex:0 0 44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--wc);color:#fff;font:800 1.05rem/1 var(--num)}
+.bchap-h b{display:block;font-size:1.1rem;line-height:1.2}
+.bchap-h small{display:block;color:var(--muted);font-weight:600;font-size:.82rem}
+.bsec{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.bsec-t{min-width:0}
+.bsec-t b{display:block;font-size:.98rem;line-height:1.3}
+.bsec-t small{display:block;color:var(--muted);font-size:.78rem;font-weight:600}
+.bsec-b{display:flex;gap:6px;flex:0 0 auto}
+.btn.sm{min-height:38px;padding:6px 12px;margin:0;font-size:.88rem;border-radius:12px;width:auto}
+.btn.sm:not(.ghost){--b:color-mix(in srgb,var(--wc) 28%,var(--raised))}
+.bchap>.btn.primary{margin:12px 0 0}
+
 /* ===== Paus ===== */
 .pausebtn{flex:0 0 34px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;padding:0}
 .pausebtn svg{width:16px;height:16px}
@@ -604,7 +636,9 @@ body.calc-open #s-game{padding-bottom:380px}
   <div id="home-special"></div>
   <div id="home-resume"></div>
   <button class="btn primary playbtn" id="b-continue"></button>
+  <div id="home-timed"></div>
   <div class="actions">
+    <button class="btn act wide" id="b-book" style="--tc:#0ea5e9"></button>
     <button class="btn act wide" id="b-learn" style="--tc:#f97316"></button>
     <button class="btn act" id="b-worlds" style="--tc:#3b82f6"></button>
     <button class="btn act" id="b-und" style="--tc:#14b8a6"></button>
@@ -695,6 +729,7 @@ body.calc-open #s-game{padding-bottom:380px}
 <section id="s-learn" class="hidden"><div id="learnbody"></div></section>
 <section id="s-topic" class="hidden"><div id="topicbody"></div></section>
 <section id="s-chal" class="hidden"><div id="chalbody"></div></section>
+<section id="s-book" class="hidden"><div id="bookbody"></div></section>
 
 <!-- ============ KONTO ============ -->
 <section id="s-account" class="hidden"><div id="accountbody"></div></section>
@@ -2259,6 +2294,439 @@ def('b-expek',24,'Tillväxt och halveringstid',()=>{
     verify:()=>left<50?h<T:h>T};
 });
 
+// ---------- Fler avsnitt ur kapitel 2 ----------
+// noTime: uppgiften får aldrig tidspress (problemlösning, tillämpningar, regression).
+const stdq = (b,c) => poly([1,b,c]);
+
+// 2.1 Mer om andragradsekvationer
+def('b-omskriv',21,'Skriv om och lös',()=>{
+  if(rand()<0.5){
+    let a,r,s,b; do{ a=ri(2,6); const ds=[]; for(let i=1;i<=a*a;i++) if((a*a)%i===0) ds.push(i); r=pick(ds); s=-a*a/r; if(rand()<0.5){ r=-r; s=-s; } b=r+s; } while(b===0);
+    const h=F(b,2), under=F(b*b+4*a*a,4), root=F(Math.abs(r-s),2);
+    return {diff:2, prompt:`Lös ekvationen $(x + ${a})(x - ${a}) = ${mono(b,'x')}$.`,
+      answer:num([r,s],`x_1 = ${Math.max(r,s)},\\ x_2 = ${Math.min(r,s)}`),
+      errors:[{values:[a,-a], msg:`Nollproduktmetoden fungerar bara när högerledet är noll. Här står det $${mono(b,'x')}$ till höger, så samla allt på en sida först.`},{values:[-r,-s], msg:'Teckenfel i $-\\frac{p}{2}$. Kontrollera genom att sätta in svaret.'}],
+      steps:[`Konjugatregeln i vänsterledet: $(x + ${a})(x - ${a}) = x^2 - ${a*a}$`,`Ekvationen blir $x^2 - ${a*a} = ${mono(b,'x')}$. Samla allt till vänster: $${stdq(-b,-a*a)} = 0$`,
+        `pq-formeln med $p = ${-b}$ och $q = ${-a*a}$: $x = ${h.tex()} \\pm \\sqrt{${h.mul(h).tex()} + ${a*a}}$`,`Under rottecknet: $${under.tex()}$, och roten ur det är $${root.tex()}$`,
+        `$x_1 = ${Math.max(r,s)}$ och $x_2 = ${Math.min(r,s)}$`,`Kontroll med $x = ${r}$: vänsterledet $(${r} + ${a})(${r} - ${a}) = ${r*r-a*a}$ och högerledet $${b}\\cdot ${sq(r)} = ${b*r}$ ✓`],
+      verify:()=>r*r-a*a===b*r && s*s-a*a===b*s && under.eq(root.mul(root))};
+  }
+  const r1=nzi(-8,8), r2=nzi(-8,8,[0,r1]), k=nzi(-6,6), m=nzi(-9,9), B=k-(r1+r2), Cc=r1*r2+m, h=F(r1+r2,2), root=F(Math.abs(r1-r2),2);
+  return {diff:2, prompt:`Lös ekvationen $${poly([1,B,Cc])} = ${poly([k,m])}$.`,
+    answer:num([r1,r2],`x_1 = ${Math.max(r1,r2)},\\ x_2 = ${Math.min(r1,r2)}`),
+    errors:[{values:[-r1,-r2], msg:'Teckenfel. Med $p$ negativt blir $-\\frac{p}{2}$ positivt.'}],
+    steps:[`Flytta över högerledet: dra bort $${poly([k,m])}$ på båda sidor.`,`Det ger $${stdq(-(r1+r2),r1*r2)} = 0$`,
+      `pq-formeln: $p = ${-(r1+r2)}$ och $q = ${r1*r2}$, så $x = ${h.tex()} \\pm \\sqrt{${h.mul(h).tex()}${plus(-r1*r2)}}$`,`Under rottecknet: $${F((r1-r2)**2,4).tex()}$ och roten ur det är $${root.tex()}$`,
+      `$x_1 = ${Math.max(r1,r2)}$ och $x_2 = ${Math.min(r1,r2)}$`,`Kontroll med $x = ${r1}$: vänsterledet blir $${r1*r1+B*r1+Cc}$ och högerledet $${k*r1+m}$ ✓`],
+    verify:()=>r1*r1+B*r1+Cc===k*r1+m && r2*r2+B*r2+Cc===k*r2+m};
+});
+def('b-antal',21,'Antal lösningar och parameter',()=>{
+  const v=rand(), h=nzi(-6,6), H=h*h;
+  if(v<0.35) return {diff:2, prompt:`För vilket värde på $c$ har ekvationen $x^2${plusM(2*h,'x')} + c = 0$ en dubbelrot?`,
+    answer:num([H],`c = ${H}`),
+    errors:[{values:[2*h], msg:`Det är $p$ själv. Under rottecknet står $\\left(\\frac{p}{2}\\right)^2 - c = ${H} - c$.`},{values:[-H], msg:'Under rottecknet står $\\left(\\frac{p}{2}\\right)^2 - c$. Det är noll när $c$ är lika med $\\left(\\frac{p}{2}\\right)^2$.'}],
+    steps:[`pq-formeln: $p = ${2*h}$ och $q = c$.`,`Under rottecknet: $\\left(\\frac{${2*h}}{2}\\right)^2 - c = ${H} - c$`,'En dubbelrot betyder att det under rottecknet är exakt noll.',`$${H} - c = 0$, alltså $c = ${H}$`,
+      `Kontroll: $x^2${plusM(2*h,'x')} + ${H} = (x${plus(h)})^2$, som bara är noll för $x = ${-h}$ ✓`],
+    verify:()=>(2*h/2)**2-H===0};
+  if(v<0.7) return {diff:2, prompt:`För vilka värden på $c$ saknar ekvationen $x^2${plusM(2*h,'x')} + c = 0$ reella rötter?`,
+    answer:mcOpts([{t:`$c > ${H}$`,ok:true},{t:`$c < ${H}$`,msg:`Då är $${H} - c$ positivt, och ekvationen har två lösningar.`},{t:`$c = ${H}$`,msg:'Då är det under rottecknet noll, och det blir en dubbelrot.'},{t:'$c < 0$',msg:`Ett negativt $c$ gör $${H} - c$ ännu större, så då finns två lösningar.`}]),
+    steps:[`Under rottecknet i pq-formeln: $\\left(\\frac{${2*h}}{2}\\right)^2 - c = ${H} - c$`,'Inga reella rötter betyder att det under rottecknet är negativt, eftersom roten ur ett negativt tal inte finns bland de reella talen.',`$${H} - c < 0$ ger $c > ${H}$`,`Svar: $c > ${H}$`,
+      `Kontroll med $c = ${H+1}$: under rottecknet blir $${H} - ${H+1} = -1 < 0$ ✓`],
+    verify:()=>H-(H+1)<0};
+  const k=pick([1,2,4]), m=nzi(-12,12), T=F(H-m,k), probe=Math.floor(T.num())-1, val=H-(k*probe+m);
+  return {diff:3, prompt:`För vilka värden på $a$ har ekvationen $x^2${plusM(2*h,'x')} + ${k===1?'':k}a${plus(m)} = 0$ två olika reella rötter?`,
+    answer:mcOpts([{t:`$a < ${T.tex()}$`,ok:true},{t:`$a > ${T.tex()}$`,msg:'Då är det under rottecknet negativt, och ekvationen saknar reella rötter.'},{t:`$a = ${T.tex()}$`,msg:'Då är det under rottecknet noll: en dubbelrot.'},{t:`$a < ${F(H+m,k).tex()}$`,msg:`Kolla tecknet på konstanten. $q = ${k===1?'':k}a${plus(m)}$, och den ska dras bort.`}]),
+    steps:[`Konstanttermen är $q = ${k===1?'':k}a${plus(m)}$ och $p = ${2*h}$.`,`Under rottecknet: $${H} - (${k===1?'':k}a${plus(m)}) = ${H-m}${plusM(-k,'a')}$`,'Två olika reella rötter kräver att det är positivt.',
+      `$${H-m}${plusM(-k,'a')} > 0$ ger $${k===1?'':k}a < ${H-m}$, alltså $a < ${T.tex()}$`,`Kontroll med $a = ${probe}$: under rottecknet blir $${val} > 0$ ✓`],
+    verify:()=>val>0 && T.mul(k).eq(H-m)};
+});
+def('b-problem',21,'Tillämpningar med andragradsekvationer',()=>{
+  const v=rand();
+  if(v<0.35){
+    const a=ri(2,20), b=ri(a+1,45), S=a+b, P=a*b, h=F(S,2), root=F(b-a,2);
+    return {diff:2, noTime:true, prompt:`Två tal har summan $${S}$ och produkten $${P}$. Vilka är talen?`,
+      answer:num([a,b],`${a} \\text{ och } ${b}`,{hint:'Två tal: skriv dem med ; emellan'}),
+      errors:[{values:[-a,-b], msg:'Kolla tecknen: summan är positiv, så båda talen är positiva.'}],
+      steps:[`Kalla det ena talet $x$. Då är det andra $${S} - x$.`,`Produkten: $x(${S} - x) = ${P}$, alltså $x^2 - ${S}x + ${P} = 0$`,
+        `pq-formeln: $x = ${h.tex()} \\pm \\sqrt{${h.mul(h).tex()} - ${P}}$`,`Under rottecknet: $${root.mul(root).tex()}$, och roten ur det är $${root.tex()}$`,
+        `$x = ${b}$ eller $x = ${a}$. Det andra talet blir då $${a}$ respektive $${b}$, alltså samma par.`,`Kontroll: $${a} + ${b} = ${S}$ och $${a}\\cdot ${b} = ${P}$ ✓`],
+      verify:()=>h.mul(h).sub(P).eq(root.mul(root))};
+  }
+  if(v<0.65){
+    const n=2*ri(2,20)+1, N=n*(n+2);
+    return {diff:2, noTime:true, prompt:`Produkten av två på varandra följande positiva udda heltal är $${N}$. Vilket är det jämna heltalet mellan dem?`,
+      answer:num([n+1],`${n+1}`),
+      errors:[{values:[n], msg:'Det är det minsta udda talet. Frågan gäller det jämna talet mellan dem.'},{values:[n+2], msg:'Det är det största udda talet. Frågan gäller det jämna talet mellan dem.'}],
+      steps:['Kalla det jämna talet $x$. De udda talen är då $x - 1$ och $x + 1$.',`$(x - 1)(x + 1) = ${N}$. Konjugatregeln: $x^2 - 1 = ${N}$`,`$x^2 = ${N+1}$, så $x = \\pm ${n+1}$`,`Talen är positiva, så $x = ${n+1}$`,
+        `Kontroll: $${n}\\cdot ${n+2} = ${N}$ ✓`],
+      verify:()=>(n+1)**2===N+1};
+  }
+  const cands=[]; for(let x=1;x<=5;x++) for(let L=2*x+1;L<=40;L++){ const W=2*x*(L+2*x)/(L-2*x); if(Number.isInteger(W) && W>=5 && W<=60 && W!==L) cands.push([x,L,W]); }
+  const [x,L,W]=pick(cands), q4=F(L+W,4), under=q4.mul(q4).add(F(L*W,4)), R=q4.add(x);
+  return {diff:3, noTime:true, prompt:`En rektangulär gräsmatta är $${L}$ m gånger $${W}$ m. Den utökas runt om med en lika bred remsa överallt, så att arean fördubblas. Hur bred är remsan?`,
+    answer:num([x],`${x} \\text{ m}`),
+    errors:[{values:[2*x], msg:'Remsan finns på båda sidor, så varje mått ökar med $2x$. Frågan gäller bredden $x$.'}],
+    steps:['Kalla remsans bredd $x$. De nya måtten blir $('+L+' + 2x)$ och $('+W+' + 2x)$, eftersom remsan finns på båda sidor.',`Den nya arean ska vara dubbelt så stor: $(${L} + 2x)(${W} + 2x) = 2\\cdot ${L}\\cdot ${W} = ${2*L*W}$`,
+      `Multiplicera ut: $4x^2 + ${2*(L+W)}x + ${L*W} = ${2*L*W}$, alltså $4x^2 + ${2*(L+W)}x - ${L*W} = 0$`,`Dela med $4$: $x^2 + ${F(L+W,2).tex()}x - ${F(L*W,4).tex()} = 0$`,
+      `pq-formeln: $x = -${q4.tex()} \\pm \\sqrt{${under.tex()}} = -${q4.tex()} \\pm ${R.tex()}$`,`Den positiva lösningen är $x = ${x}$. Den negativa stryks, eftersom en bredd inte kan vara negativ.`,
+      `Kontroll: $${L+2*x}\\cdot ${W+2*x} = ${(L+2*x)*(W+2*x)}$, och det är dubbelt så mycket som $${L}\\cdot ${W} = ${L*W}$ ✓`],
+    verify:()=>(L+2*x)*(W+2*x)===2*L*W && under.eq(R.mul(R))};
+});
+
+// 2.2 Andragradsfunktionens graf och största/minsta värde
+def('b-grafsym',22,'Punkter och symmetri',()=>{
+  const s=ri(-4,5), d=nzi(-5,5), x0=s+d, x1=s-d;
+  if(rand()<0.5){
+    const y0=nzi(-9,24);
+    return {diff:1, prompt:`Grafen till en andragradsfunktion har symmetrilinjen $x = ${s}$. Punkten $(${x0}, ${y0})$ ligger på grafen. Vilken annan punkt på grafen har också $y = ${y0}$? Ange $x$-koordinaten.`,
+      answer:num([x1],`x = ${x1}`),
+      errors:[{values:[-x0], msg:`Spegla i symmetrilinjen $x = ${s}$, inte i $y$-axeln.`}],
+      steps:[`Grafen är spegelsymmetrisk kring linjen $x = ${s}$.`,`$x = ${x0}$ ligger $${Math.abs(d)}$ steg ${d>0?'till höger om':'till vänster om'} symmetrilinjen.`,
+        `Lika långt på andra sidan: $x = ${s}${plus(-d)} = ${x1}$`,`Svar: punkten $(${x1}, ${y0})$`,`Kontroll: mitt emellan $${x0}$ och $${x1}$ ligger $\\frac{${x0}${plus(x1)}}{2} = ${s}$ ✓`],
+      verify:()=>x0+x1===2*s};
+  }
+  return {diff:1, prompt:`En andragradsfunktion har ett nollställe i $x = ${x0}$ och symmetrilinjen $x = ${s}$. Var ligger det andra nollstället?`,
+    answer:num([x1],`x = ${x1}`),
+    errors:[{values:[-x0], msg:`Nollställena ligger symmetriskt kring $x = ${s}$, inte kring $x = 0$.`}],
+    steps:['Nollställena ligger lika långt från symmetrilinjen, på var sin sida.',`Avståndet från $${x0}$ till $${s}$ är $${Math.abs(d)}$.`,`Det andra nollstället: $${s}${plus(-d)} = ${x1}$`,
+      `Kontroll: $\\frac{${x0}${plus(x1)}}{2} = ${s}$, alltså symmetrilinjen ✓`],
+    verify:()=>x0+x1===2*s};
+});
+def('b-param',22,'Parameter och extremvärde',()=>{
+  const h=nzi(-5,5), H=h*h;
+  if(rand()<0.6){
+    const m=nzi(-9,9), a=m+H;
+    return {diff:2, prompt:`Funktionen $y = x^2${plusM(2*h,'x')} + a$ har sitt minsta värde $${m}$. Vilket värde har $a$?`,
+      answer:num([a],`a = ${a}`),
+      errors:[{values:[m-H], msg:`Minsta värdet är $a - ${H}$. Lös $a - ${H} = ${m}$.`},{values:[m], msg:'$a$ är inte själva minsta värdet. Minsta värdet finns i vändpunkten, där även $x$-termerna bidrar.'}],
+      steps:[`Symmetrilinjen: $x = -\\frac{b}{2a} = -\\frac{${2*h}}{2} = ${-h}$. Där finns minsta värdet.`,`$y(${-h}) = ${sq(-h)}^2 + ${sq(2*h)}\\cdot ${sq(-h)} + a = ${H} - ${2*H} + a = a - ${H}$`,
+        `Minsta värdet ska vara $${m}$: $a - ${H} = ${m}$`,`$a = ${a}$`,`Kontroll: $y = x^2${plusM(2*h,'x')} + ${a} = (x${plus(h)})^2${plus(m)}$, som är minst $${m}$ ✓`],
+      verify:()=>H-2*H+a===m};
+  }
+  return {diff:2, prompt:`Bestäm $a$ så att funktionen $y = x^2${plusM(2*h,'x')} + a$ endast har ett nollställe.`,
+    answer:num([H],`a = ${H}`),
+    errors:[{values:[-H], msg:`Minsta värdet är $a - ${H}$. Det ska vara noll.`}],
+    steps:['Endast ett nollställe betyder att parabelns botten precis nuddar $x$-axeln. Minsta värdet är alltså $0$.',`Symmetrilinjen: $x = ${-h}$. Minsta värdet: $y(${-h}) = ${H} - ${2*H} + a = a - ${H}$`,
+      `$a - ${H} = 0$ ger $a = ${H}$`,`Kontroll: $x^2${plusM(2*h,'x')} + ${H} = (x${plus(h)})^2$, som bara är noll för $x = ${-h}$ ✓`],
+    verify:()=>H-2*H+H===0};
+});
+def('b-rekt',22,'Rektanglar med given omkrets',()=>{
+  const half=ri(8,60), P=2*half, mx=F(half,2), Amax=mx.mul(mx), v=rand();
+  if(v<0.4) return {diff:2, noTime:true, prompt:`En metalltråd som är $${P}$ cm lång böjs till en rektangel. Hur stor kan rektangelns area bli som mest?`,
+    answer:num([Amax],`${Amax.tex()} \\text{ cm}^2`),
+    errors:[{values:[F(P*P,4)], msg:'Använd halva omkretsen. Två sidor av varje sort ska tillsammans vara $'+P+'$ cm.'},{values:[mx], msg:'Det är sidan i kvadraten. Frågan gäller arean.'}],
+    steps:[`Halva omkretsen är $${half}$ cm. Om ena sidan är $x$ är den andra $${half} - x$.`,`Arean: $A(x) = x(${half} - x)$. Den är noll när $x = 0$ och när $x = ${half}$.`,
+      `Största värdet ligger mitt emellan nollställena: $x = ${mx.tex()}$`,`$A = ${mx.tex()}\\cdot ${mx.tex()} = ${Amax.tex()}$ cm². Rektangeln med störst area är en kvadrat.`,
+      `Kontroll: med $x = ${mx.sub(1).tex()}$ blir arean $${mx.sub(1).mul(mx.add(1)).tex()}$, alltså mindre ✓`],
+    verify:()=>mx.sub(1).mul(mx.add(1)).num()<Amax.num()};
+  if(v<0.7) return {diff:2, noTime:true, prompt:`En rektangel har omkretsen $${P}$ cm. Ena sidan är $x$ cm och arean är $A(x)$. Ange definitionsmängd och värdemängd.`,
+    answer:mcOpts([{t:`$0 < x < ${half}$ och $0 < A \\le ${Amax.tex()}$`,ok:true},{t:`$0 < x < ${P}$ och $0 < A \\le ${F(P*P,4).tex()}$`,msg:`Den andra sidan är $${half} - x$, så $x$ måste vara mindre än $${half}$.`},
+      {t:`$0 \\le x \\le ${half}$ och $0 \\le A \\le ${Amax.tex()}$`,msg:'En sida kan inte vara $0$. Då finns ingen rektangel, så gränserna är inte med.'},{t:`$0 < x < ${half}$ och $0 < A < ${Amax.tex()}$`,msg:`$x = ${mx.tex()}$ är tillåtet och ger den största arean, så den är med.`}]),
+    steps:[`Sidorna är $x$ och $${half} - x$. Båda måste vara större än noll: $0 < x < ${half}$.`,`$A(x) = x(${half} - x)$ har sin topp mitt emellan nollställena, i $x = ${mx.tex()}$.`,
+      `Största arean: $${Amax.tex()}$. Den nås, så den är med.`,'Nära ändpunkterna blir arean nästan noll, men aldrig exakt noll.',`Kontroll: $A(1) = ${half-1}$ ligger mellan $0$ och $${Amax.tex()}$ ✓`],
+    verify:()=>half-1<=Amax.num()};
+  const a=ri(2,Math.floor(half/2)), b=half-a, A=a*b, h=F(half,2), root=F(b-a,2);
+  if(a===b) return null;
+  return {diff:2, noTime:true, prompt:`En rektangel har omkretsen $${P}$ cm och arean $${A}$ cm². Bestäm rektangelns sidor.`,
+    answer:num([a,b],`${a} \\text{ cm och } ${b} \\text{ cm}`,{hint:'Två sidor: skriv dem med ; emellan'}),
+    errors:[{values:[a*2,b*2], msg:`Använd halva omkretsen, $${half}$ cm.`}],
+    steps:[`Halva omkretsen: $${half}$ cm. Sidorna är $x$ och $${half} - x$.`,`Arean: $x(${half} - x) = ${A}$, alltså $x^2 - ${half}x + ${A} = 0$`,
+      `pq-formeln: $x = ${h.tex()} \\pm \\sqrt{${h.mul(h).tex()} - ${A}} = ${h.tex()} \\pm ${root.tex()}$`,`$x = ${b}$ eller $x = ${a}$. Sidorna är $${a}$ cm och $${b}$ cm.`,
+      `Kontroll: $2\\cdot ${a} + 2\\cdot ${b} = ${P}$ och $${a}\\cdot ${b} = ${A}$ ✓`],
+    verify:()=>h.mul(h).sub(A).eq(root.mul(root))};
+});
+def('b-vinst',22,'Intäkt och vinst',()=>{
+  if(rand()<0.55){
+    const k=pick([1,2]), xs=10*ri(3,12), N=2*k*xs, K=100*ri(10,60), Vmax=k*xs*xs-K;
+    if(Vmax<=0) return null;
+    return {diff:2, noTime:true, prompt:`En klass säljer biljetter till en musikal. Om priset är $x$ kr säljs $${N}${plusM(-k,'x')}$ biljetter. Utgifterna är $${K}$ kr, så vinsten är $V(x) = x(${N}${plusM(-k,'x')}) - ${K}$. Hur stor kan vinsten bli som mest?`,
+      answer:num([Vmax],`${Vmax} \\text{ kr}`),
+      errors:[{values:[xs], msg:'Det är priset som ger störst vinst. Frågan gäller själva vinsten.'},{values:[Vmax+K], msg:`Det är den största intäkten. Dra bort utgifterna, $${K}$ kr.`}],
+      steps:[`Intäkten $x(${N}${plusM(-k,'x')})$ är noll när $x = 0$ och när $${N}${plusM(-k,'x')} = 0$, alltså $x = ${N/k}$.`,
+        `Vinsten är en parabel som öppnar nedåt, och toppen ligger mitt emellan: $x = ${xs}$ kr`,`$V(${xs}) = ${xs}\\cdot(${N} - ${k*xs}) - ${K} = ${xs}\\cdot ${N-k*xs} - ${K} = ${Vmax}$`,
+        `Svar: den största vinsten är $${Vmax}$ kr, vid priset $${xs}$ kr`,`Kontroll: $V(${xs-10}) = ${(xs-10)*(N-k*(xs-10))-K}$ och $V(${xs+10}) = ${(xs+10)*(N-k*(xs+10))-K}$, båda mindre ✓`],
+      verify:()=>(xs-10)*(N-k*(xs-10))-K<Vmax && (xs+10)*(N-k*(xs+10))-K<Vmax};
+  }
+  const k=pick([1,2]), r1=ri(2,10), r2=r1+ri(4,20), N=k*(r1+r2), K=k*r1*r2, mid=Math.floor((r1+r2)/2), vm=-k*mid*mid+N*mid-K;
+  return {diff:3, noTime:true, prompt:`Ett företags vinst är $V(x) = ${k===1?'-':'-'+k}x^2 + ${N}x - ${K}$ tusen kr när det säljer $x$ maskiner. För vilka $x$ är vinsten positiv?`,
+    answer:mcOpts([{t:`$${r1} < x < ${r2}$`,ok:true},{t:`$x < ${r1}$ eller $x > ${r2}$`,msg:'Där är vinsten negativ. Parabeln öppnar nedåt, så den ligger över $x$-axeln mellan nollställena.'},
+      {t:`$${r1} \\le x \\le ${r2}$`,msg:'Vid gränserna är vinsten exakt noll, inte positiv.'},{t:`$x > ${r1}$`,msg:`För stora $x$ blir vinsten negativ igen. Den är positiv bara fram till $x = ${r2}$.`}]),
+    steps:[`Hitta nollställena: $${k===1?'-':'-'+k}x^2 + ${N}x - ${K} = 0$. Dela med $${-k}$: $x^2 - ${r1+r2}x + ${r1*r2} = 0$`,`Faktorisera eller använd pq-formeln: $(x - ${r1})(x - ${r2}) = 0$, alltså $x = ${r1}$ och $x = ${r2}$`,
+      'Talet framför $x^2$ är negativt, så parabeln öppnar nedåt. Den ligger över $x$-axeln mellan nollställena.',`Svar: $${r1} < x < ${r2}$`,`Kontroll med $x = ${mid}$: $V(${mid}) = ${vm} > 0$ ✓`],
+    verify:()=>vm>0 && -k*r1*r1+N*r1-K===0 && -k*r2*r2+N*r2-K===0};
+});
+
+// 2.3 Potenser och procent
+const POTVAL=[[49,1,2,7],[36,1,2,6],[64,1,2,8],[64,1,3,4],[125,1,3,5],[1000,1,3,10],[27,1,3,3],[16,1,4,2],[81,1,4,3],[32,1,5,2],[32,3,5,8],[8,2,3,4],[27,2,3,9],[4,3,2,8],[2,-3,1,F(1,8)],[10,-2,1,F(1,100)],[4,-1,1,F(1,4)],[5,-2,1,F(1,25)],[15,0,1,1],[100,1,2,10]];
+def('b-potval',23,'Potenser utan miniräknare',()=>{
+  const [b,m,n,res]=pick(POTVAL), R=Frac.of(res), ex=n===1?String(m):`\\frac{${m}}{${n}}`, root=n>1?Math.round(b**(1/n)):null;
+  const steps = m===0 ? ['Alla tal utom noll upphöjt till $0$ är $1$.',`$${b}^{0} = 1$`,`Svar: $1$`,`Kontroll: $${b}^{0} = \\frac{${b}^{1}}{${b}^{1}} = 1$ ✓`]
+    : m<0 ? ['Negativ exponent betyder ett delat med potensen: $a^{-n} = \\frac{1}{a^n}$.',`$${b}^{${m}} = \\frac{1}{${b}^{${-m}}} = \\frac{1}{${b**(-m)}}$`,`Svar: $${R.tex()}$`,`Kontroll: $${R.tex()}\\cdot ${b**(-m)} = 1$ ✓`]
+    : [`$a^{\\frac{1}{n}}$ är $n$:te roten ur $a$: vilket tal upphöjt till $${n}$ blir $${b}$?`,`$${root}^{${n}} = ${b}$, så $${b}^{\\frac{1}{${n}}} = ${root}$`, m>1?`Upphöj till $${m}$: $${root}^{${m}} = ${R.tex()}$`:`Svar: $${R.tex()}$`,`Kontroll: $${R.tex()}^{${n}} = ${R.pow(n).tex()}$ och $${b}^{${m}} = ${Frac.of(b).pow(m).tex()}$ ✓`];
+  return {diff:m<0||m>1?2:1, prompt:`Skriv $${b}^{${ex}}$ utan potens.`, answer:num([R],`${b}^{${ex}} = ${R.tex()}`,{hint:'Skriv talet, t.ex. 7 eller 1/8'}),
+    errors:m<0?[{values:[-(b**(-m))], msg:'Negativ exponent betyder inte ett negativt tal. Det betyder ett delat med potensen.'}]:m===0?[{values:[0], msg:'Upphöjt till noll blir alltid $1$, inte $0$.'}]:[{values:[F(b*m,n)], msg:`Exponenten $${ex}$ betyder en rot, inte gånger $${ex}$.`}],
+    steps, verify:()=>m===0?R.eq(1):m<0?R.mul(b**(-m)).eq(1):R.pow(n).eq(Frac.of(b).pow(m))};
+});
+def('b-procent',23,'Förändringsfaktor och procent',()=>{
+  const v=rand();
+  if(v<0.34){
+    const old=ri(120,900), p=pick([4,6,8.5,12,15,25,3.5]), a=1+p/100, nw=old*a;
+    return {diff:1, calc:true, prompt:`Antalet elever på en skola ökade med $${dc(p,p%1?1:0)}$ %. Innan ökningen var de $${old}$. Hur många elever gick på skolan efter ökningen? Avrunda till heltal.`,
+      answer:num([Math.round(nw)],`\\approx ${Math.round(nw)}`,{tol:0.51}),
+      errors:[{values:[Math.round(old+p)], msg:`Det är $${dc(p,p%1?1:0)}$ procent, inte $${dc(p,p%1?1:0)}$ elever. Använd förändringsfaktorn.`}],
+      steps:[`Förändringsfaktorn: $100\\,\\% + ${dc(p,p%1?1:0)}\\,\\% = ${dc(100+p,p%1?1:0)}\\,\\% = ${dc(a,p%1?3:2)}$`,'Nya värdet = förändringsfaktorn $\\cdot$ gamla värdet',`$${dc(a,p%1?3:2)}\\cdot ${old} = ${dc(nw,2)}$`,`Svar: ungefär $${Math.round(nw)}$ elever`,`Kontroll: $${Math.round(nw)} - ${old} = ${Math.round(nw)-old}$, och det är ungefär $${dc(p,p%1?1:0)}$ % av $${old}$ ✓`],
+      verify:()=>Math.abs(nw-old-old*p/100)<1e-9};
+  }
+  if(v<0.67){
+    const old=100*ri(20,150), p=pick([10,15,20,25,35,40]), a=1-p/100, nw=old*(100-p)/100;
+    return {diff:2, calc:true, prompt:`Vid en utförsäljning sänktes alla priser med $${p}$ %. En dator kostade då $${nw}$ kr. Vad kostade datorn innan prissänkningen?`,
+      answer:num([old],`${old} \\text{ kr}`,{tol:0.01}),
+      errors:[{values:[Math.round(nw*(1+p/100))], msg:`Att lägga på $${p}$ % ger inte tillbaka det gamla priset. Sänkningen räknades på det gamla priset. Dela med förändringsfaktorn i stället.`}],
+      steps:[`Kalla det gamla priset $x$. Förändringsfaktorn: $100\\,\\% - ${p}\\,\\% = ${100-p}\\,\\% = ${dc(a,2)}$`,`Nya priset = faktorn $\\cdot$ gamla priset: $${dc(a,2)}\\cdot x = ${nw}$`,`Dela med $${dc(a,2)}$: $x = \\frac{${nw}}{${dc(a,2)}} = ${old}$`,`Svar: datorn kostade $${old}$ kr`,
+        `Kontroll: $${p}$ % av $${old}$ är $${old*p/100}$, och $${old} - ${old*p/100} = ${nw}$ ✓`],
+      verify:()=>old-old*p/100===nw};
+  }
+  const old=20*ri(10,40), p=pick([20,25,50,60,80]), a=1+p/100, nw=old*(100+p)/100;
+  return {diff:2, calc:true, prompt:`En hundvalp ökade i vikt med $${p}$ % under första levnadsveckan. Då vägde den $${nw}$ g. Hur mycket vägde den som nyfödd?`,
+    answer:num([old],`${old} \\text{ g}`,{tol:0.01}),
+    errors:[{values:[dcF(nw*(1-p/100),1)], msg:`Att dra bort $${p}$ % av den nya vikten ger fel. Ökningen räknades på den gamla vikten. Dela med förändringsfaktorn.`}],
+    steps:[`Förändringsfaktorn: $100\\,\\% + ${p}\\,\\% = ${100+p}\\,\\% = ${dc(a,2)}$`,`$${dc(a,2)}\\cdot x = ${nw}$`,`$x = \\frac{${nw}}{${dc(a,2)}} = ${old}$`,`Svar: valpen vägde $${old}$ g`,`Kontroll: $${old}\\cdot ${dc(a,2)} = ${nw}$ ✓`],
+    verify:()=>old*(100+p)/100===nw};
+});
+
+// 2.4 Mer om logaritmer, exponential- och potensekvationer, tillämpningar
+const LGV={2:0.301,3:0.477,5:0.699,7:0.845};
+def('b-lglag',24,'Logaritmlagen',()=>{
+  const v=rand(), b=pick([2,3,5,7]), p=b===7?2:b===5?pick([2,3]):pick([2,3,4]), N=b**p, lv=LGV[b];
+  if(v<0.45) return {diff:2, prompt:`Använd att $\\lg ${b} \\approx ${dc(lv,3)}$ och beräkna $\\lg ${N}$ utan miniräknare.`,
+    answer:num([dcF(p*lv,3)],`\\lg ${N} \\approx ${dc(p*lv,3)}`,{tol:0.0011,hint:'Skriv ett decimaltal, t.ex. 0,903'}),
+    errors:[{values:[dcF(lv+p,3)], msg:`$\\lg ${b}^{${p}}$ är $${p}$ gånger $\\lg ${b}$, inte $\\lg ${b}$ plus $${p}$.`},{values:[dcF(lv**p,3)], msg:'Logaritmlagen: exponenten flyttas ner och gångras, $\\lg x^p = p\\lg x$.'}],
+    steps:[`Skriv talet som en potens: $${N} = ${b}^{${p}}$`,'Logaritmlagen: $\\lg x^p = p\\cdot\\lg x$',`$\\lg ${N} = ${p}\\cdot\\lg ${b} \\approx ${p}\\cdot ${dc(lv,3)} = ${dc(p*lv,3)}$`,`Svar: $\\lg ${N} \\approx ${dc(p*lv,3)}$`,`Kontroll med miniräknare: $\\lg ${N} \\approx ${dc(lg(N),4)}$ ✓`],
+    verify:()=>Math.abs(p*lv-lg(N))<0.003};
+  if(v<0.8) return {diff:2, prompt:`Lös ekvationen $\\lg x = ${p}\\lg ${b}$.`,
+    answer:num([N],`x = ${N}`),
+    errors:[{values:[p*b], msg:`$${p}\\lg ${b} = \\lg ${b}^{${p}}$, inte $\\lg(${p}\\cdot ${b})$.`}],
+    steps:[`Logaritmlagen baklänges: $${p}\\lg ${b} = \\lg ${b}^{${p}} = \\lg ${N}$`,`Ekvationen blir $\\lg x = \\lg ${N}$`,`Två tal med samma logaritm är lika: $x = ${N}$`,`Kontroll: $\\lg ${N} \\approx ${dc(lg(N),3)}$ och $${p}\\lg ${b} \\approx ${dc(p*lg(b),3)}$ ✓`],
+    verify:()=>Math.abs(lg(N)-p*lg(b))<1e-12};
+  const c=pick([3,4,5,6,7,8]);
+  return {diff:3, prompt:`Andy löser ekvationen $2\\lg x = \\lg ${c*c}$ så här: $\\lg x^2 = \\lg ${c*c}$, alltså $x^2 = ${c*c}$ och $x = \\pm ${c}$. Vad stämmer?`,
+    answer:mcOpts([{t:`Bara $x = ${c}$ är en lösning, eftersom $\\lg x$ bara finns för $x > 0$`,ok:true},{t:`Båda är lösningar, eftersom $(-${c})^2 = ${c*c}$`,msg:`Sätt in $x = -${c}$ i den ursprungliga ekvationen: $\\lg(-${c})$ finns inte.`},
+      {t:'Ekvationen saknar lösning',msg:`$x = ${c}$ fungerar: $2\\lg ${c} = \\lg ${c*c}$.`},{t:`Bara $x = -${c}$ är en lösning`,msg:'Logaritmen av ett negativt tal finns inte.'}]),
+    steps:['Andys räkningar är rätt fram till $x^2 = '+(c*c)+'$.',`Men i den ursprungliga ekvationen står $\\lg x$, och logaritmen finns bara för positiva tal.`,`$x = -${c}$ ger $\\lg(-${c})$, som inte är definierat. Den roten är falsk.`,`Svar: $x = ${c}$`,`Kontroll: $2\\lg ${c} \\approx ${dc(2*lg(c),3)}$ och $\\lg ${c*c} \\approx ${dc(lg(c*c),3)}$ ✓`],
+    verify:()=>Math.abs(2*lg(c)-lg(c*c))<1e-12};
+});
+def('b-expvspot',24,'Exponential- eller potensekvation',()=>{
+  const v=rand();
+  if(v<0.3){
+    const exp=rand()<0.5, a=pick([2,3,5,7]), n=pick([3,5,7]), b=pick([8,12,20,50,95,240]);
+    const eq = exp ? `${a}^x = ${b}` : `x^${n} = ${b}`;
+    return {diff:1, prompt:`Vilken metod passar bäst för att lösa ekvationen $${eq}$?`,
+      answer:mcOpts([{t:'Logaritmera båda leden',ok:exp,msg:exp?null:'Här står $x$ i basen, inte i exponenten. Då behövs ingen logaritm.'},{t:`Upphöja båda leden till $\\frac{1}{${n}}$`,ok:!exp,msg:exp?'Här står $x$ i exponenten. Då hjälper det inte att upphöja till ett tal.':null},
+        {t:'Nollproduktmetoden',msg:'Nollproduktmetoden kräver en produkt som är lika med noll.'},{t:'pq-formeln',msg:'pq-formeln är till för andragradsekvationer.'}]),
+      steps:[exp?'$x$ står i exponenten. Det är en exponentialekvation.':'$x$ står i basen. Det är en potensekvation.',exp?'Logaritmera båda leden och flytta ner $x$ med $\\lg a^x = x\\lg a$.':`Upphöj båda leden till $\\frac{1}{${n}}$, så att exponenten blir $1$.`,
+        exp?`$x = \\frac{\\lg ${b}}{\\lg ${a}} \\approx ${dc(lg(b)/lg(a),3)}$`:`$x = ${b}^{\\frac{1}{${n}}} \\approx ${dc(b**(1/n),3)}$`,`Kontroll: ${exp?`$${a}^{${dc(lg(b)/lg(a),3)}} \\approx ${b}$`:`$${dc(b**(1/n),3)}^${n} \\approx ${b}$`} ✓`],
+      verify:()=>exp?Math.abs(a**(lg(b)/lg(a))-b)<1e-9:Math.abs((b**(1/n))**n-b)<1e-9};
+  }
+  if(v<0.65){
+    let a,b,x; do{ a=pick([2,3,5,1.5,1.05,0.8]); b=pick([3,8,12,20,50,0.5,0.3].filter(y=>a<1?y<1:y>1)); x=lg(b)/lg(a); } while(Number.isInteger(rnd(x,6)));
+    const as=dc(a,a%1?(a===1.05?2:1):0), bs=dc(b,b%1?1:0);
+    return {diff:2, calc:true, prompt:`Lös ekvationen $${as}^x = ${bs}$. Svara med tre decimaler.`,
+      answer:num([dcF(x,3)],`x = \\frac{\\lg ${bs}}{\\lg ${as}} \\approx ${dc(x,3)}`,{tol:TOL[3]}),
+      errors:[{values:[dcF(b**(1/a),3)], msg:'$x$ står i exponenten. Logaritmera båda leden i stället för att ta en rot.'},{values:[dcF(lg(a)/lg(b),3)], msg:'Kvoten är upp och ner: $x = \\frac{\\lg b}{\\lg a}$.'}],
+      steps:['$x$ står i exponenten, så det är en exponentialekvation.',`Logaritmera båda leden: $\\lg ${as}^x = \\lg ${bs}$`,`Logaritmlagen: $x\\cdot\\lg ${as} = \\lg ${bs}$`,`$x = \\frac{\\lg ${bs}}{\\lg ${as}} \\approx \\frac{${dc(lg(b),4)}}{${dc(lg(a),4)}} \\approx ${dc(x,3)}$`,
+        `Kontroll: $${as}^{${dc(x,3)}} \\approx ${dc(a**rnd(x,3),3)} \\approx ${bs}$ ✓`],
+      verify:()=>Math.abs(a**x-b)<1e-9};
+  }
+  let n,c,k,x; do{ n=pick([3,4,5,7]); c=pick([2,3,4,5,10,49000]); k=pick([8,28,60,95,240,1375,35000]); x=(k/c)**(1/n); } while(Number.isInteger(rnd(x,6))||c>=k);
+  return {diff:2, calc:true, prompt:`Lös ekvationen $${c===1?'':c}x^${n} = ${k}$. Ange ${n%2===0?'den positiva lösningen':'lösningen'} med två decimaler.`,
+    answer:num([dcF(x,2)],`x = \\left(\\frac{${k}}{${c}}\\right)^{\\frac{1}{${n}}} \\approx ${dc(x,2)}`,{tol:TOL[2]}),
+    errors:[{values:[dcF(lg(k/c)/lg(n),2)], msg:'$x$ står i basen, inte i exponenten. Upphöj till $\\frac{1}{n}$ i stället för att logaritmera.'}],
+    steps:['$x$ står i basen, så det är en potensekvation.',`Dela med $${c}$: $x^${n} = \\frac{${k}}{${c}}$`,`Upphöj båda leden till $\\frac{1}{${n}}$: $x = \\left(\\frac{${k}}{${c}}\\right)^{\\frac{1}{${n}}}$`,`Med miniräknaren: $x \\approx ${dc(x,4)}$, avrundat $${dc(x,2)}$`,
+      `Kontroll: $${c}\\cdot ${dc(x,4)}^${n} \\approx ${dc(c*rnd(x,4)**n,0)} \\approx ${k}$ ✓`],
+    verify:()=>Math.abs(c*x**n-k)<1e-6};
+});
+def('b-ranta',24,'Ränta, värdeminskning och tillväxt',()=>{
+  const v=rand();
+  if(v<0.25){
+    const A=1000*ri(50,300), n=ri(3,12), rt=pick([0.018,0.025,0.032,0.038,0.045,0.06]), B=1000*Math.round(A*(1+rt)**n/1000), a=(B/A)**(1/n), pc=(a-1)*100;
+    return {diff:3, calc:true, noTime:true, prompt:`Ett kapital på $${A}$ kr har på $${n}$ år vuxit till $${B}$ kr. Ökningen antas vara exponentiell. Hur många procents årlig ränta motsvarar det? Svara med en decimal.`,
+      answer:num([dcF(pc,1)],`\\approx ${dc(pc,1)}\\,\\%`,{tol:TOL[1]}),
+      errors:[{values:[dcF((B-A)/A*100/n,1)], msg:'Det är en linjär uppskattning. Räntan räknas på det nya beloppet varje år, så använd $x^{'+n+'} = \\frac{B}{A}$.'}],
+      steps:[`Kalla förändringsfaktorn $x$: $${A}\\cdot x^{${n}} = ${B}$`,`$x^{${n}} = \\frac{${B}}{${A}} \\approx ${dc(B/A,4)}$`,`$x = \\left(\\frac{${B}}{${A}}\\right)^{\\frac{1}{${n}}} \\approx ${dc(a,4)}$`,`$${dc(a,4)} = ${dc(a*100,2)}\\,\\%$, alltså en ökning med ungefär $${dc(pc,1)}$ % per år`,
+        `Kontroll: $${A}\\cdot ${dc(a,4)}^{${n}} \\approx ${dc(A*rnd(a,4)**n,0)} \\approx ${B}$ ✓`],
+      verify:()=>Math.abs(A*a**n-B)<1e-6};
+  }
+  if(v<0.45){
+    const n=pick([10,12,15,20,25]), a=2**(1/n), pc=(a-1)*100;
+    return {diff:2, calc:true, noTime:true, prompt:`Efter $${n}$ år har värdet på ett hus fördubblats. Hur stor var den årliga procentuella ökningen, om den var lika stor varje år? Svara med en decimal.`,
+      answer:num([dcF(pc,1)],`\\approx ${dc(pc,1)}\\,\\%`,{tol:TOL[1]}),
+      errors:[{values:[dcF(100/n,1)], msg:'$\\frac{100}{'+n+'}$ % per år vore en linjär ökning. Med ränta på ränta behövs $x^{'+n+'} = 2$.'}],
+      steps:['Fördubbling betyder att värdet blir $2$ gånger så stort, oavsett startvärde.',`$x^{${n}} = 2$`,`$x = 2^{\\frac{1}{${n}}} \\approx ${dc(a,4)}$`,`Ökningen per år är ungefär $${dc(pc,1)}$ %`,`Kontroll: $${dc(a,4)}^{${n}} \\approx ${dc(rnd(a,4)**n,3)} \\approx 2$ ✓`],
+      verify:()=>Math.abs(a**n-2)<1e-9};
+  }
+  if(v<0.65){
+    const A=1000*ri(10,40), n=ri(3,8), rt=pick([0.15,0.2,0.25,0.3,0.36]), B=100*Math.round(A*(1-rt)**n/100), a=(B/A)**(1/n), pc=(1-a)*100;
+    return {diff:3, calc:true, noTime:true, prompt:`Karl köpte en dator för $${A}$ kr. Efter $${n}$ år har värdet minskat till $${B}$ kr. Vilken årlig procentuell minskning motsvarar det? Svara med en decimal.`,
+      answer:num([dcF(pc,1)],`\\approx ${dc(pc,1)}\\,\\%`,{tol:TOL[1]}),
+      errors:[{values:[dcF((A-B)/A*100/n,1)], msg:'Värdet minskar med samma procent av det aktuella värdet varje år. Använd $x^{'+n+'} = \\frac{B}{A}$.'}],
+      steps:[`$${A}\\cdot x^{${n}} = ${B}$, där $x$ är förändringsfaktorn per år`,`$x^{${n}} = \\frac{${B}}{${A}} \\approx ${dc(B/A,4)}$`,`$x = \\left(\\frac{${B}}{${A}}\\right)^{\\frac{1}{${n}}} \\approx ${dc(a,4)}$`,`$100\\,\\% - ${dc(a*100,2)}\\,\\% \\approx ${dc(pc,1)}\\,\\%$ minskning per år`,
+        `Kontroll: $${A}\\cdot ${dc(a,4)}^{${n}} \\approx ${dc(A*rnd(a,4)**n,0)} \\approx ${B}$ ✓`],
+      verify:()=>Math.abs(A*a**n-B)<1e-6};
+  }
+  if(v<0.85){
+    const A=10000*ri(5,40), p=pick([1.5,2,2.5,3,4,5]), g=pick([1.1,1.24,1.5,2]), B=Math.round(A*g), a=1+p/100, n=lg(B/A)/lg(a);
+    return {diff:3, calc:true, noTime:true, prompt:`Hur många år tar det för en investering på $${A}$ kr att öka till $${B}$ kr, om värdet ökar med $${dc(p,p%1?1:0)}$ % per år? Svara med en decimal.`,
+      answer:num([dcF(n,1)],`\\approx ${dc(n,1)} \\text{ år}`,{tol:TOL[1]}),
+      errors:[{values:[dcF((B-A)/(A*p/100),1)], msg:'Det är en linjär beräkning. Ökningen räknas på det nya värdet varje år, så lös $'+dc(a,3)+'^x = \\frac{B}{A}$ med logaritmer.'}],
+      steps:[`$${A}\\cdot ${dc(a,3)}^x = ${B}$`,`Dela: $${dc(a,3)}^x = \\frac{${B}}{${A}} = ${dc(B/A,2)}$`,`Logaritmera: $x\\lg ${dc(a,3)} = \\lg ${dc(B/A,2)}$`,`$x = \\frac{\\lg ${dc(B/A,2)}}{\\lg ${dc(a,3)}} \\approx ${dc(n,2)}$`,
+        `Kontroll: $${A}\\cdot ${dc(a,3)}^{${dc(n,2)}} \\approx ${dc(A*a**rnd(n,2),0)} \\approx ${B}$ ✓`],
+      verify:()=>Math.abs(A*a**n-B)<1e-6};
+  }
+  const N=10*ri(40,120), p=pick([2,3,4,5,8]), n=pick([5,8,10,12]), a=1-p/100, before=N/a**n;
+  return {diff:3, calc:true, noTime:true, prompt:`Antalet invånare i en by har minskat med $${p}$ % per år under $${n}$ år. Nu bor det $${N}$ personer i byn. Hur många bodde där för $${n}$ år sedan? Avrunda till heltal.`,
+    answer:num([Math.round(before)],`\\approx ${Math.round(before)}`,{tol:0.51}),
+    errors:[{values:[Math.round(N*(1+p/100)**n)], msg:'Att räkna baklänges med ökning ger inte samma sak. Lös $x\\cdot '+dc(a,2)+'^{'+n+'} = '+N+'$.'}],
+    steps:[`Kalla antalet för $${n}$ år sedan $x$. Förändringsfaktorn är $${dc(a,2)}$.`,`$x\\cdot ${dc(a,2)}^{${n}} = ${N}$`,`$x = \\frac{${N}}{${dc(a,2)}^{${n}}} \\approx \\frac{${N}}{${dc(a**n,4)}} \\approx ${dc(before,1)}$`,`Svar: ungefär $${Math.round(before)}$ invånare`,
+      `Kontroll: $${Math.round(before)}\\cdot ${dc(a,2)}^{${n}} \\approx ${dc(Math.round(before)*a**n,0)} \\approx ${N}$ ✓`],
+    verify:()=>Math.abs(before*a**n-N)<1e-6};
+});
+def('b-kol14',24,'Halveringstid och kol-14',()=>{
+  const v=rand();
+  if(v<0.4){
+    const r=pick([20,30,40,45,50,60,70,75,80,90]), t=5730*lg(r/100)/lg(0.5), T=Math.round(t/100)*100;
+    return {diff:3, calc:true, noTime:true, prompt:`Kol-14 har halveringstiden $5730$ år. I ett träföremål finns $${r}$ % kvar av den ursprungliga mängden kol-14. Hur gammalt är föremålet? Avrunda till hundratal år.`,
+      answer:num([T],`\\approx ${T} \\text{ år}`,{tol:51,hint:'Skriv antalet år, t.ex. 7600'}),
+      errors:[{values:[Math.round(5730*(1-r/100)*2/100)*100], msg:'Mängden avtar exponentiellt, inte linjärt. Lös $0{,}5^{t/5730} = '+dc(r/100,2)+'$ med logaritmer.'}],
+      steps:[`Andelen som finns kvar efter $t$ år: $0{,}5^{\\frac{t}{5730}}$`,`$0{,}5^{\\frac{t}{5730}} = ${dc(r/100,2)}$`,`Logaritmera: $\\frac{t}{5730}\\cdot\\lg 0{,}5 = \\lg ${dc(r/100,2)}$`,`$t = 5730\\cdot\\frac{\\lg ${dc(r/100,2)}}{\\lg 0{,}5} \\approx ${dc(t,0)}$`,
+        r===50?'Kontroll: hälften kvar betyder exakt en halveringstid ✓':`Kontroll: ${r<50?'mindre än hälften är kvar, så åldern ska vara mer än':'mer än hälften är kvar, så åldern ska vara mindre än'} $5730$ år ✓`],
+      verify:()=>r===50?Math.abs(t-5730)<1e-6:r<50?t>5730:t<5730};
+  }
+  if(v<0.7){
+    const m=pick([400,320,160,800,64,240]), k=ri(1,4), T=pick([8,6,12,5]), d=k*T, left=F(m,2**k);
+    return {diff:1, prompt:`Ett radioaktivt ämne har halveringstiden $${T}$ dygn. Vi har $${m}$ mg. Hur mycket återstår efter $${d}$ dygn?`,
+      answer:num([left],`${left.tex()} \\text{ mg}`),
+      errors:[{values:[F(m,2*k)], msg:'Mängden halveras en gång per halveringstid. Efter '+k+' halveringstider har den halverats '+k+' gånger, alltså delats med $2^{'+k+'}$.'}],
+      steps:[`$${d}$ dygn är $\\frac{${d}}{${T}} = ${k}$ halveringstider.`,`Varje halveringstid halveras mängden: $${m}\\cdot 0{,}5^{${k}}$`,`$0{,}5^{${k}} = \\frac{1}{${2**k}}$, så det återstår $\\frac{${m}}{${2**k}} = ${left.tex()}$ mg`,`Kontroll: ${Array.from({length:k},(_,i)=>F(m,2**(i+1)).tex()).join(', ')} mg efter varje halvering ✓`],
+      verify:()=>left.mul(2**k).eq(m)};
+  }
+  const T=pick([8,5,12,30,42]), a=0.5**(1/T), pc=(1-a)*100;
+  return {diff:2, calc:true, noTime:true, prompt:`Ett ämne har halveringstiden $${T}$ dygn. Hur många procent sönderfaller varje dygn? Svara med en decimal.`,
+    answer:num([dcF(pc,1)],`\\approx ${dc(pc,1)}\\,\\%`,{tol:TOL[1]}),
+    errors:[{values:[dcF(50/T,1)], msg:'Att dela $50$ % med antalet dygn vore linjärt. Mängden minskar med samma procent av det som finns kvar varje dygn.'}],
+    steps:[`Kalla förändringsfaktorn per dygn $a$. Efter $${T}$ dygn är hälften kvar: $a^{${T}} = 0{,}5$`,`$a = 0{,}5^{\\frac{1}{${T}}} \\approx ${dc(a,4)}$`,`$${dc(a,4)} = ${dc(a*100,2)}\\,\\%$`,`Minskningen per dygn: $100\\,\\% - ${dc(a*100,2)}\\,\\% \\approx ${dc(pc,1)}\\,\\%$`,
+      `Kontroll: $${dc(a,4)}^{${T}} \\approx ${dc(rnd(a,4)**T,3)} \\approx 0{,}5$ ✓`],
+    verify:()=>Math.abs(a**T-0.5)<1e-9};
+});
+
+// 2.5 Regressionsanalys och från graf till formel
+def('b-regtyp',25,'Välj modell till mätvärden',()=>{
+  const kind=pick(['lin','exp','kvad']), xs=[0,1,2,3,4]; let ys, formula, why;
+  if(kind==='lin'){ const k=nzi(-12,25), m=ri(5,60); ys=xs.map(x=>k*x+m); formula=`y = ${poly([k,m])}`; }
+  else if(kind==='exp'){ const [C,a]=pick([[16,F(3,2)],[32,F(3,2)],[48,F(3,2)],[3,2],[5,2],[10,2],[2,3],[4,3],[5,3]]); ys=xs.map(x=>Frac.of(a).pow(x).mul(C).num()); formula=`y = ${C}\\cdot ${Frac.of(a).isInt()?a:'1{,}5'}^x`; }
+  else { const a=nzi(-3,4), b=nzi(-8,8), c=ri(0,30); ys=xs.map(x=>a*x*x+b*x+c); formula=`y = ${poly([a,b,c])}`; }
+  const d=ys.slice(1).map((y,i)=>y-ys[i]), q=ys.slice(1).map((y,i)=>ys[i]?y/ys[i]:NaN);
+  const dd=d.slice(1).map((y,i)=>y-d[i]);
+  const linOk=d.every(v=>v===d[0]), expOk=q.every(v=>Math.abs(v-q[0])<1e-9) && q[0]!==1;
+  if((kind!=='lin'&&linOk) || (kind!=='exp'&&expOk) || ys.some(y=>!Number.isInteger(y)||Math.abs(y)>999)) return null;
+  const mt2=v=>v<0?'-'+(-v):String(v);
+  const tab=`\\begin{array}{c|ccccc} x & ${xs.join(' & ')} \\\\ \\hline y & ${ys.map(mt2).join(' & ')} \\end{array}`;
+  return {diff:2, prompt:`Vilken modell passar till värdena i tabellen? $${tab}$`,
+    answer:mcOpts([{t:'Linjär modell, $y = kx + m$',ok:kind==='lin',msg:kind==='lin'?null:'Skillnaderna mellan värdena är inte lika stora, så det är ingen rät linje.'},
+      {t:'Exponentiell modell, $y = C\\cdot a^x$',ok:kind==='exp',msg:kind==='exp'?null:'Kvoterna mellan värdena är inte lika stora, så det är ingen exponentialfunktion.'},
+      {t:'Kvadratisk modell, $y = ax^2 + bx + c$',ok:kind==='kvad',msg:kind==='kvad'?null:(kind==='lin'?'Skillnaderna är exakt lika stora. Då räcker en rät linje.':'Värdena gångras med samma tal varje steg. Det är typiskt för en exponentialfunktion.')}]),
+    steps:[`Skillnaderna mellan värdena: $${d.map(mt2).join(',\\ ')}$`,
+      kind==='exp'?`Kvoterna mellan värdena: varje värde är $${q[0]===1.5?'1{,}5':q[0]}$ gånger det förra.`:kind==='kvad'?`Skillnaderna ändras med lika mycket varje steg: $${dd.map(mt2).join(',\\ ')}$`:'Skillnaderna är lika stora varje steg.',
+      'Lika skillnader ger en linjär modell. Lika kvoter ger en exponentiell modell. Skillnader som ändras jämnt ger en kvadratisk modell.',`Svar: ${kind==='lin'?'linjär':kind==='exp'?'exponentiell':'kvadratisk'} modell`,`Kontroll: $${formula}$ ger tabellens värden, till exempel $${mt2(ys[3])}$ när $x = 3$ ✓`],
+    verify:()=>kind==='lin'?linOk:kind==='exp'?expOk:dd.every(v=>v===dd[0]) && !linOk};
+});
+def('b-regmodell',25,'Använd en regressionsmodell',()=>{
+  const v=rand();
+  if(v<0.35){
+    const C=pick([1.15,1.6,2.3,0.95]), a=pick([1.04,1.03,1.06]), n=ri(8,20), y=C*a**n;
+    if(rand()<0.4) return {diff:1, noTime:true, prompt:`En exponentiell regression ger modellen $y = ${dc(C,2)}\\cdot ${dc(a,2)}^x$ för en lägenhets värde i miljoner kr, $x$ år efter köpet. Vad kostade lägenheten när den köptes?`,
+      answer:num([dcF(C,2)],`${dc(C,2)} \\text{ miljoner kr}`,{tol:0.001,hint:'Skriv ett decimaltal'}),
+      errors:[{values:[dcF(C*a,2)], msg:'Köpet är vid $x = 0$, inte $x = 1$.'}],
+      steps:['Vid köpet är $x = 0$.',`$y = ${dc(C,2)}\\cdot ${dc(a,2)}^0 = ${dc(C,2)}\\cdot 1$`,`$y = ${dc(C,2)}$`,`Svar: $${dc(C,2)}$ miljoner kr`,`Kontroll: $C$ i $y = C\\cdot a^x$ är alltid startvärdet ✓`],
+      verify:()=>C*a**0===C};
+    return {diff:2, calc:true, noTime:true, prompt:`En exponentiell regression ger modellen $y = ${dc(C,2)}\\cdot ${dc(a,2)}^x$ för en lägenhets värde i miljoner kr, $x$ år efter köpet. Hur mycket är lägenheten värd efter $${n}$ år enligt modellen? Svara med två decimaler.`,
+      answer:num([dcF(y,2)],`\\approx ${dc(y,2)} \\text{ miljoner kr}`,{tol:TOL[2]}),
+      errors:[{values:[dcF(C*a*n,2)], msg:`$${dc(a,2)}^{${n}}$ är inte samma sak som $${dc(a,2)}\\cdot ${n}$.`}],
+      steps:[`Sätt in $x = ${n}$: $y = ${dc(C,2)}\\cdot ${dc(a,2)}^{${n}}$`,`Potensen först: $${dc(a,2)}^{${n}} \\approx ${dc(a**n,4)}$`,`$y \\approx ${dc(C,2)}\\cdot ${dc(a**n,4)} \\approx ${dc(y,2)}$`,`Svar: ungefär $${dc(y,2)}$ miljoner kr`,`Kontroll: värdet ökar, så det ska vara mer än $${dc(C,2)}$ miljoner ✓`],
+      verify:()=>y>C};
+  }
+  if(v<0.65){
+    const k=pick([52,48,35,60]), m=pick([780,1200,1650]), yr=pick([2030,2040,2050]), x=yr-1900, y=k*x+m;
+    return {diff:1, noTime:true, prompt:`En linjär regression ger modellen $y = ${k}x + ${m}$ för jordens befolkning i miljoner, där $x$ är antal år efter $1900$. Vad blir befolkningen år $${yr}$ enligt modellen?`,
+      answer:num([y],`${y} \\text{ miljoner}`),
+      errors:[{values:[k*yr+m], msg:`$x$ är antal år efter $1900$. År $${yr}$ ger $x = ${x}$.`}],
+      steps:[`År $${yr}$ är $${yr} - 1900 = ${x}$ år efter $1900$, alltså $x = ${x}$`,`$y = ${k}\\cdot ${x} + ${m}$`,`$y = ${k*x} + ${m} = ${y}$`,`Svar: $${y}$ miljoner människor`,`Kontroll: $\\frac{${y} - ${m}}{${k}} = ${x}$ ✓`],
+      verify:()=>(y-m)/k===x};
+  }
+  const a=0.01, b=0.25, x=pick([50,70,90,110,130]), y=b*x+a*x*x;
+  return {diff:2, calc:true, noTime:true, prompt:`Stoppsträckan $y$ meter för en bil med farten $x$ km/h beskrivs av modellen $y = 0{,}25x + 0{,}01x^2$. Beräkna stoppsträckan vid $${x}$ km/h.`,
+    answer:num([dcF(y,1)],`${dc(y,1)} \\text{ m}`,{tol:TOL[1]}),
+    errors:[{values:[dcF(b*x+a*x,1)], msg:'Glöm inte att kvadrera farten i den andra termen.'}],
+    steps:[`Sätt in $x = ${x}$: $y = 0{,}25\\cdot ${x} + 0{,}01\\cdot ${x}^2$`,`$0{,}25\\cdot ${x} = ${dc(b*x,2)}$`,`$0{,}01\\cdot ${x*x} = ${dc(a*x*x,2)}$`,`$y = ${dc(b*x,2)} + ${dc(a*x*x,2)} = ${dc(y,2)}$ m`,`Kontroll: vid dubbla farten blir den andra termen fyra gånger så stor, så stoppsträckan växer snabbt med farten ✓`],
+    verify:()=>Math.abs(y-(b*x+a*x*x))<1e-9};
+});
+def('b-grafformel',25,'Från graf till formel',()=>{
+  const v=rand();
+  if(v<0.4){
+    const k=nzi(-5,5), m=nzi(-10,10), x1=ri(-3,2), x2=x1+ri(1,4), y1=k*x1+m, y2=k*x2+m;
+    return {diff:2, prompt:`En rät linje går genom punkterna $(${x1}, ${y1})$ och $(${x2}, ${y2})$. Bestäm $k$ och $m$ i $y = kx + m$. Ange $k$ först.`,
+      answer:num([k,m],`k = ${k},\\ m = ${m}`,{ordered:true,hint:'Skriv k; m'}),
+      errors:[{values:[m,k], msg:'Ordningen: $k$ först, sedan $m$.'},{values:[-k,y1-(-k)*x1], msg:'Kvoten ska vara ändringen i $y$ delat med ändringen i $x$, i samma ordning.'}],
+      steps:[`Lutningen: $k = \\frac{y_2 - y_1}{x_2 - x_1} = \\frac{${y2}${plus(-y1)}}{${x2}${plus(-x1)}} = ${k}$`,`Sätt in en punkt i $y = ${k}x + m$: $${y1} = ${k}\\cdot ${sq(x1)} + m$`,`$m = ${y1}${plus(-k*x1)} = ${m}$`,`Svar: $y = ${poly([k,m])}$`,`Kontroll med den andra punkten: $${k}\\cdot ${sq(x2)}${plus(m)} = ${y2}$ ✓`],
+      verify:()=>k*x2+m===y2};
+  }
+  if(v<0.75){
+    const [a,C]=pick([[2,3],[2,5],[3,2],[3,4],[F(1,2),64],[F(1,2),80],[F(3,2),16],[F(3,2),32],[F(6,5),25]]), A=Frac.of(a), n=pick([2,3]), yn=A.pow(n).mul(C);
+    if(!yn.isInt()) return null;
+    return {diff:2, prompt:`Grafen till $y = C\\cdot a^x$ går genom punkterna $(0, ${C})$ och $(${n}, ${yn.tex()})$. Bestäm $C$ och $a$. Ange $C$ först.`,
+      answer:num([C,A],`C = ${C},\\ a = ${A.isInt()?A.tex():dc(A.num(),1)}`,{ordered:true,hint:'Skriv C; a, t.ex. 16; 1,5'}),
+      errors:[{values:[A,C], msg:'Ordningen: $C$ först, sedan $a$.'},{values:[C,yn.div(C).div(n)], msg:`$a^{${n}} = ${yn.div(C).tex()}$. Ta roten, dela inte med $${n}$.`}],
+      steps:[`När $x = 0$ är $a^0 = 1$, så $C$ är $y$-värdet där: $C = ${C}$`,`Den andra punkten: $${C}\\cdot a^{${n}} = ${yn.tex()}$`,`$a^{${n}} = \\frac{${yn.tex()}}{${C}} = ${yn.div(C).tex()}$`,`$a = \\left(${yn.div(C).tex()}\\right)^{\\frac{1}{${n}}} = ${A.isInt()?A.tex():dc(A.num(),1)}$`,
+      `Kontroll: $${C}\\cdot ${A.isInt()?A.tex():'('+dc(A.num(),1)+')'}^{${n}} = ${yn.tex()}$ ✓`],
+      verify:()=>A.pow(n).mul(C).eq(yn)};
+  }
+  const C=1000*ri(5,20), n=pick([3,4,5]), at=pick([1.04,1.05,1.06,1.08]), Y=100*Math.round(C*at**n/100), a=(Y/C)**(1/n);
+  return {diff:3, calc:true, noTime:true, prompt:`Antalet bakterier ökade exponentiellt. Från början fanns $${C}$ och efter $${n}$ timmar $${Y}$. Bestäm förändringsfaktorn $a$ i $y = ${C}\\cdot a^t$. Svara med tre decimaler.`,
+    answer:num([dcF(a,3)],`a \\approx ${dc(a,3)}`,{tol:TOL[3]}),
+    errors:[{values:[dcF(Y/C/n,3)], msg:'$a^{'+n+'} = \\frac{'+Y+'}{'+C+'}$. Upphöj till $\\frac{1}{'+n+'}$, dela inte med '+n+'.'}],
+    steps:[`Startvärdet är $C = ${C}$.`,`Efter $${n}$ timmar: $${C}\\cdot a^{${n}} = ${Y}$`,`$a^{${n}} = \\frac{${Y}}{${C}} = ${dc(Y/C,4)}$`,`$a = ${dc(Y/C,4)}^{\\frac{1}{${n}}} \\approx ${dc(a,3)}$`,`Kontroll: $${C}\\cdot ${dc(a,3)}^{${n}} \\approx ${dc(C*rnd(a,3)**n,0)} \\approx ${Y}$ ✓`],
+    verify:()=>Math.abs(C*a**n-Y)<1e-6};
+});
+
+// Kapitel 2 som i boken: avsnitt, sidor och vilka uppgiftstyper de övar
+const BOOK=[
+  {n:21, title:'2.1 Andragradsekvationer', page:88, sections:[
+    {id:'s211', title:'Enkla andragradsekvationer', page:88, types:['b-kvrot','b-nollprod','rot-faktor'], learn:'l21-kvrot'},
+    {id:'s212', title:'En lösningsformel', page:92, types:['pq','pq-dela','b-pqdec'], learn:'l4-pq'},
+    {id:'s213', title:'Mer om andragradsekvationer', page:95, types:['b-omskriv','b-antal','pq-dela'], learn:'l21-mer'},
+    {id:'s214', title:'Tillämpningar och problemlösning', page:100, types:['b-problem','b-ord'], learn:'l21-problem'},
+    {id:'s215', title:'Samband mellan rötter och koefficienter', page:102, types:['rot-bygg','rot-andra','elever'], learn:'l21-samband'}]},
+  {n:22, title:'2.2 Andragradsfunktioner', page:103, sections:[
+    {id:'s221', title:'Repetition av skrivsättet f(x)', page:103, types:['ins-kvad','ins-los','fn-ka','fn-ff','k-kvad'], learn:'l6-ka'},
+    {id:'s222', title:'Andragradsfunktionens graf', page:108, types:['b-sym','b-grafsym','graf-skar','df-graf'], learn:'l22-graf'},
+    {id:'s223', title:'Största eller minsta värde', page:113, types:['b-extrem','b-param','mod-max'], learn:'l22-extrem'},
+    {id:'s224', title:'Rektanglar med en given omkrets', page:118, types:['b-rekt'], learn:'l22-rekt'},
+    {id:'s225', title:'Problemlösning', page:119, types:['b-modell','b-vinst','mod-vf'], learn:'l22-problem'}]},
+  {n:23, title:'2.3 Potensekvationer och exponentialfunktioner', page:123, sections:[
+    {id:'s231', title:'Potenser och potensekvationer', page:123, types:['b-potval','b-potlag','b-potek','b-potcalc'], learn:'l23-pot'},
+    {id:'s232', title:'Exponentialfunktioner', page:126, types:['b-exp','b-procent'], learn:'l23-exp'}]},
+  {n:24, title:'2.4 Logaritmer', page:131, sections:[
+    {id:'s241', title:'Exponentialekvationer och logaritmer', page:131, types:['b-lg','b-10x'], learn:'l24-lg'},
+    {id:'s242', title:'Mer om logaritmer', page:133, types:['b-lgdef','b-lglag'], learn:'l24-lag'},
+    {id:'s243', title:'Exponential- och potensekvationer', page:136, types:['b-expvspot','b-expek'], learn:'l24-ekv'},
+    {id:'s244', title:'Tillämpningar och problemlösning', page:141, types:['b-ranta','b-kol14'], learn:'l24-tillamp'}]},
+  {n:25, title:'2.5 Regressionsanalys', page:148, sections:[
+    {id:'s251', title:'Regressionsanalys med olika modeller', page:148, types:['b-regtyp','b-regmodell'], learn:'l25-reg'},
+    {id:'s252', title:'Från graf till formel', page:152, types:['b-grafformel'], learn:'l25-graf'}]}
+];
+const chapterTypes = n => [...new Set(BOOK.find(c=>c.n===n).sections.flatMap(s=>s.types))];
+const allBookTypes = () => [...new Set(BOOK.flatMap(c=>c.sections.flatMap(s=>s.types)))];
+const bookSection = id => BOOK.flatMap(c=>c.sections.map(s=>({...s,chapter:c.n}))).find(s=>s.id===id) || null;
+
 /* =====================================================================
    FÖRSTÅELSEUPPGIFTER
    Ger Insikter och Kodex-kort. Varje uppgift är kopplad till ett kort.
@@ -3531,6 +3999,7 @@ const LEVELS=[
   {n:22, name:'2.2 Andragradsfunktioner', time:60, book:true},
   {n:23, name:'2.3 Potenser och exponentialfunktioner', time:75, book:true},
   {n:24, name:'2.4 Logaritmer', time:80, book:true},
+  {n:25, name:'2.5 Regressionsanalys', time:80, book:true},
 ];
 const BLACK_LEVELS=LEVELS.filter(L=>L.black).map(L=>L.n);
 const BOOK_LEVELS=LEVELS.filter(L=>L.book).map(L=>L.n);
@@ -4086,6 +4555,127 @@ Object.assign(METHOD,{
   'b-expek':{topic:'l24-ekv', how:['Ställ upp modellen $y = C\\cdot a^x$ och sätt in det du vet.','Dela bort $C$, logaritmera båda sidor och flytta ner $x$: $x\\lg a = \\lg(\\ldots)$.','Dela med $\\lg a$ och räkna med miniräknaren.'], trap:'Att räkna som om förändringen vore linjär.'}
 });
 
+// ---------- Lär dig: fler avsnitt ur kapitel 2 ----------
+LEARN[25]=[];
+const L2=(n,t)=>LEARN[n].push(t);
+L2(21,{id:'l21-mer', title:'Mer om andragradsekvationer', cards:['antal-losningar'],
+  easy:['Många ekvationer ser inte ut som $x^2 + px + q = 0$ från början. Då skriver du om dem först: multiplicera ut, samla allt på en sida och dela så att det står $1$ framför $x^2$.',
+    'Exempel: $(x + 3)(x - 3) = 8x$ blir $x^2 - 9 = 8x$, och sedan $x^2 - 8x - 9 = 0$.',
+    'Det som står under rottecknet, $\\left(\\frac{p}{2}\\right)^2 - q$, avgör antalet lösningar. Positivt ger två, noll ger en dubbelrot och negativt ger inga reella lösningar.'],
+  ex:{prompt:'Lös $(x + 3)(x - 3) = 8x$.', steps:['Konjugatregeln: $x^2 - 9 = 8x$','Samla allt till vänster: $x^2 - 8x - 9 = 0$','pq-formeln: $x = 4 \\pm \\sqrt{16 + 9} = 4 \\pm 5$','$x_1 = 9$ och $x_2 = -1$','Kontroll med $x = 9$: $12\\cdot 6 = 72$ och $8\\cdot 9 = 72$ ✓']},
+  help:[['Tänk på pq-formeln som en maskin som bara tar emot en sorts ekvation: $x^2 + px + q = 0$. Allt annat måste först göras om till den formen.','Det är som att sortera tvätt innan den går i maskinen: först ordning, sedan formeln.'],
+    ['Steg 1: multiplicera ut alla parenteser. Steg 2: flytta allt till vänster, så att det står $0$ till höger.','Steg 3: står det något annat än $1$ framför $x^2$, dela alla termer med det talet. Steg 4: läs av $p$ och $q$ och använd formeln.']],
+  adv:['För att avgöra antalet lösningar behöver du inte lösa ekvationen. $x^2 - 12x + a = 0$ saknar reella rötter när $36 - a < 0$, alltså när $a > 36$.',
+    'Med en parameter, som i $x^2 + 2x + 4a - 11 = 0$, blir uttrycket under rottecknet $1 - (4a - 11) = 12 - 4a$. Två lösningar när $a < 3$, en dubbelrot när $a = 3$ och inga reella lösningar när $a > 3$.'],
+  quiz:{q:'För vilka $a$ saknar $x^2 - 12x + a = 0$ reella rötter?', options:[{t:'$a > 36$', ok:true, msg:'Rätt: $36 - a < 0$ när $a > 36$.'},{t:'$a < 36$', msg:'Då är $36 - a$ positivt, och det finns två lösningar.'},{t:'$a > 12$', msg:'Halva $p$ är $6$, och $6^2 = 36$. Jämför $a$ med $36$.'},{t:'$a = 36$', msg:'Då blir det en dubbelrot.'}]}});
+L2(21,{id:'l21-problem', title:'Tillämpningar och problemlösning', cards:[],
+  easy:['Ett: läs uppgiften och bestäm vad du söker. Kalla det $x$.','Två: skriv de andra storheterna med hjälp av $x$, till exempel $x + 6$ eller $100 - x$, och ställ upp en ekvation.','Tre: lös ekvationen och pröva lösningarna mot verkligheten. En längd kan till exempel inte vara negativ.'],
+  ex:{prompt:'En rektangel har sidorna $x$ cm och $(x + 6)$ cm och arean $280$ cm². Bestäm sidorna.', steps:['$x(x + 6) = 280$, alltså $x^2 + 6x - 280 = 0$','pq-formeln: $x = -3 \\pm \\sqrt{9 + 280} = -3 \\pm 17$','$x = 14$ eller $x = -20$. En längd är positiv, så $x = 14$','Sidorna är $14$ cm och $20$ cm','Kontroll: $14\\cdot 20 = 280$ ✓']},
+  help:[['Problemlösning är att översätta text till matte. Varje mening blir en bit av ekvationen.','”Två på varandra följande tal” blir $x$ och $x + 1$. ”Summan är $41$” betyder att det andra talet är $41 - x$.'],
+    ['Rita alltid en figur när det handlar om längder eller areor, och skriv måtten direkt i figuren.','Skriv till sist svaret med ord och enhet, och kolla att det svarar på frågan.']],
+  adv:['Konjugatregeln ger ofta en genväg. Två udda tal runt det jämna talet $x$ är $x - 1$ och $x + 1$, och produkten blir $x^2 - 1$.',
+    'När en remsa läggs runt en rektangel ökar varje mått med dubbla remsans bredd, eftersom remsan finns på båda sidor.'],
+  quiz:{q:'Två tal har summan $41$ och produkten $238$. Vilken ekvation beskriver det?', options:[{t:'$x(41 - x) = 238$', ok:true, msg:'Rätt: talen är $x$ och $41 - x$.'},{t:'$x + 41 = 238$', msg:'Produkten betyder gånger. Det ena talet är $x$ och det andra $41 - x$.'},{t:'$x^2 = 238$', msg:'Talen är olika: $x$ och $41 - x$.'},{t:'$41x = 238$', msg:'Det andra talet är $41 - x$, inte $41$.'}]}});
+L2(21,{id:'l21-samband', title:'Samband mellan rötter och koefficienter', cards:['faktorform'],
+  easy:['Om ekvationen $x^2 + px + q = 0$ har rötterna $x_1$ och $x_2$ kan den skrivas $(x - x_1)(x - x_2) = 0$.',
+    'Multiplicerar du ut får du $x^2 - (x_1 + x_2)x + x_1x_2$. Alltså är $p = -(x_1 + x_2)$ och $q = x_1x_2$.',
+    'Rötterna $1$ och $2$ ger $p = -3$ och $q = 2$, alltså ekvationen $x^2 - 3x + 2 = 0$.'],
+  ex:{prompt:'Indra skriver av $b$ fel och får rötterna $-6$ och $1$. Fanny skriver av $c$ fel och får rötterna $2$ och $3$. Vilken ekvation $x^2 + bx + c = 0$ försöker de lösa?', steps:['Indra har rätt $c$: $c = (-6)\\cdot 1 = -6$','Fanny har rätt $b$: $b = -(2 + 3) = -5$','Ekvationen är $x^2 - 5x - 6 = 0$','Kontroll: $(x - 6)(x + 1) = x^2 - 5x - 6$, med rötterna $6$ och $-1$ ✓']},
+  help:[['Rötterna och koefficienterna hänger ihop som ett recept. Summan av rötterna styr $x$-termen och produkten styr konstanttermen.','Därför kan du gå åt båda hållen: från rötter till ekvation, och från ekvation till rötternas summa och produkt.'],
+    ['Från rötter till ekvation: skriv $(x - x_1)(x - x_2)$ och byt tecken på varje rot. Multiplicera sedan ut.','Kolla genom att sätta in en rot. Det ska bli noll.']],
+  adv:['Sambandet kallas Vietas formler. Det gäller även när rötterna inte är heltal, och det är ett snabbt sätt att kontrollera svar från pq-formeln.',
+    'Om ena roten är känd ger produkten den andra. I $x^2 - 25 = 0$ är $x_1x_2 = -25$, så om $x_1 = -5$ är $x_2 = 5$.'],
+  quiz:{q:'Ekvationen $x^2 + bx + c = 0$ har lösningarna $1$ och $2$. Vad är $b$ och $c$?', options:[{t:'$b = -3$ och $c = 2$', ok:true, msg:'Rätt: $b = -(1 + 2)$ och $c = 1\\cdot 2$.'},{t:'$b = 3$ och $c = 2$', msg:'Tecknet byts: $b = -(1 + 2) = -3$.'},{t:'$b = -3$ och $c = -2$', msg:'$c$ är produkten av rötterna: $1\\cdot 2 = 2$.'},{t:'$b = 2$ och $c = -3$', msg:'Summan hör till $b$ och produkten till $c$.'}]}});
+L2(22,{id:'l22-graf', title:'Andragradsfunktionens graf', cards:['graf-tabell','symmetri'],
+  easy:['Grafen till $y = ax^2 + bx + c$ är en parabel. Är $a > 0$ öppnar den uppåt, är $a < 0$ öppnar den nedåt.',
+    'Där grafen skär $x$-axeln finns nollställena. Där den skär $y$-axeln är $y = c$.',
+    'Grafen är symmetrisk kring symmetrilinjen. Den ligger mitt emellan nollställena, eller i $x = -\\frac{b}{2a}$.'],
+  ex:{prompt:'Symmetrilinjen är $x = 1$, och punkten $(0, 8)$ ligger på grafen. Ange en annan punkt på grafen.', steps:['$x = 0$ ligger $1$ steg till vänster om symmetrilinjen','Lika långt till höger: $x = 2$','Punkten $(2, 8)$ ligger på grafen','Kontroll: mitt emellan $0$ och $2$ ligger $1$ ✓']},
+  help:[['Tänk dig att du viker papperet längs symmetrilinjen. De två halvorna av parabeln hamnar då precis på varandra.','Varje punkt har därför en tvilling på andra sidan, på samma höjd.'],
+    ['Räkna hur många steg punkten ligger från symmetrilinjen. Gå lika många steg åt andra hållet.','$y$-värdet är detsamma, bara $x$-värdet ändras.']],
+  adv:['Från $y = (x - 3)(x + 9)$ syns nollställena $3$ och $-9$ direkt, och symmetrilinjen är $x = \\frac{3 + (-9)}{2} = -3$.',
+    'Ekvationen $f(x) = k$ löses grafiskt genom att dra linjen $y = k$ och läsa av skärningarnas $x$-värden.'],
+  quiz:{q:'Vilken är symmetrilinjen till $y = (x - 3)(x + 9)$?', options:[{t:'$x = -3$', ok:true, msg:'Rätt: mitt emellan $3$ och $-9$.'},{t:'$x = 3$', msg:'Nollställena är $3$ och $-9$. Mitten är $-3$.'},{t:'$x = 6$', msg:'Ta medelvärdet av nollställena: $\\frac{3 + (-9)}{2}$.'},{t:'$x = -27$', msg:'$-27$ är konstanttermen, inte symmetrilinjen.'}]}});
+L2(22,{id:'l22-rekt', title:'Rektanglar med en given omkrets', cards:['symmetri'],
+  easy:['Om omkretsen är bestämd är summan av två olika sidor halva omkretsen. Med omkretsen $48$ cm är sidorna $x$ och $24 - x$.',
+    'Arean blir $A(x) = x(24 - x)$, en parabel som öppnar nedåt.',
+    'Största arean finns mitt emellan nollställena $0$ och $24$, alltså vid $x = 12$. Rektangeln är då en kvadrat.'],
+  ex:{prompt:'Vilken är den största arean en hage med omkretsen $200$ m kan ha?', steps:['Halva omkretsen: $100$ m. Sidorna är $x$ och $100 - x$','$A(x) = x(100 - x)$, med nollställena $0$ och $100$','Toppen: $x = 50$','$A(50) = 50\\cdot 50 = 2500$ m²','Kontroll: $A(49) = 49\\cdot 51 = 2499$, lite mindre ✓']},
+  help:[['Föreställ dig ett snöre med fast längd som du formar till en rektangel. Gör du den lång och smal blir arean liten. Gör du den mer kvadratisk blir arean större.','Den allra största arean får du när alla sidor är lika långa.'],
+    ['Steg 1: halvera omkretsen. Steg 2: kalla ena sidan $x$ och den andra halva omkretsen minus $x$.','Steg 3: arean är sidorna gånger varandra. Steg 4: toppen ligger mitt emellan nollställena.']],
+  adv:['Definitionsmängden blir $0 < x < \\frac{P}{2}$, eftersom båda sidorna måste vara positiva. Värdemängden blir $0 < A \\le \\left(\\frac{P}{4}\\right)^2$.',
+    'Står ena sidan mot en vägg eller en älv är det bara tre sidor som har staket. Då är kvadraten inte längre bäst.'],
+  quiz:{q:'En rektangel har omkretsen $40$ cm. Vilken är den största möjliga arean?', options:[{t:'$100$ cm²', ok:true, msg:'Rätt: en kvadrat med sidan $10$ cm.'},{t:'$400$ cm²', msg:'Sidorna tillsammans är halva omkretsen, $20$ cm. Kvadraten har sidan $10$ cm.'},{t:'$200$ cm²', msg:'Toppen ligger vid $x = 10$, och $10\\cdot 10 = 100$.'},{t:'$40$ cm²', msg:'Det är omkretsen, inte arean.'}]}});
+L2(22,{id:'l22-problem', title:'Problemlösning med andragradsfunktioner', cards:['fraga'],
+  easy:['Många verkliga förlopp beskrivs av andragradsfunktioner, till exempel en kastbana, en bärkabel eller ett företags vinst.',
+    'Högsta eller lägsta värdet finns på symmetrilinjen. Nollställena svarar på frågor som ”när slår bollen i marken?” eller ”när är vinsten noll?”.',
+    'Vinst är intäkt minus kostnad. Säljs $a$ biljetter till priset $x$ kr blir intäkten $x\\cdot a$.'],
+  ex:{prompt:'Kulan i en kulstötning har höjden $y = 2{,}3 + x - 0{,}10x^2$ meter efter $x$ meter. Bestäm kulans högsta höjd.', steps:['Symmetrilinjen: $x = -\\frac{b}{2a} = -\\frac{1}{2\\cdot(-0{,}10)} = 5$','$y(5) = 2{,}3 + 5 - 0{,}10\\cdot 25 = 4{,}8$','Högsta höjden är $4{,}8$ m','Kontroll: $y(4) = y(6) = 4{,}7$, symmetriskt kring $x = 5$ ✓']},
+  help:[['Läs först vad frågan vill ha: en tid, en sträcka, en höjd eller en vinst. Det avgör om du ska använda symmetrilinjen eller nollställena.','”Högst”, ”störst” och ”mest” betyder symmetrilinjen. ”När är den noll” och ”hur långt” betyder nollställen.'],
+    ['Gör en liten tabell över några värden om du är osäker. Då ser du hur kurvan går upp och ner.','Räkna sedan exakt, med $x = -\\frac{b}{2a}$ eller med pq-formeln.']],
+  adv:['Vinsten $V(x) = x(400 - 2x) - 7000$ har sitt största värde mitt emellan intäktens nollställen $0$ och $200$, alltså vid $x = 100$: $V(100) = 100\\cdot 200 - 7000 = 13\\,000$.',
+    'Positiv vinst, $V(x) > 0$, gäller mellan vinstfunktionens nollställen när parabeln öppnar nedåt.'],
+  quiz:{q:'Höjden är $h(t) = 50t - 5t^2$. Efter hur lång tid är stenen högst?', options:[{t:'$5$ s', ok:true, msg:'Rätt: nollställena är $0$ och $10$, och mitten är $5$.'},{t:'$10$ s', msg:'Efter $10$ s är stenen tillbaka på marken.'},{t:'$125$ s', msg:'$125$ m är den högsta höjden, inte tiden.'},{t:'$50$ s', msg:'Lös $50t - 5t^2 = 0$ för att hitta nollställena först.'}]}});
+L2(24,{id:'l24-lag', title:'Mer om logaritmer', cards:[],
+  easy:['$\\lg 10^a = a$ och $10^{\\lg a} = a$. Logaritmen och tiopotensen tar ut varandra.',
+    'Logaritmlagen: $\\lg x^p = p\\cdot\\lg x$. Exponenten kan flyttas ner framför logaritmen.',
+    'Med $\\lg 2 \\approx 0{,}301$ får du $\\lg 8 = \\lg 2^3 = 3\\lg 2 \\approx 0{,}903$.'],
+  ex:{prompt:'Lös $\\lg x = 2\\lg 8$.', steps:['Logaritmlagen baklänges: $2\\lg 8 = \\lg 8^2 = \\lg 64$','$\\lg x = \\lg 64$','$x = 64$','Kontroll: $\\lg 64 \\approx 1{,}806$ och $2\\lg 8 \\approx 2\\cdot 0{,}903 = 1{,}806$ ✓']},
+  help:[['Tänk på $\\lg$ som en fråga om exponenter. $\\lg 8$ frågar: $10$ upphöjt till vad blir $8$?','Eftersom $8 = 2\\cdot 2\\cdot 2$ blir svaret tre gånger så stort som för $2$.'],
+    ['Står det ett tal framför $\\lg$ kan du flytta upp det som exponent: $3\\lg 2 = \\lg 2^3 = \\lg 8$.','Står det en exponent inne i $\\lg$ kan du flytta ner den framför: $\\lg 5^2 = 2\\lg 5$.']],
+  adv:['Lagen kommer från definitionen: $x^p = (10^{\\lg x})^p = 10^{p\\lg x}$, så $\\lg x^p = p\\lg x$.',
+    'Var försiktig när du flyttar exponenter. $2\\lg x = \\lg 9$ ger bara $x = 3$, inte $x = -3$, eftersom $\\lg x$ bara finns för $x > 0$.'],
+  quiz:{q:'Vilket uttryck är lika med $\\lg 25$?', options:[{t:'$2\\lg 5$', ok:true, msg:'Rätt: $25 = 5^2$.'},{t:'$5\\lg 2$', msg:'$25 = 5^2$, så det är $2\\lg 5$.'},{t:'$\\lg 2 + \\lg 5$', msg:'Det är $\\lg 10 = 1$, inte $\\lg 25$.'},{t:'$(\\lg 5)^2$', msg:'Exponenten flyttas ner och gångras: $\\lg 5^2 = 2\\lg 5$.'}]}});
+L2(24,{id:'l24-tillamp', title:'Ränta, värdeminskning och halveringstid', cards:[],
+  easy:['Exponentiell förändring skrivs $y = C\\cdot a^x$. Känner du startvärde och slutvärde kan du räkna ut förändringsfaktorn $a$ eller tiden $x$.',
+    'Söker du $a$: lös potensekvationen $a^x = \\frac{y}{C}$ genom att upphöja till $\\frac{1}{x}$.',
+    'Söker du tiden $x$: lös exponentialekvationen med logaritmer, $x = \\frac{\\lg \\frac{y}{C}}{\\lg a}$.'],
+  ex:{prompt:'Ett kapital på $100\\,000$ kr har på sju år vuxit till $130\\,000$ kr. Hur stor är den årliga räntan?', steps:['$100\\,000\\cdot x^7 = 130\\,000$','$x^7 = 1{,}3$','$x = 1{,}3^{\\frac{1}{7}} \\approx 1{,}038$','Räntan är ungefär $3{,}8$ % per år','Kontroll: $1{,}038^7 \\approx 1{,}30$ ✓']},
+  help:[['Exponentiellt betyder ränta på ränta. Varje år räknas ökningen på det nya, större beloppet.','Därför kan man inte bara dela den totala ökningen med antalet år.'],
+    ['Fråga dig: vad är okänt, faktorn eller tiden? Okänd faktor: upphöj till ett bråk. Okänd tid: logaritmera.','Avrunda först i sista steget, annars kan svaret bli fel.']],
+  adv:['Halveringstid: om något halveras på $T$ år finns andelen $0{,}5^{\\frac{t}{T}}$ kvar efter $t$ år. Kol-14 har $T = 5730$ år, och därför kan man räkna ut hur gammalt ett fynd är.',
+    'Om $40$ % av kol-14 finns kvar är åldern $t = 5730\\cdot\\frac{\\lg 0{,}4}{\\lg 0{,}5} \\approx 7600$ år.'],
+  quiz:{q:'Ett hus värde fördubblas på $20$ år. Vilken ekvation ger den årliga förändringsfaktorn $x$?', options:[{t:'$x^{20} = 2$', ok:true, msg:'Rätt: faktorn gångras med sig själv en gång per år.'},{t:'$20x = 2$', msg:'Det vore en linjär ökning. Exponentiellt betyder att faktorn gångras $20$ gånger.'},{t:'$2^x = 20$', msg:'Här står $x$ i exponenten, men det är faktorn som är okänd.'},{t:'$x + 20 = 2$', msg:'Ökningen sker genom multiplikation, inte addition.'}]}});
+L2(25,{id:'l25-reg', title:'Regressionsanalys med olika modeller', cards:[],
+  easy:['Regressionsanalys betyder att anpassa en funktion till mätvärden. Det görs med ett digitalt verktyg.',
+    'I kursen används fyra modeller: linjär $y = kx + m$, kvadratisk $y = ax^2 + bx + c$, exponentiell $y = C\\cdot a^x$ och potensfunktion $y = a\\cdot x^b$.',
+    'Titta på värdena när du väljer modell. Lika stora skillnader passar en linje. Lika stora kvoter passar en exponentialfunktion.'],
+  ex:{prompt:'Regressionen gav $y = 1{,}15\\cdot 1{,}04^x$ för en lägenhets värde i miljoner kr, $x$ år efter köpet. Vad är den värd efter $12$ år?', steps:['Sätt in $x = 12$: $y = 1{,}15\\cdot 1{,}04^{12}$','$1{,}04^{12} \\approx 1{,}601$','$y \\approx 1{,}15\\cdot 1{,}601 \\approx 1{,}84$','Kontroll: värdet vid köpet var $1{,}15$ miljoner, och det har ökat, så svaret är rimligt ✓']},
+  help:[['Mätvärden ligger sällan exakt på en kurva. Regressionen hittar den kurva som passar bäst, ungefär som att dra den bästa möjliga linjen genom prickarna.','Sedan används kurvans formel för att räkna ut värden man inte har mätt.'],
+    ['Räkna skillnaderna mellan $y$-värdena när $x$ ökar lika mycket. Är de lika: linjär. Räkna kvoterna. Är de lika: exponentiell.','Ändras skillnaderna lika mycket varje gång passar en kvadratisk modell.']],
+  adv:['Två modeller kan passa mätvärdena lika bra men ge helt olika prognoser långt fram i tiden. Jordens befolkning år $2040$ blir ungefär $8\\,000$, $10\\,200$ eller $10\\,100$ miljoner beroende på modell.',
+    'En prognos långt utanför mätvärdena är osäker. Modellen gäller bara så länge förloppet fortsätter på samma sätt.'],
+  quiz:{q:'Värdena är $5,\\ 10,\\ 20,\\ 40$ när $x = 0,\\ 1,\\ 2,\\ 3$. Vilken modell passar?', options:[{t:'Exponentiell', ok:true, msg:'Rätt: varje värde är dubbelt så stort som det förra.'},{t:'Linjär', msg:'Skillnaderna är $5$, $10$ och $20$, alltså inte lika.'},{t:'Kvadratisk', msg:'Kvoterna är exakt lika, $2$ varje gång. Det är typiskt exponentiellt.'},{t:'Ingen modell passar', msg:'Kvoterna är lika, så en exponentiell modell passar exakt.'}]}});
+L2(25,{id:'l25-graf', title:'Från graf till formel', cards:[],
+  easy:['En rät linje bestäms av två punkter. Lutningen är $k = \\frac{y_2 - y_1}{x_2 - x_1}$, och sedan ger en av punkterna $m$.',
+    'En exponentialfunktion $y = C\\cdot a^x$ bestäms också av två punkter. $C$ är $y$-värdet där $x = 0$.',
+    'Med punkterna $(0, 800)$ och $(2, 1152)$ blir $C = 800$ och $a^2 = \\frac{1152}{800} = 1{,}44$, alltså $a = 1{,}2$.'],
+  ex:{prompt:'Antalet bakterier var $12\\,000$ från början och $15\\,200$ efter $4$ timmar. Bestäm en exponentialfunktion.', steps:['$C = 12\\,000$','$12\\,000\\cdot a^4 = 15\\,200$, alltså $a^4 \\approx 1{,}267$','$a = 1{,}267^{\\frac{1}{4}} \\approx 1{,}061$','$y = 12\\,000\\cdot 1{,}061^t$','Kontroll: $12\\,000\\cdot 1{,}061^4 \\approx 15\\,200$ ✓']},
+  help:[['Två punkter räcker för att bestämma två okända tal. För en linje är de okända $k$ och $m$, för en exponentialfunktion $C$ och $a$.','Startvärdet, där $x = 0$, är oftast lättast att läsa av först.'],
+    ['Linje: räkna lutningen först och sedan $m$. Exponentialfunktion: läs av $C$, dela det andra $y$-värdet med $C$ och ta roten.','Kontrollera alltid formeln med den andra punkten.']],
+  adv:['Ligger ingen av punkterna vid $x = 0$ kan du dela de två ekvationerna med varandra. $f(-1) = 1$ och $f(1) = 3$ ger $a^2 = 3$, alltså $a = \\sqrt{3}$ och $C = \\sqrt{3}$.',
+    'Linjär ökning lägger till samma tal varje steg. Exponentiell ökning gångrar med samma tal. I en graf syns det som en rak linje respektive en kurva som blir allt brantare.'],
+  quiz:{q:'En linje går genom $(1, 2)$ och $(4, 7)$. Vad är lutningen $k$?', options:[{t:'$\\frac{5}{3}$', ok:true, msg:'Rätt: $\\frac{7 - 2}{4 - 1} = \\frac{5}{3}$.'},{t:'$\\frac{3}{5}$', msg:'Ändringen i $y$ ska stå i täljaren: $\\frac{7 - 2}{4 - 1}$.'},{t:'$5$', msg:'Dela med ändringen i $x$, som är $3$.'},{t:'$\\frac{7}{4}$', msg:'Använd skillnaderna mellan punkterna, inte bara den ena punkten.'}]}});
+Object.assign(WORLD_TOPIC,{25:'l25-reg'});
+Object.assign(METHOD,{
+  'b-omskriv':{topic:'l21-mer', how:['Multiplicera ut alla parenteser.','Samla allt på en sida så att det står $0$ på den andra.','Läs av $p$ och $q$ och använd pq-formeln. Kontrollera genom att sätta in svaret i den ursprungliga ekvationen.'], trap:'Att använda nollproduktmetoden fast högerledet inte är noll.'},
+  'b-antal':{topic:'l21-mer', how:['Räkna ut det som står under rottecknet, $\\left(\\frac{p}{2}\\right)^2 - q$, med parametern kvar.','Positivt ger två lösningar, noll ger en dubbelrot och negativt ger inga reella lösningar.','Lös ekvationen eller olikheten för parametern.'], trap:'Att glömma att halvera $p$ innan du kvadrerar, eller att vända olikheten fel.'},
+  'b-problem':{topic:'l21-problem', how:['Kalla det du söker $x$, och skriv de andra storheterna med $x$.','Ställ upp en ekvation, samla allt på en sida och lös med pq-formeln.','Pröva lösningarna mot verkligheten och stryk de som inte passar.'], trap:'Att ta med en negativ lösning, eller att svara på en annan fråga än den som ställdes.'},
+  'b-grafsym':{topic:'l22-graf', how:['Grafen är spegelsymmetrisk kring symmetrilinjen.','Räkna hur långt punkten ligger från symmetrilinjen och gå lika långt åt andra hållet.'], trap:'Att spegla i $y$-axeln i stället för i symmetrilinjen.'},
+  'b-param':{topic:'l22-extrem', how:['Minsta värdet finns på symmetrilinjen, $x = -\\frac{b}{2a}$.','Sätt in det $x$-värdet. Då får du minsta värdet uttryckt med parametern.','Sätt uttrycket lika med det givna värdet och lös. Ett enda nollställe betyder att minsta värdet är $0$.'], trap:'Att tro att parametern själv är minsta värdet.'},
+  'b-rekt':{topic:'l22-rekt', how:['Halva omkretsen är summan av två olika sidor. Kalla ena sidan $x$.','Arean är $x$ gånger den andra sidan, en parabel som öppnar nedåt.','Största arean ligger mitt emellan nollställena. Då är rektangeln en kvadrat.'], trap:'Att använda hela omkretsen i stället för halva.'},
+  'b-vinst':{topic:'l22-problem', how:['Vinst är intäkt minus kostnad.','Största vinsten finns på symmetrilinjen, mitt emellan intäktens nollställen.','Positiv vinst gäller mellan vinstfunktionens nollställen när parabeln öppnar nedåt.'], trap:'Att svara med priset när frågan gäller vinsten, eller att glömma kostnaden.'},
+  'b-potval':{topic:'l23-pot', how:['$a^{\\frac{1}{n}}$ är $n$:te roten ur $a$: vilket tal upphöjt till $n$ blir $a$?','$a^{\\frac{m}{n}}$: ta roten först och upphöj sedan till $m$.','$a^{-n} = \\frac{1}{a^n}$ och $a^0 = 1$.'], trap:'Att tro att en negativ exponent ger ett negativt tal.'},
+  'b-procent':{topic:'l23-exp', how:['Skriv förändringen som en förändringsfaktor: $100$ % plus eller minus ändringen, skrivet som decimaltal.','Nya värdet är förändringsfaktorn gånger gamla värdet.','Söker du det gamla värdet: dela det nya med förändringsfaktorn.'], trap:'Att räkna procenten på det nya värdet när den gäller det gamla.'},
+  'b-lglag':{topic:'l24-lag', how:['Skriv talet som en potens av ett tal vars logaritm du känner.','Använd logaritmlagen: $\\lg x^p = p\\lg x$.','Baklänges: $p\\lg a = \\lg a^p$, och samma logaritm betyder samma tal.'], trap:'Att lägga till exponenten i stället för att gånga, eller att ta med negativa lösningar när det står $\\lg x$.'},
+  'b-expvspot':{topic:'l24-ekv', how:['Titta var $x$ står. I exponenten: exponentialekvation. I basen: potensekvation.','Exponentialekvation: logaritmera båda leden och flytta ner $x$.','Potensekvation: upphöj båda leden till $\\frac{1}{n}$.'], trap:'Att välja fel metod, till exempel att logaritmera när $x$ står i basen.'},
+  'b-ranta':{topic:'l24-tillamp', how:['Ställ upp $C\\cdot a^x = y$ med det du vet.','Okänd faktor $a$: lös potensekvationen $a^x = \\frac{y}{C}$ genom att upphöja till $\\frac{1}{x}$.','Okänd tid $x$: logaritmera. Räkna om faktorn till procent på slutet.'], trap:'Att räkna linjärt, alltså att dela den totala ökningen med antalet år.'},
+  'b-kol14':{topic:'l24-tillamp', how:['Efter varje halveringstid finns hälften kvar. Efter $t$ år finns andelen $0{,}5^{\\frac{t}{T}}$ kvar.','Söker du tiden: logaritmera båda leden.','Söker du procent per tidsenhet: $a = 0{,}5^{\\frac{1}{T}}$.'], trap:'Att tro att mängden minskar lika mycket varje år, alltså linjärt.'},
+  'b-regtyp':{topic:'l25-reg', how:['Räkna skillnaderna mellan $y$-värdena. Lika skillnader: linjär modell.','Räkna kvoterna. Lika kvoter: exponentiell modell.','Skillnader som ändras med lika mycket varje steg: kvadratisk modell.'], trap:'Att bara titta på om värdena ökar. Både linjära och exponentiella modeller kan öka.'},
+  'b-regmodell':{topic:'l25-reg', how:['Läs av vad $x$ och $y$ betyder i modellen, med enheter.','Sätt in rätt $x$-värde. Startvärdet är när $x = 0$.','Räkna potenser först och avrunda på slutet.'], trap:'Att sätta in ett årtal i stället för antal år efter starten.'},
+  'b-grafformel':{topic:'l25-graf', how:['Linje: lutningen $k = \\frac{y_2 - y_1}{x_2 - x_1}$, och sedan $m$ ur en punkt.','Exponentialfunktion: $C$ är $y$-värdet där $x = 0$. Dela det andra $y$-värdet med $C$ och ta roten.','Kontrollera formeln med den andra punkten.'], trap:'Att dela med exponenten i stället för att ta roten.'}
+});
+
 /* =====================================================================
    UTMANING: svåra frågor på A-nivå, inom Matte 2
    Handskrivna. ok() räknar om facit med vanliga tal (oberoende kontroll,
@@ -4305,7 +4895,7 @@ const CHALLENGES=[
 ];
 function challengeTask(q){
   const t={type:'ch-'+q.id, level:q.w, typeName:'Utmaning · A-nivå', und:null, card:null, diff:3, time:q.time||210,
-    prompt:q.prompt, steps:q.steps.slice(), fig:'', lines:null, method:q.how, trap:q.trap, chal:q.id};
+    prompt:q.prompt, steps:q.steps.slice(), fig:'', lines:null, method:q.how, trap:q.trap, chal:q.id, noTime:true};
   const part = q.options
     ? {answer:mcOpts(q.options)}
     : {answer:num(q.values.map(parseNum), q.tex, {ordered:!!q.ordered, hint:q.hint||''}), errors:(q.errors||[]).map(e=>({values:e.values.map(parseNum), msg:e.msg}))};
@@ -4323,7 +4913,7 @@ const MEDALS=['Ingen medalj','Brons','Silver','Guld','Diamant'];
 const starsFor = c => c>=9?3:c>=8?2:c>=6?1:0;
 function freshState(){
   return {v:2, level:1, passed:{}, best:{}, low:{level:0,count:0}, rounds:0, answered:0, correct:0, bestStreak:0, totalTime:0, types:{}, history:[],
-    xp:0, insights:0, insightsEarned:0, hintsUsed:0, stars:{}, und:{}, cards:{}, worldLast:{}, read:{}, chal:{},
+    xp:0, insights:0, insightsEarned:0, hintsUsed:0, stars:{}, und:{}, cards:{}, worldLast:{}, read:{}, chal:{}, secBest:{}, timed:false,
     skin:{owned:['standard'], active:'standard'},
     black:{unlocked:false, beaten:false, name:'', theme:false, lessons:{}, attempts:0, unlockedAt:0}};
 }
@@ -4332,7 +4922,7 @@ function migrate(old){
   const f=freshState();
   for(const k in old) if(old[k]!==undefined) S[k]=old[k];
   S.skin=Object.assign({},f.skin,old.skin||{}); S.black=Object.assign({},f.black,old.black||{});
-  for(const k of ['stars','und','cards','worldLast','passed','best','types','read','chal']) S[k]=Object.assign({},old[k]||{});
+  for(const k of ['stars','und','cards','worldLast','passed','best','types','read','chal','secBest']) S[k]=Object.assign({},old[k]||{});
   if(!Array.isArray(S.history)) S.history=[];
   if(!old.v || old.v<2){
     const now=Date.now();
@@ -4381,7 +4971,7 @@ const blackStatus = (S,now) => !S.black.unlocked ? null : rustyWorlds(S,now).len
 function playerLevel(xp){ let l=1; while(xp>=150*l*l) l++; return {level:l, from:150*(l-1)*(l-1), to:150*l*l}; }
 
 root.Core={Frac,F,Poly,parseNum,parseList,check,answerString,generate,makeRound,reviveTask,TYPES,LEVELS,typesFor,undTypesFor,levelInfo,timeFor,setRandom,sameVals,
-  UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,LEARN,BOOK_LEVELS,approxVals,methodFor,CHALLENGES,challengeTask,challengesOf,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
+  UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,LEARN,BOOK_LEVELS,approxVals,BOOK,chapterTypes,allBookTypes,bookSection,methodFor,CHALLENGES,challengeTask,challengesOf,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
 })(typeof window!=='undefined'?window:globalThis);
 </script>
 
@@ -4458,6 +5048,7 @@ const svgI=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 const ICON={
   play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z" fill="currentColor"/></svg>',
   trophy:svgI('<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>'),
+  chapter:svgI('<path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2z"/><path d="M22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/>'),
   book:svgI('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M9 7h7M9 11h5"/>'),
   map:svgI('<path d="M9 4 3 6.5v13L9 17l6 2.5 6-2.5V4l-6 2.5z"/><path d="M9 4v13M15 6.5v13"/>'),
   spark:svgI('<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/>'),
@@ -4474,7 +5065,7 @@ const ICON={
 };
 
 /* ---------- Världarnas färger ---------- */
-const WORLD_COLOR={21:'#0ea5e9',22:'#10b981',23:'#f59e0b',24:'#ec4899',1:'#3b82f6',2:'#8b5cf6',3:'#f43f5e',4:'#f97316',5:'#14b8a6',6:'#eab308',7:'#22c55e',8:'#06b6d4',9:'#d946ef',10:'#6366f1'};
+const WORLD_COLOR={21:'#0ea5e9',22:'#10b981',23:'#f59e0b',24:'#ec4899',25:'#a855f7',1:'#3b82f6',2:'#8b5cf6',3:'#f43f5e',4:'#f97316',5:'#14b8a6',6:'#eab308',7:'#22c55e',8:'#06b6d4',9:'#d946ef',10:'#6366f1'};
 const wcol=n=>WORLD_COLOR[n]||'#d4af37';   // Black-världarna (11-17) är guld
 
 /* ---------- Dagar i rad (räknas fram ur historiken) ---------- */
@@ -4502,10 +5093,10 @@ function openModal(html){ const m=$('#modal'); m.innerHTML=`<div class="inner">$
 function bindCards(root){ root.querySelectorAll('[data-card]').forEach(b=>b.onclick=()=>{ const c=C.CARDS.find(x=>x.id===b.dataset.card); openModal(cardHTML(c,true,{big:true})); }); }
 
 /* ---------- Skärmar ---------- */
-const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test','account','learn','topic','chal'];
+const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test','account','learn','topic','chal','book'];
 let curWorld=1;
 // Mobilens tillbaka-gest går tillbaka i appen. Sidor man bläddrar mellan läggs i webbläsarens historik.
-const NAV=['worlds','world','kodex','shop','stats','black','bworld','lesson','account','learn','topic','chal'];
+const NAV=['worlds','world','kodex','shop','stats','black','bworld','lesson','account','learn','topic','chal','book'];
 function show(name,arg,fromHistory){
   if(!fromHistory){
     if(NAV.includes(name)) history.pushState({s:name,arg:arg===undefined?null:arg},'');
@@ -4527,6 +5118,7 @@ function show(name,arg,fromHistory){
   if(name==='account') renderAccount();
   if(name==='learn') renderLearn();
   if(name==='chal') renderChal();
+  if(name==='book') renderBook();
   if(name==='topic'){ if(arg) curTopic=arg; renderTopic(); }
 }
 $$('[data-home]').forEach(b=>b.onclick=()=>show('home'));
@@ -4558,6 +5150,9 @@ function renderHome(){
   $('#b-continue').style.setProperty('--wc',wcol(S.level));
   $('#b-continue').innerHTML=`<span class="pi">${ICON.play}</span><span class="pt">Fortsätt<small><span class="wdot"></span>${esc(worldName(S.level))}</small></span><span class="chev">›</span>`;
   const act=(icon,title,sub)=>`<span class="ic">${icon}</span><span><b>${title}</b><small>${sub}</small></span>`;
+  const allSecs=C.BOOK.flatMap(c=>c.sections), nSec=allSecs.filter(x=>S.secBest[x.id]!=null).length;
+  $('#b-book').innerHTML=act(ICON.chapter,'Kapitel 2 i boken',nSec?`${nSec} av ${allSecs.length} avsnitt övade · 2.1–2.5`:'Samma avsnitt som i boken, 2.1–2.5');
+  $('#home-timed').innerHTML=timeToggleHTML(); bindTimeToggle($('#home-timed'));
   const nRead=Object.values(C.LEARN).flat().filter(t=>S.read[t.id]).length, nTopics=Object.values(C.LEARN).flat().length;
   $('#b-learn').innerHTML=act(ICON.book,'Lär dig',nRead?`${nRead} av ${nTopics} avsnitt lästa · fungerar offline`:'Läs på i lugn och ro, även offline');
   $('#b-worlds').innerHTML=act(ICON.map,'Världar','Medaljer och nivåer');
@@ -4579,6 +5174,7 @@ $('#b-kodex').onclick=()=>show('kodex');
 $('#b-shop').onclick=()=>show('shop');
 $('#b-stats').onclick=()=>show('stats');
 $('#b-learn').onclick=()=>show('learn');
+$('#b-book').onclick=()=>show('book');
 $('#b-chal').onclick=()=>show('chal');
 
 /* ---------- Världar ---------- */
@@ -4590,10 +5186,9 @@ function renderWorlds(){
       <span class="t">${esc(L.name)}<small><span class="stars">${starStr(mi.stars)}</span> · ${C.MEDALS[mi.medal]}${mi.und?' · <span class="stamp">Förstådd</span>':''}${rust?' · <span class="rusttag">Rostig</span>':''}</small></span>
       <span class="medal">${MEDAL_ICON[mi.medal]}</span></button>`;
   }).join('')+`<button class="lvl${S.level===10?' cur':''}" data-w="10" style="--wc:${wcol(10)}"><span class="n">10</span><span class="t">Provnivå<small>Provberedskap: ${C.provGrade(S)||'inte testad'}</small></span><span class="medal">${C.provGrade(S)||'–'}</span></button>`;
-  $('#worldlist').insertAdjacentHTML('beforeend',`<h3 style="margin:18px 0 2px">Kapitel ur boken</h3><p class="small muted" style="margin:0 0 8px">Samma områden som i läroboken, kapitel 2.1–2.4. Miniräknare finns på uppgifterna som behöver en. Påverkar inte medaljerna.</p>`+
-    C.BOOK_LEVELS.map(n=>{ const st=S.stars[n]||{best:0}; return `<button class="lvl" data-bk="${n}" style="--wc:${wcol(n)}"><span class="n">2.${n-20}</span><span class="t">${esc(C.levelInfo(n).name.replace(/^2\.\d /,''))}<small><span class="stars">${starStr(st.best)}</span>${n>=23?' · 🧮 miniräknare':''}</small></span></button>`; }).join(''));
+  $('#worldlist').insertAdjacentHTML('beforeend',`<button class="lvl" id="w-book" style="--wc:#0ea5e9;margin-top:8px"><span class="n">2</span><span class="t">Kapitel 2 i boken<small>2.1–2.5 med samma avsnitt och sidor som i boken</small></span><span class="ok">›</span></button>`);
   $$('#worldlist [data-w]').forEach(b=>b.onclick=()=>show('world',+b.dataset.w));
-  $$('#worldlist [data-bk]').forEach(b=>b.onclick=()=>startRound('level',+b.dataset.bk));
+  $('#w-book').onclick=()=>show('book');
 }
 function renderWorld(w){
   const L=C.levelInfo(w), now=Date.now();
@@ -4713,9 +5308,11 @@ const cur=()=>R.tasks[R.i];
 function snapshot(){ const o={}; C.WORLDS.forEach(w=>{ const m=C.medalInfo(S,w); o[w]={medal:m.medal,und:m.und}; }); return o; }
 function startRound(mode,level,typeIds){
   if(mode==='challenge') return startChallenge(typeIds);
+  if(mode==='section') return startSection(typeIds);
   let tasks;
   if(mode==='und') tasks=C.makeRound(C.undTypesFor(level),10);
   else if(mode==='practice') tasks=C.makeRound(typeIds,10);
+  else if(C.BOOK_LEVELS.includes(level)) tasks=C.makeRound(C.chapterTypes(level),10);   // hela kapitlet i boken
   else tasks=C.makeRound(C.typesFor(level),10,C.undTypesFor(level),3);
   startRun({mode,level,ids:typeIds,tasks});
 }
@@ -4731,6 +5328,8 @@ function enterGame(){
   show('game');
 }
 function taskLimit(t){ return t.time || C.timeFor(t.level,!!t.und,t.diff); }
+// Tidspress bara om spelaren slagit på den, och aldrig på problemlösning, miniräknaruppgifter och utmaningar. Slutbossen har alltid sin klocka.
+const isTimed = t => R.mode==='boss' || (S.timed && !t.noTime && !t.calc && R.mode!=='challenge');
 
 // st: sparat läge för en påbörjad uppgift (från en pausad runda)
 function showTask(st){
@@ -4738,12 +5337,12 @@ function showTask(st){
   R.part=0; R.partRes=[]; R.hint=false; R.hintPenalty=false; R.done=false; R.paused=false;
   $('#s-game').classList.remove('answered'); $('#g-card').classList.remove('ok-fx','no-fx');
   const total=R.tasks.length;
-  $('#g-title').innerHTML=`<span class="wdot"></span>${runTitle()}`;
+  $('#g-title').innerHTML=`<span class="wdot"></span><span class="wtxt">${runTitle()}</span>`;
   renderProgress();
   $('#g-score').textContent=R.score; $('#g-ins').textContent=R.ins;
   renderCombo(false);
   $('#g-type').innerHTML=t.und?`<span class="ubadge">✦ ${esc(C.UND[t.und])}</span>`:esc(t.typeName);
-  $('#g-diff').innerHTML=(t.calc?'<span class="calctag">🧮</span>':'')+(t.diff>1&&!t.time?'<span class="xtime">+ extra tid</span> ':'')+'Svårighet '+t.diff+' '+[1,2,3].map(i=>`<i class="${i<=t.diff?'on':''}"></i>`).join('');
+  $('#g-diff').innerHTML=(t.calc?'<span class="calctag">🧮</span>':'')+(t.diff>1&&!t.time&&isTimed(t)?'<span class="xtime">+ extra tid</span> ':'')+'Svårighet '+t.diff+' '+[1,2,3].map(i=>`<i class="${i<=t.diff?'on':''}"></i>`).join('');
   $('#g-prompt').innerHTML=`<div>${md(t.prompt)}</div>`;
   $('#g-lines').innerHTML=t.lines?`<ol class="sol">${t.lines.map((l,i)=>`<li class="${i===t.mark?'mark':''}"><span class="rn">Rad ${i+1}</span><span>${md(l)}</span></li>`).join('')}</ol>`:'';
   $('#g-fig').innerHTML=t.fig;
@@ -4766,7 +5365,10 @@ function showTask(st){
     }
   }
   renderPart();
-  startTimer(st?st.limit:taskLimit(t), st?st.left:undefined);
+  // Sparad uppgift: samma klocka som när den pausades (äldre sparningar har bara kvarvarande tid)
+  const lim = st ? (st.limit||null) : (isTimed(t) ? taskLimit(t) : null);
+  const el0 = st ? (st.elapsed!=null ? st.elapsed : (st.limit && st.left!=null ? Math.max(0,st.limit-st.left) : 0)) : 0;
+  startTimer(lim, el0);
   saveRun();
 }
 function renderProgress(){
@@ -4781,12 +5383,12 @@ function renderCombo(pop){
   el.classList.toggle('zero',R.streak===0); el.classList.toggle('hot',R.streak>=3);
   if(pop){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 }
-function runTitle(){ return R.mode==='challenge'?'Utmaning':R.mode==='practice'?'Träna fel':R.mode==='und'?'Förståelse':R.level<=10?'Nivå '+R.level:esc(C.levelInfo(R.level).name); }
+function runTitle(){ return R.mode==='section'?esc(R.sec.title):R.mode==='challenge'?'Utmaning':R.mode==='practice'?'Träna fel':R.mode==='und'?'Förståelse':R.level<=10?'Nivå '+R.level:esc(C.levelInfo(R.level).name); }
 
 /* ----- Ledtråd ----- */
 function renderHintButton(){
   const t=cur(), box=$('#g-hint');
-  if(t.und || R.mode==='boss' || !t.steps.length){ box.innerHTML=''; return; }
+  if(t.und || R.mode==='boss' || R.noHints || !t.steps.length){ box.innerHTML=''; return; }
   box.innerHTML=`<div style="margin-top:12px"><button class="hintbtn" id="b-hint">💡 Ledtråd · ${S.insights>=1?'1 ✦':'halva XP'}</button></div>`;
   $('#b-hint').onclick=()=>{
     if(R.done||R.hint) return;
@@ -4913,13 +5515,17 @@ function partVerdict(box,p,res){
 
 /* ----- Timer ----- */
 // left: kvarvarande sekunder när en pausad uppgift fortsätter
-function startTimer(limit,left){
+// limit: sekunder, eller null när uppgiften inte har tidspress. elapsed0: tid som redan gått (pausad uppgift).
+function startTimer(limit,elapsed0=0){
   cancelAnimationFrame(R.raf);
-  R.limit=limit; R.t0=performance.now()-(left===undefined?0:Math.max(0,limit-left)*1000); R.paused=false;
+  R.limit=limit||null; R.t0=performance.now()-elapsed0*1000; R.paused=false;
   const bar=$('#g-timer'), fill=bar.firstElementChild, txt=$('#g-timetext');
+  bar.classList.toggle('hidden',!R.limit); txt.classList.toggle('notime',!R.limit);
+  if(!R.limit){ bar.classList.remove('low'); txt.classList.remove('low'); txt.textContent='Ingen tidspress'; return; }
+  limit=R.limit;
   const tick=()=>{
     if(!R||R.done||R.paused) return;
-    const left=Math.max(0,limit-(performance.now()-R.t0)/1000), f=left/limit;
+    const left=Math.max(0,limit-elapsedNow()), f=left/limit;
     fill.style.width=(100*f)+'%';
     // grön → gul → röd när tiden rinner ut
     bar.style.setProperty('--tc', f>=0.6 ? 'var(--good)' : f>=0.3 ? `color-mix(in srgb,var(--good) ${Math.round((f-0.3)/0.3*100)}%,var(--warn))`
@@ -4936,7 +5542,7 @@ function startTimer(limit,left){
 function finishTask(timedOut){
   R.done=true; cancelAnimationFrame(R.raf);
   $('#s-game').classList.add('answered'); closeCalc();
-  const t=cur(), used=Math.min(R.limit,(performance.now()-R.t0)/1000);
+  const t=cur(), used=R.limit ? Math.min(R.limit,elapsedNow()) : elapsedNow();
   // olåsta delar räknas som fel
   const boxes=[...$('#g-parts').children];
   t.parts.forEach((p,i)=>{ if(!R.partRes[i]){ if(boxes[i]){ lockPart(boxes[i],p,null,null); if(t.parts.length>1) partVerdict(boxes[i],p,null); } } });
@@ -4946,7 +5552,7 @@ function finishTask(timedOut){
 
   let pts=0;
   if(ok){
-    pts = t.und ? 60 : 50+Math.round(100*(1-used/R.limit));
+    pts = t.und ? 60 : R.limit ? 50+Math.round(100*(1-used/R.limit)) : 75;   // utan tidspress: fast poäng
     pts += Math.min(50,10*R.streak);
     if(R.mode==='challenge') pts*=2;
     if(R.hintPenalty) pts=Math.round(pts/2);
@@ -4971,7 +5577,7 @@ function finishTask(timedOut){
 
   $('#g-score').textContent=R.score; $('#g-ins').textContent=R.ins;
   renderCombo(ok); renderProgress();
-  $('#g-timer').firstElementChild.style.width=(100*Math.max(0,1-used/R.limit))+'%';
+  if(R.limit) $('#g-timer').firstElementChild.style.width=(100*Math.max(0,1-used/R.limit))+'%';
   $('#g-timer').classList.remove('low'); $('#g-timetext').classList.remove('low');
   const card=$('#g-card'); card.classList.remove('ok-fx','no-fx'); void card.offsetWidth; card.classList.add(ok?'ok-fx':'no-fx');
   if(ok && pts){ const f=document.createElement('span'); f.className='xpfloat'; f.textContent='+'+pts; $('#g-score').appendChild(f); setTimeout(()=>f.remove(),1200); }
@@ -4981,17 +5587,13 @@ function finishTask(timedOut){
   const head = timedOut ? '<div class="verdict time"><span><span class="vi">⏰</span>Tiden tog slut</span></div>'
             : ok ? `<div class="verdict ok"><span><span class="vi">✓</span>${R.streak>=3?'Grymt, '+R.streak+' i rad!':'Rätt!'}</span><span class="pts">+${pts} XP</span></div>`
                  : '<div class="verdict no"><span><span class="vi">✗</span>Inte riktigt</span></div>';
-  const last=t.steps.length-1;
-  const tip = single && !ok && r0 && r0.res.msg ? `<div class="tip">${md(r0.res.msg)}</div>` : '';
   const facit = single && !ok && p0.answer.kind!=='order' ? `<div class="facit">Rätt svar: ${md(facitOf(p0))}</div>` : '';
   const fb=$('#g-feedback');
   fb.innerHTML=`<div class="feedback ${timedOut?'time':ok?'ok':'no'}">
-      ${head}${facit}${tip}
+      ${head}${facit}
       ${ins?`<div class="insgain">+${ins} ✦ Insikter${predOk&&ins>2?' (varav 2 för rätt förutsägelse)':''}</div>`:''}
       ${newCard?`<div class="newcard"><div class="lbl">Nytt Kodex-kort!</div>${cardHTML(newCard,true,{reveal:true})}</div>`:''}
-      <button class="btn lhelp morebtn${ok?'':' hot'}" id="b-more">📖 Förklara mer, steg för steg</button><div id="morebox"></div>
-      <div class="stepshead">${ok?'Så här kan man tänka':'Så här löser du den'}</div>
-      <ol class="steps">${t.steps.map((s,i)=>`<li class="${i===last&&/^Kontroll/.test(s)?'check':''}">${md(s)}</li>`).join('')}</ol>
+      <button class="btn lhelp morebtn${ok?'':' hot'}" id="b-more">📖 ${ok?'Visa lösningen':'Förklara hur man löser den'}</button><div id="morebox"></div>
     </div>
     <button class="btn primary sticky" id="b-next">${nextLabel()}</button>`;
   bindCards(fb);
@@ -5070,21 +5672,38 @@ function toggleExplain(t){
   const m=C.methodFor(t), mains=t.parts.map((p,i)=>({p,pr:R.partRes[i]})).filter(x=>x.p.role!=='predict');
   const wrong=mains.filter(x=>!(x.pr&&x.pr.res.correct));
   const msgs=wrong.map(x=>x.pr&&x.pr.res.msg).filter(Boolean);
-  let shown=1;
+  const steps=t.steps, last=steps.length-1, isCheck=i=>i===last&&/^Kontroll/.test(steps[i]);
+  let shown=1, helpLvl=0, nr=0; const H=title=>`<h4>${++nr} · ${title}</h4>`;
   box.innerHTML=`
-    ${wrong.length?`<div class="lpanel help"><h4>Ditt svar och rätt svar</h4>${wrong.map(x=>`<p>${t.parts.length>1&&x.p.prompt?md(x.p.prompt)+'<br>':''}Du svarade: ${yourAnswer(x.p,x.pr)}<br>Rätt svar: ${md(facitOf(x.p))}</p>`).join('')}
+    <div class="xsec">${H('Uppgiften')}<div class="xq">${md(t.prompt)}</div>${t.lines?`<ol class="sol">${t.lines.map((l,i)=>`<li class="${i===t.mark?'mark':''}"><span class="rn">Rad ${i+1}</span><span>${md(l)}</span></li>`).join('')}</ol>`:''}</div>
+    ${wrong.length?`<div class="lpanel help">${H('Ditt svar')}${wrong.map(x=>`<p>${t.parts.length>1&&x.p.prompt?md(x.p.prompt)+'<br>':''}Du svarade: ${yourAnswer(x.p,x.pr)}<br>Rätt svar: ${md(facitOf(x.p))}</p>`).join('')}
       ${msgs.map(s=>`<p><b>Det här gick fel:</b> ${md(s)}</p>`).join('')}</div>`:''}
-    ${m.how.length?`<div class="lpanel adv"><h4>Så tänker du</h4>${m.how.map(p=>`<p>${md(p)}</p>`).join('')}${m.trap?`<p><b>Vanligt fel:</b> ${md(m.trap)}</p>`:''}</div>`:''}
-    <div class="card"><b>Lösningen, ett steg i taget</b><ol class="exsteps bigsteps" id="mx-steps"></ol>
+    ${m.how.length?`<div class="lpanel adv">${H('Så tänker du')}<ol class="xhow">${m.how.map(p=>`<li>${md(p)}</li>`).join('')}</ol>${m.trap?`<p class="xtrap"><b>Vanligt fel:</b> ${md(m.trap)}</p>`:''}</div>`:''}
+    <div class="card xsteps">${H('Lösningen steg för steg')}<ol id="mx-steps"></ol>
       <div class="row"><button class="btn" id="mx-next">Nästa steg</button><button class="btn ghost" id="mx-all">Visa alla</button></div></div>
-    ${m.topic?`<button class="btn ghost" id="mx-basics">Repetera grunderna: ${md(m.topic.title)}</button><div id="mx-basicsbox"></div>`:''}`;
-  const steps=t.steps, draw=()=>{ $('#mx-steps').innerHTML=steps.slice(0,shown).map(s=>`<li>${md(s)}</li>`).join('');
-    if(shown>=steps.length){ const r=$('#mx-next'); if(r) r.closest('.row').remove(); } };
+    ${m.topic?`<button class="btn lhelp" id="mx-simple">🤔 Förstår inte, förklara enklare</button><div id="mx-simplebox"></div>
+      <button class="btn ghost" id="mx-basics">📚 Repetera grunderna: ${md(m.topic.title)}</button><div id="mx-basicsbox"></div>`:''}`;
+  const draw=()=>{ $('#mx-steps').innerHTML=steps.slice(0,shown).map((s,i)=>`<li class="${isCheck(i)?'check':''}">${md(s)}</li>`).join('');
+    if(shown>=steps.length){ const r=$('#mx-next'); if(r) r.closest('.row').remove(); }
+    const li=$('#mx-steps').lastElementChild; if(li && shown>1) li.scrollIntoView({behavior:'smooth',block:'nearest'}); };
   draw();
   $('#mx-next').onclick=()=>{ shown++; draw(); };
   $('#mx-all').onclick=()=>{ shown=steps.length; draw(); };
+  // "Förstår inte": genomgångens enklare förklaringar en nivå i taget, och sist ett exempel till
+  const sb=$('#mx-simple'); if(sb) sb.onclick=()=>{
+    const hb=$('#mx-simplebox'), help=m.topic.help;
+    if(helpLvl<help.length){
+      hb.insertAdjacentHTML('beforeend',`<div class="lpanel help"><h4>${helpLvl===0?'Enklare förklarat':'Ännu enklare, steg för steg'}</h4>${help[helpLvl].map(p=>`<p>${md(p)}</p>`).join('')}</div>`);
+      helpLvl++; sb.textContent=helpLvl<help.length?'🤔 Förstår fortfarande inte':'🤔 Visa ett exempel till';
+    } else if(!$('#mx-ex')){
+      const ex=m.topic.ex;
+      hb.insertAdjacentHTML('beforeend',`<div class="card" id="mx-ex"><b>Ett exempel till</b><p style="margin:8px 0 0">${md(ex.prompt)}</p><ol class="exsteps">${ex.steps.map(x=>`<li>${md(x)}</li>`).join('')}</ol></div>`);
+      sb.remove();
+    }
+    hb.lastElementChild.scrollIntoView({behavior:'smooth',block:'nearest'});
+  };
   const bb=$('#mx-basics'); if(bb) bb.onclick=()=>{ const x=$('#mx-basicsbox');
-    x.innerHTML=x.innerHTML?'':`<div class="card ltext" style="--wc:${wcol(Math.min(t.level,10))}">${m.topic.easy.map(p=>`<p>${md(p)}</p>`).join('')}</div>`; };
+    x.innerHTML=x.innerHTML?'':`<div class="card ltext" style="--wc:${wcol(Math.min(t.level,25))}">${m.topic.easy.map(p=>`<p>${md(p)}</p>`).join('')}</div>`; };
   box.firstElementChild.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function nextLabel(){ return R.i<R.tasks.length-1?'Nästa':R.mode==='boss'?'Se hur det gick':'Se resultatet'; }
@@ -5093,12 +5712,14 @@ function next(){ if(R.i<R.tasks.length-1){ R.i++; showTask(); window.scrollTo(0,
 /* ----- Paus: rundan sparas efter varje svar och kan fortsätta senare ----- */
 const runKey=()=>storeKey+'-runda';   // testläget har en egen
 const fmtLeft=v=>(v>=60?Math.floor(v/60)+' min '+Math.ceil(v%60):Math.ceil(v))+' s';
-const timeLeft=()=>R.paused ? R.left : Math.max(0,R.limit-(performance.now()-R.t0)/1000);
+const elapsedNow=()=>(performance.now()-R.t0)/1000;
+const elapsed=()=>R.paused ? R.pElapsed : elapsedNow();
+const timeLeft=()=>R.limit ? Math.max(0,R.limit-elapsed()) : null;
 function saveRun(){
   if(!R) return;
   const o={v:1, savedAt:Date.now(), mode:R.mode, level:R.level, ids:R.ids||null, tasks:R.tasks, i:R.i, score:R.score, ins:R.ins, streak:R.streak,
-    results:R.results, newCards:R.newCards, chal:R.chal||null, before:R.before, plBefore:R.plBefore, sBefore:R.sBefore||null,
-    cur:{done:!!R.done, part:R.part||0, partRes:R.partRes||[], hint:!!R.hint, hintPenalty:!!R.hintPenalty, limit:R.limit, left:R.done?0:timeLeft()}};
+    results:R.results, newCards:R.newCards, chal:R.chal||null, sec:R.sec||null, noHints:!!R.noHints, before:R.before, plBefore:R.plBefore, sBefore:R.sBefore||null,
+    cur:{done:!!R.done, part:R.part||0, partRes:R.partRes||[], hint:!!R.hint, hintPenalty:!!R.hintPenalty, limit:R.limit, elapsed:R.done?0:elapsed(), left:R.done?0:timeLeft()}};
   try{ localStorage.setItem(runKey(),JSON.stringify(o)); }catch(e){}
 }
 function loadRun(){
@@ -5108,15 +5729,15 @@ function clearRun(){ try{ localStorage.removeItem(runKey()); }catch(e){} }
 function runPlace(o){
   const t=o.tasks[o.i]||o.tasks[0], n=o.tasks.length, at=Math.min(n,o.i+(o.cur.done?2:1));
   if(o.mode==='boss') return `Slutbossen · steg ${Math.min(o.cur.part+1,t.parts.length)} av ${t.parts.length}`;
-  const where = o.mode==='challenge' ? 'Utmaning · '+(o.chal==='mix'?'blandat':worldName(o.level)) : o.mode==='practice' ? 'Träna fel' : (o.mode==='und'?'Förståelse · ':'')+worldName(o.level);
+  const where = o.mode==='section' ? (o.sec?o.sec.title:'Kapitel 2') : o.mode==='challenge' ? 'Utmaning · '+(o.chal==='mix'?'blandat':worldName(o.level)) : o.mode==='practice' ? 'Träna fel' : (o.mode==='und'?'Förståelse · ':'')+worldName(o.level);
   return `${where} · uppgift ${at} av ${n}`;
 }
 function pauseRun(){
   if(!R || R.paused || $('#s-game').classList.contains('hidden')) return;
-  if(!R.done){ R.left=timeLeft(); cancelAnimationFrame(R.raf); }
+  if(!R.done){ R.pElapsed=elapsedNow(); cancelAnimationFrame(R.raf); }
   R.paused=true; saveRun(); $('#s-game').classList.add('paused'); closeCalc();
   $('#pm-info').textContent=runPlace(loadRun()||{mode:R.mode,level:R.level,tasks:R.tasks,i:R.i,cur:{done:R.done,part:R.part}})
-    +(R.done?'':` · ${fmtLeft(R.left)} kvar`)+(R.streak?` · combo ${R.streak}`:'');
+    +(R.done||!R.limit?'':` · ${fmtLeft(Math.max(0,R.limit-R.pElapsed))} kvar`)+(R.streak?` · combo ${R.streak}`:'');
   $('#pm-abort').textContent='Avbryt rundan (räknas inte)'; abortArmed=false;
   $('#pausemenu').classList.remove('hidden');
 }
@@ -5124,7 +5745,7 @@ function unpause(){
   $('#pausemenu').classList.add('hidden'); $('#s-game').classList.remove('paused');
   if(!R||!R.paused) return;
   R.paused=false;
-  if(!R.done) startTimer(R.limit,R.left);
+  if(!R.done) startTimer(R.limit,R.pElapsed);
 }
 function leaveGame(){
   closeCalc();
@@ -5167,7 +5788,7 @@ function askAboutSavedRun(then){
 function renderResumeCard(){
   const box=$('#home-resume'), o=loadRun();
   if(!o){ box.innerHTML=''; return; }
-  const left=o.cur.done?'':` · ${fmtLeft(o.cur.left)} kvar`;
+  const left=o.cur.done||!o.cur.limit||o.cur.left==null?'':` · ${fmtLeft(o.cur.left)} kvar`;
   box.innerHTML=`<button class="btn resume" id="b-resume" style="--wc:${o.mode==='boss'?'#d4af37':wcol(o.level)}"><span class="ic">${ICON.play}</span>
     <span><b>Fortsätt där du slutade</b><small>${esc(runPlace(o))}${left}${o.streak?` · 🔥 ${o.streak}`:''}</small></span></button>
     <button class="resume-x" id="b-resume-x">Avbryt den pausade rundan</button>`;
@@ -5216,7 +5837,8 @@ function endRound(){
   const missedIds=Object.keys(missed);
   const mode=R.mode;
   const newCards=R.newCards.map(id=>C.CARDS.find(c=>c.id===id));
-  $('#e-title').textContent=R.mode==='challenge'?'Utmaningen klar':R.mode==='practice'?'Träningsrundan klar':R.mode==='und'?'Förståelserundan klar':`${runTitle()} klar`;
+  if(R.mode==='section' && R.sec){ S.secBest[R.sec.id]=Math.max(S.secBest[R.sec.id]||0,right); save(); }
+  $('#e-title').textContent=R.mode==='section'?R.sec.title+': klar':R.mode==='challenge'?'Utmaningen klar':R.mode==='practice'?'Träningsrundan klar':R.mode==='und'?'Förståelserundan klar':`${runTitle()} klar`;
   $('#endbody').innerHTML=`
     ${counts?`<div class="bigstars" aria-label="${stars} stjärnor">${[0,1,2].map(i=>`<i>${i<stars?'★':'☆'}</i>`).join('')}</div>`:''}
     ${banner}
@@ -5534,6 +6156,56 @@ function renderTopic(){
   $('#l-back').onclick=()=>show('learn');
   $('#l-back-top').onclick=()=>show('learn');
   $('#l-home-top').onclick=()=>show('home');
+}
+
+/* =====================================================================
+   KAPITEL 2 I BOKEN: samma avsnitt och sidor som i läroboken (Core.BOOK)
+   Avsnitt övas med mode 'section' (påverkar inte stjärnor), hela kapitlet
+   med mode 'level' på nivå 21–25.
+   ===================================================================== */
+function timeToggleHTML(){
+  return `<div class="timetoggle"><span><b>⏱ Tidspress</b><small>${S.timed?'På: uppgifterna har en klocka. Problemlösning, tillämpningar och miniräknaruppgifter har aldrig tidspress.':'Av: ta den tid du behöver. Slå på när du vill träna snabbhet.'}</small></span><button class="tt-btn${S.timed?' on':''}" data-timed aria-pressed="${S.timed}">${S.timed?'På':'Av'}</button></div>`;
+}
+function bindTimeToggle(root){
+  root.querySelectorAll('[data-timed]').forEach(b=>b.onclick=()=>{ S.timed=!S.timed; save(); root.innerHTML=timeToggleHTML(); bindTimeToggle(root); });
+}
+function startSection(id){
+  if(id==='mix2') return startRun({mode:'section', level:21, ids:id, sec:{id, title:'Blandade övningar 2'}, tasks:C.makeRound(C.allBookTypes(),10)});
+  if(id==='test2'){
+    const secs=shuffleArr(C.BOOK.flatMap(c=>c.sections)).slice(0,10);
+    return startRun({mode:'section', level:21, ids:id, noHints:true, sec:{id, title:'Testa dig själv 2'}, tasks:secs.map(x=>C.generate(x.types[Math.floor(Math.random()*x.types.length)]))});
+  }
+  const x=C.bookSection(id);
+  startRun({mode:'section', level:x.chapter, ids:id, sec:{id, title:x.title}, tasks:C.makeRound(x.types,8)});
+}
+function openTopic(id){
+  for(const [w,ts] of Object.entries(C.LEARN)){ const k=ts.findIndex(t=>t.id===id); if(k>=0) return show('topic',{w:+w,k}); }
+}
+function renderBook(){
+  const row=(x,n)=>{ const best=S.secBest[x.id], read=x.learn&&S.read[x.learn];
+    return `<div class="bsec"><div class="bsec-t"><b>${esc(x.title)}</b><small>s. ${x.page}${best!=null?` · bästa ${best} av 8`:''}${read?' · läst':''}</small></div>
+      <div class="bsec-b">${x.learn?`<button class="btn ghost sm" data-read="${x.learn}">Läs</button>`:''}<button class="btn sm" data-sec="${x.id}">Öva</button></div></div>`; };
+  const extra=(id,title,sub,n)=>`<div class="bsec"><div class="bsec-t"><b>${title}</b><small>${sub}${S.secBest[id]!=null?` · bästa ${S.secBest[id]} av ${n}`:''}</small></div><div class="bsec-b"><button class="btn sm" data-sec="${id}">Starta</button></div></div>`;
+  $('#bookbody').innerHTML=`<div class="backrow"><button class="backbtn" data-home>‹ Startsidan</button></div>
+    <p class="lkicker" style="--wc:#0ea5e9">Matte 2 · Kapitel 2 · s. 86</p><h2>Algebra och icke-linjära modeller</h2>
+    <p class="sub small">Samma avsnitt och sidor som i boken. Tryck <b>Läs</b> för genomgången och <b>Öva</b> för uppgifter. Efter varje uppgift kan du trycka fram en förklaring steg för steg.</p>
+    <div id="book-timed">${timeToggleHTML()}</div>
+    ${C.BOOK.map(c=>{ const st=S.stars[c.n]||{best:0}; return `<div class="card bchap" style="--wc:${wcol(c.n)}">
+      <div class="bchap-h"><span class="n">2.${c.n-20}</span><span><b>${esc(c.title.replace(/^2\.\d /,''))}</b><small>s. ${c.page} · <span class="stars">${starStr(st.best)}</span> för hela avsnittet</small></span></div>
+      ${c.sections.map(x=>row(x,c.n)).join('')}
+      <button class="btn primary" data-chap="${c.n}">Öva hela ${c.title.slice(0,3)}</button></div>`; }).join('')}
+    <div class="card bchap" style="--wc:var(--accent)"><div class="bchap-h"><span class="n">✓</span><span><b>Avslutning av kapitlet</b><small>s. 156–165</small></span></div>
+      <div class="bsec"><div class="bsec-t"><b>Sammanfattning 2</b><small>s. 156 · alla genomgångar i Lär dig</small></div><div class="bsec-b"><button class="btn ghost sm" data-goto="learn">Läs</button></div></div>
+      ${extra('test2','Testa dig själv 2','s. 159 · en uppgift från tio avsnitt, utan ledtrådar',10)}
+      ${extra('mix2','Blandade övningar 2','s. 160 · tio blandade uppgifter från hela kapitlet',10)}</div>
+    <button class="btn ghost" data-home>Tillbaka</button>`;
+  const box=$('#bookbody');
+  box.querySelectorAll('[data-home]').forEach(b=>b.onclick=()=>show('home'));
+  box.querySelectorAll('[data-sec]').forEach(b=>b.onclick=()=>startSection(b.dataset.sec));
+  box.querySelectorAll('[data-chap]').forEach(b=>b.onclick=()=>startRound('level',+b.dataset.chap));
+  box.querySelectorAll('[data-read]').forEach(b=>b.onclick=()=>openTopic(b.dataset.read));
+  box.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>show(b.dataset.goto));
+  bindTimeToggle($('#book-timed'));
 }
 
 /* =====================================================================
