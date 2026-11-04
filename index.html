@@ -172,6 +172,98 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
 .timetoggle small{display:block;color:var(--muted);font-size:.78rem;font-weight:600;margin-top:2px}
 .tt-btn{flex:0 0 64px;min-height:38px;border:0;border-radius:999px;font-weight:900;background:var(--raised);color:var(--muted)}
 .tt-btn.on{background:var(--good);color:#fff}
+/* ---------- Guiden ---------- */
+.guidecard{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 20%,var(--card)),var(--card) 70%);border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:var(--radius);padding:14px 16px;margin:0 0 14px;box-shadow:var(--shadow)}
+.guidecard .gbadge{flex:0 0 52px;height:52px;border-radius:16px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font:900 1.6rem/1 var(--num)}
+.guidecard .gt,.grow .gt,.gnode .gt,.cellrow .gt{flex:1;min-width:0;display:flex;flex-direction:column}
+.guidecard .gt small{color:var(--muted);font-size:.85rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.guidecard .chev{color:var(--muted);font-size:1.4rem}
+.gbar{display:block;height:6px;border-radius:99px;background:var(--raised);margin-top:7px;overflow:hidden}
+.gbar i{display:block;height:100%;border-radius:99px;background:var(--accent)}
+.gradecard .gc-top{display:flex;align-items:center;gap:14px}
+.gbig{flex:0 0 72px;height:72px;border-radius:22px;display:grid;place-items:center;font:900 2.6rem/1 var(--num);color:var(--accent-ink);background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 78%,#fff),var(--accent))}
+.gline{display:block;font-size:.98rem;margin-top:2px}
+.gscale{position:relative;margin:18px 8px 26px}
+.gscale .trk{height:10px;border-radius:99px;background:var(--raised);overflow:hidden}
+.gscale .fil{height:100%;border-radius:99px;background:var(--accent)}
+.gscale .tk{position:absolute;top:-3px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+.gscale .tk i{width:2px;height:16px;background:var(--card)}
+.gscale .tk em{font-style:normal;font-size:.75rem;color:var(--muted);font-weight:800;margin-top:2px}
+.gpts{margin:0 0 10px}
+.gneed{background:var(--raised);border-radius:14px;padding:10px 12px;font-size:.92rem;margin:0 0 10px}
+.nchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.nchip{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px 10px;font-size:.8rem;font-weight:700}
+.gwhy{color:var(--muted);margin:0}
+.gnext h3{margin:4px 0 4px;font-size:1.15rem;line-height:1.3}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.chip{background:var(--raised);border-radius:99px;padding:4px 10px;font-size:.8rem;font-weight:800;color:var(--muted)}
+.gchart{position:relative}
+.gchart svg{display:block;width:100%;height:auto;touch-action:pan-y;outline:none}
+.gchart svg:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:8px}
+.gaxis,.gref{stroke:var(--grid);stroke-width:1}
+.greft,.gxt{fill:var(--muted);font:800 11px var(--num)}
+.garea{fill:var(--accent);opacity:.1}
+.gpath{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.gdot{fill:var(--accent);stroke:var(--card);stroke-width:2}
+.gend{fill:var(--ink);font:800 12px var(--num)}
+.gcross{stroke:var(--muted);stroke-width:1}
+.ghit{fill:transparent}
+.gchart .hidden{display:none}
+.gtip{position:absolute;top:-8px;pointer-events:none;background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:.78rem;box-shadow:var(--shadow);display:flex;flex-direction:column;white-space:nowrap}
+.gtip b{font-size:.95rem}
+.gtip span{color:var(--muted)}
+.gtable summary{cursor:pointer;color:var(--muted);font-size:.85rem;font-weight:800;margin-top:8px}
+.gtable table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:6px}
+.gtable td,.gtable th{padding:4px 6px;border-bottom:1px solid var(--line);text-align:left}
+.grow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.card>b+.grow,.card>p+.grow{border-top:0}
+.grow .gt small{color:var(--muted);font-weight:600}
+.btn.sm{width:auto;min-height:40px;margin:0;padding:8px 12px;font-size:.85rem;flex:0 0 auto}
+.gic{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;font-weight:900;flex:0 0 26px;font-size:.9rem}
+.gic.down{background:var(--bad-soft);color:var(--bad)}
+.gic.ok{background:var(--good-soft);color:var(--good)}
+.gcount{flex:0 0 auto;min-width:34px;font-weight:900}
+.gh3{margin:22px 0 8px}
+.gch{margin:0 0 18px}
+.gch-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:0 4px 6px;border-bottom:2px solid var(--wc)}
+.gch-h small{color:var(--muted);font-weight:700;font-size:.82rem;white-space:nowrap}
+.gnode{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 12px;margin:8px 0 0}
+.gnode .gt{gap:5px}
+.gnode .gt small{color:var(--muted);font-weight:700;font-size:.82rem}
+.gnode.next{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 30%,transparent)}
+.gnode.locked{opacity:.62}
+.gnode .chev{color:var(--muted)}
+.ntag{background:var(--accent);color:var(--accent-ink);border-radius:99px;padding:3px 9px;font-size:.72rem;font-weight:900;flex:0 0 auto}
+.lvdot{flex:0 0 38px;height:38px;border-radius:50%;display:grid;place-items:center;font:900 1rem/1 var(--num)}
+.lvdot.l0{background:var(--raised);color:var(--muted)}
+.lvdot.l1{background:color-mix(in srgb,var(--accent) 30%,var(--card));color:var(--ink)}
+.lvdot.l2{background:color-mix(in srgb,var(--accent) 70%,var(--card));color:#fff}
+.lvdot.l3{background:var(--accent);color:#fff}
+.lvdot.ex{background:var(--raised);color:var(--wc);font-size:1.05rem}
+.lvdot.ex.done{background:var(--good-soft);color:var(--good)}
+.pills{display:flex;gap:5px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:2px;min-width:32px;height:24px;padding:0 7px;border-radius:99px;font:800 .78rem/1 var(--num);border:1px solid var(--line);color:var(--muted);background:transparent;vertical-align:middle}
+.pill i{font-style:normal}
+.pill.st-klar{background:var(--good-soft);border-color:var(--good);color:var(--ink)}
+.pill.st-nara{background:var(--warn-soft);border-color:var(--warn);color:var(--ink)}
+.pill.st-svag{background:var(--bad-soft);border-color:var(--bad);color:var(--ink)}
+.pill.st-ovar{color:var(--ink);border-color:color-mix(in srgb,var(--muted) 60%,transparent)}
+.cellrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.cellrow .gt small{color:var(--muted);font-weight:600;font-size:.8rem}
+.cellrow .dots{display:flex;gap:3px}
+.cellrow .dots i{width:8px;height:8px;border-radius:50%;background:var(--bad)}
+.cellrow .dots i.ok{background:var(--good)}
+.ghow summary{cursor:pointer}
+.ghow p{margin:10px 0 0}
+.gchip{display:inline-block;border-radius:99px;padding:2px 8px;font-size:.75rem;font-weight:900;background:var(--accent-soft);color:var(--ink);margin-right:4px}
+.gchip.c-X{background:color-mix(in srgb,#e11d48 28%,var(--card))}
+.gchip.c-U{background:color-mix(in srgb,#14b8a6 28%,var(--card))}
+.gnote{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:var(--accent-soft);font-size:.92rem}
+.glist{list-style:none;padding:0;margin:8px 0 0}
+.glist li{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:.95rem}
+.tile b small{font-size:.8rem}
+.tile b small.up{color:var(--good)}
+.tile b small.dn{color:var(--bad)}
 .diff i{display:inline-block;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--wc);margin-left:3px}
 .diff i.on{background:var(--wc)}
 .prompt{font-size:1.55rem;line-height:1.55;font-weight:700}
@@ -378,6 +470,7 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:16px;z-index:50}
 .modal .inner{max-width:420px;width:100%;max-height:90vh;overflow:auto}
 .modal .btn{margin-top:12px}
+.modal .inner.gm{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
 /* Butik */
 .skin{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:var(--card);border-radius:14px;padding:12px;margin:0 0 10px}
 .swatch{width:46px;height:46px;border-radius:12px;flex:0 0 46px;border:1px solid var(--line)}
@@ -636,6 +729,7 @@ body.calc-open #s-game{padding-bottom:380px}
   <div id="home-special"></div>
   <div id="home-resume"></div>
   <button class="btn primary playbtn" id="b-continue"></button>
+  <button class="guidecard" id="b-guide"></button>
   <div id="home-timed"></div>
   <div class="actions">
     <button class="btn act wide" id="b-book" style="--tc:#0ea5e9"></button>
@@ -730,6 +824,7 @@ body.calc-open #s-game{padding-bottom:380px}
 <section id="s-topic" class="hidden"><div id="topicbody"></div></section>
 <section id="s-chal" class="hidden"><div id="chalbody"></div></section>
 <section id="s-book" class="hidden"><div id="bookbody"></div></section>
+<section id="s-guide" class="hidden"><div id="guidebody"></div></section>
 
 <!-- ============ KONTO ============ -->
 <section id="s-account" class="hidden"><div id="accountbody"></div></section>
@@ -954,7 +1049,20 @@ function approxVals(a,b,ordered,tol){
   if(!ordered){ x=[...x].sort((p,q)=>p-q); y=[...y].sort((p,q)=>p-q); }
   return x.every((v,i)=>Math.abs(v-y[i])<=tol+1e-12);
 }
-function check(task,input){
+// "Svara med två decimaler" ger 2, "Avrunda till heltal" ger 0. Annars null.
+const DEC_WORDS={en:1, 'två':2, tre:3};
+function decimalsAsked(text){ const m=String(text).match(/(en|två|tre) decimal/); if(m) return DEC_WORDS[m[1]]; if(/till heltal/.test(text)) return 0; return null; }
+// opts.strict: guidens stenhårda rättning. Ett avrundat svar måste ha just så många decimaler som uppgiften ber om.
+function strictRound(A,input,opts){
+  if(!opts||!opts.strict||!A.tol) return null;
+  const N=decimalsAsked(opts.prompt||''); if(N===null) return null;
+  for(const tk of String(input).match(/\d+(?:[.,]\d+)?/g)||[]){
+    const d=(tk.split(/[.,]/)[1]||'').length;
+    if(d>N) return {valid:true, correct:false, strict:true, msg:`Rätt värde, men avrunda till ${N===0?'heltal':N===1?'en decimal':N+' decimaler'} som uppgiften säger. Guiden rättar stenhårt, precis som på ett prov.`};
+  }
+  return null;
+}
+function check(task,input,opts){
   const A=task.answer;
   if(A.kind==='mc'){
     const o=A.options[input]; if(!o) return {valid:false};
@@ -972,7 +1080,7 @@ function check(task,input){
   if(!vals || !vals.length) return {valid:false};
   // Med tol (uppgifter med miniräknare) godtas avrundade svar
   const same = A.tol ? (a,b,o)=>approxVals(a,b,o,A.tol) : sameVals;
-  if(same(vals,A.values,A.ordered)) return {valid:true, correct:true, msg:null};
+  if(same(vals,A.values,A.ordered)) return strictRound(A,input,opts) || {valid:true, correct:true, msg:null};
   for(const e of task.errors) if(same(vals,e.values,A.ordered)) return {valid:true, correct:false, msg:e.msg};
   const n=A.values.length;
   if(vals.length===n && same(vals.map(v=>v.abs()), A.values.map(v=>v.abs()), A.ordered))
@@ -4898,11 +5006,584 @@ function challengeTask(q){
     prompt:q.prompt, steps:q.steps.slice(), fig:'', lines:null, method:q.how, trap:q.trap, chal:q.id, noTime:true};
   const part = q.options
     ? {answer:mcOpts(q.options)}
-    : {answer:num(q.values.map(parseNum), q.tex, {ordered:!!q.ordered, hint:q.hint||''}), errors:(q.errors||[]).map(e=>({values:e.values.map(parseNum), msg:e.msg}))};
+    : {answer:num(q.values.map(parseNum), q.tex, {ordered:!!q.ordered, hint:q.hint||'', tol:q.tol}), errors:(q.errors||[]).map(e=>({values:e.values.map(parseNum), msg:e.msg}))};
   t.parts=[normPart(part)]; t.answer=t.parts[0].answer; t.errors=t.parts[0].errors;
   return t;
 }
 const challengesOf = w => CHALLENGES.filter(q=>q.w===w);
+
+/* =====================================================================
+   GUIDEN: innehåll
+   Förståelseuppgifter och A-nivåuppgifter för avsnitt i kapitel 2 som
+   saknade dem, nya Kodex-kort och nya utmaningar (A+) för 2.3–2.5.
+   ===================================================================== */
+CARDS.push(
+  {id:'rimlig',w:21,r:2,title:'Rimliga lösningar',rule:'En ekvation kan ha lösningar som inte passar i verkligheten. Stryk dem och säg varför.',ex:'$x^2 + 4x = 96$ ger $x = 8$ eller $x = -12$. En sida kan inte vara $-12$ cm, så svaret är $8$ cm.',why:'Ekvationen vet inget om sammanhanget. Det är du som vet att längder, tider och antal inte kan vara negativa.'},
+  {id:'rot-samband',w:21,r:3,title:'Rötter och koefficienter',rule:'Om $x^2 + px + q = 0$ har rötterna $x_1$ och $x_2$ är $x_1 + x_2 = -p$ och $x_1x_2 = q$.',ex:'$x^2 - 7x + 10 = 0$ har rötterna $2$ och $5$: $2 + 5 = 7$ och $2\\cdot 5 = 10$.',why:'$(x - x_1)(x - x_2) = x^2 - (x_1 + x_2)x + x_1x_2$. Jämför med $x^2 + px + q$ term för term.'},
+  {id:'potenslagar',w:23,r:2,title:'Potenslagarna',rule:'$a^m\\cdot a^n = a^{m + n}$, $\\frac{a^m}{a^n} = a^{m - n}$ och $(a^m)^n = a^{mn}$.',ex:'$\\frac{x^5\\cdot x^3}{x^2} = x^{5 + 3 - 2} = x^6$ och $(x^4)^3 = x^{12}$.',why:'$x^5\\cdot x^3$ är fem $x$ gånger tre $x$, alltså åtta. En potens av en potens upprepar hela potensen, så exponenterna gångras.'},
+  {id:'jamn-exponent',w:23,r:2,title:'Jämn eller udda exponent',rule:'$x^n = b$ med jämnt $n$ och $b > 0$ har två lösningar, $x = \\pm b^{\\frac{1}{n}}$. Med udda $n$ finns en.',ex:'$x^4 = 81$ ger $x = \\pm 3$. $x^3 = 27$ ger bara $x = 3$.',why:'$(-3)^4 = 81$ eftersom fyra minustecken tar ut varandra. $(-3)^3 = -27$, så $-3$ löser inte $x^3 = 27$.'},
+  {id:'forandringsfaktor',w:23,r:1,title:'Förändringsfaktor',rule:'Ökning med $p$ % ger faktorn $1 + \\frac{p}{100}$. Minskning med $p$ % ger $1 - \\frac{p}{100}$.',ex:'Ökning med $5$ % ger $1{,}05$. Minskning med $15$ % ger $0{,}85$.',why:'Det nya värdet är hela det gamla ($100$ %) plus eller minus förändringen. $105$ % skrivs $1{,}05$.'},
+  {id:'lg-def',w:24,r:2,title:'Vad lg betyder',rule:'$\\lg x$ är den exponent som $10$ ska upphöjas till för att bli $x$. $10^x = b$ ger $x = \\lg b$.',ex:'$\\lg 1000 = 3$ eftersom $10^3 = 1000$. $10^x = 50$ ger $x = \\lg 50 \\approx 1{,}699$.',why:'Logaritmen är ett namn på en exponent. Att lösa $10^x = 50$ är att fråga efter exponenten, och den heter $\\lg 50$.'},
+  {id:'lg-lagar',w:24,r:3,title:'Logaritmlagarna',rule:'$\\lg ab = \\lg a + \\lg b$, $\\lg\\frac{a}{b} = \\lg a - \\lg b$ och $\\lg a^p = p\\lg a$. Men $\\lg(a + b)$ går inte att dela upp.',ex:'$\\lg 20 + \\lg 5 = \\lg 100 = 2$. Däremot är $\\lg 20 + \\lg 5$ inte $\\lg 25$.',why:'Logaritmer är exponenter. När potenser gångras läggs exponenterna ihop, därför blir produkt till summa.'},
+  {id:'halveringstid',w:24,r:3,title:'Halveringstid',rule:'Med halveringstiden $T$ finns $M\\cdot 0{,}5^{\\frac{t}{T}}$ kvar efter tiden $t$.',ex:'$T = 8$ dygn och $800$ mg: efter $24$ dygn finns $800\\cdot 0{,}5^3 = 100$ mg kvar.',why:'$\\frac{t}{T}$ är antalet halveringar. Varje halvering gångrar mängden med $0{,}5$.'},
+  {id:'modellval',w:25,r:2,title:'Välj modell ur en tabell',rule:'Lika differenser ger linjär modell. Lika kvoter ger exponentiell. Lika andradifferenser ger kvadratisk.',ex:'$3, 6, 12, 24$: kvoten är $2$ hela tiden, alltså $y = 3\\cdot 2^x$.',why:'En linje ökar med lika mycket varje steg. En exponentialfunktion ökar med lika många procent, alltså samma faktor.'},
+  {id:'tva-punkter',w:25,r:3,title:'Formel ur två punkter',rule:'$y = C\\cdot a^x$: dela $y$-värdena så försvinner $C$. Med $n$ steg emellan är kvoten $a^n$.',ex:'$(0, 5)$ och $(3, 40)$: $a^3 = \\frac{40}{5} = 8$, så $a = 2$ och $C = 5$.',why:'Kvoten $\\frac{C\\cdot a^{x_2}}{C\\cdot a^{x_1}} = a^{x_2 - x_1}$. Konstanten $C$ tar ut sig själv.'}
+);
+
+const dd = x => dc(x, Math.abs(x-Math.round(x))<1e-9 ? 0 : 2);   // heltal utan decimaler, annars två
+
+/* ---------- Förståelse: 2.1 ---------- */
+defU('u-metod',21,'tvavagar','tva-vagar','Välj metod',()=>{
+  const v=ri(0,3), k=ri(2,9), a=nzi(-7,7), b=nzi(-7,7,[0,a]);
+  if(v===3 && a+b===0) return null;
+  let prompt, right, why;
+  if(v===0){ const c=pick([1,2,3,5]); prompt=`$${c===1?'':c}x^2 = ${c*k*k}$`; right='Kvadratrotsmetoden'; why=`Det finns bara en $x^2$-term. Dela med $${c}$ och dra roten ur: $x = \\pm ${k}$.`; }
+  else if(v===1){ prompt=`$${poly([1,-k,0])} = 0$`; right='Bryt ut $x$ och använd nollproduktmetoden'; why=`Konstantterm saknas. $x(x${plus(-k)}) = 0$ ger direkt $x = 0$ eller $x = ${k}$.`; }
+  else if(v===2){ prompt=`$(${poly([1,-a])})(${poly([1,-b])}) = 0$`; right='Nollproduktmetoden direkt'; why=`Det är redan en produkt som är noll. Varje parentes ger en rot: $x = ${a}$ eller $x = ${b}$.`; }
+  else { prompt=`$${poly([1,-(a+b),a*b])} = 0$`; right='pq-formeln'; why='Alla tre termerna finns och det är ingen produkt. Då är pq-formeln rätt verktyg.'; }
+  const all=['Kvadratrotsmetoden','Bryt ut $x$ och använd nollproduktmetoden','Nollproduktmetoden direkt','pq-formeln'];
+  const msgs={'Kvadratrotsmetoden':'Kvadratrotsmetoden fungerar bara när $x$ bara finns i en kvadrat.','Bryt ut $x$ och använd nollproduktmetoden':'Att bryta ut $x$ går bara när varje term innehåller $x$.','Nollproduktmetoden direkt':'Nollproduktmetoden direkt kräver att vänsterledet redan är en produkt.','pq-formeln':'pq-formeln fungerar, men här finns en kortare väg. Uppgiften frågar efter den snabbaste.'};
+  return {diff:v===3?1:2, prompt:`Vilken metod är snabbast för ekvationen ${prompt}?`,
+    answer:mcOpts(all.map(t=>({t, ok:t===right, msg:t===right?null:msgs[t]}))),
+    steps:[`Titta på ekvationens form: ${prompt}`, why, 'Välj alltid den kortaste vägen. pq-formeln fungerar för alla andragradsekvationer, men den tar längst tid.',
+      v===0?`Kontroll: $${k}^2 = ${k*k}$ och $(-${k})^2 = ${k*k}$ ✓`:v===1?`Kontroll: $${k}^2 - ${k}\\cdot ${k} = 0$ ✓`:v===2?`Kontroll: $x = ${a}$ gör första parentesen till $0$ ✓`:`Kontroll: $x = ${a}$ ger $${subsTex([1,-(a+b),a*b],a)} = 0$ ✓`],
+    verify:()=>v===0||v===1?k*k-k*k===0:v===2?a!==b:(a*a-(a+b)*a+a*b===0 && b*b-(a+b)*b+a*b===0)};
+});
+defU('u-rimlig',21,'varfor','rimlig','Vilken lösning är rimlig?',()=>{
+  const v=ri(0,2);
+  if(v===0){
+    const r=ri(3,20), d=ri(2,9), A=r*(r+d), x2=-(r+d);
+    return {diff:2, lines:[`Sidorna är $x$ cm och $(x + ${d})$ cm. Arean ger $x(x + ${d}) = ${A}$`,`$${poly([1,d,-A])} = 0$`,`pq-formeln: $x_1 = ${r}$ och $x_2 = ${x2}$`,`Svar: den kortaste sidan är $${r}$ cm`], mark:3,
+      prompt:`En rektangel har arean $${A}$ cm². Varför används bara $x = ${r}$ i svaret på rad 4?`,
+      answer:mc('En sida kan inte ha negativ längd, så den andra lösningen passar inte i verkligheten.',[
+        {t:'pq-formeln ger alltid en falsk rot som ska strykas.', msg:`Båda rötterna löser ekvationen: $${x2}\\cdot(${x2} + ${d}) = ${A}$. Det är sammanhanget som stryker den.`},
+        {t:'Man väljer alltid den största roten.', msg:'Det finns ingen sådan regel. I andra uppgifter kan båda lösningarna vara rimliga.'},
+        {t:`$x = ${x2}$ blir fel när man sätter in den i ekvationen.`, msg:`Sätt in: $${x2}\\cdot ${P(x2+d)} = ${A}$. Den löser ekvationen, men den är inte en längd.`}]),
+      steps:['Ekvationen vet inget om att $x$ är en längd. Den har två lösningar.',`$x = ${x2}$ löser ekvationen, men en sida på $${x2}$ cm finns inte.`,`Därför stryks den och svaret blir $${r}$ cm.`,`Kontroll: $${r}\\cdot ${r+d} = ${A}$ ✓`],
+      verify:()=>r*(r+d)===A && x2*(x2+d)===A};
+  }
+  if(v===1){
+    const n=ri(5,40), P2=n*(n+1);
+    return {diff:2, lines:[`Talen är $x$ och $x + 1$: $x(x + 1) = ${P2}$`,`$${poly([1,1,-P2])} = 0$`,`$x_1 = ${n}$ och $x_2 = ${-(n+1)}$`,`Talen är $${n}$ och $${n+1}$`], mark:3,
+      prompt:`Produkten av två på varandra följande positiva heltal är $${P2}$. Varför stryks $x = ${-(n+1)}$?`,
+      answer:mc('Uppgiften säger att talen är positiva, och $'+(-(n+1))+'$ är negativt.',[
+        {t:'Negativa tal kan aldrig vara lösningar till en andragradsekvation.', msg:'Jo, det kan de. Här stryks roten bara för att uppgiften kräver positiva tal.'},
+        {t:`$${-(n+1)}$ löser inte ekvationen.`, msg:`Den gör det: $${-(n+1)}\\cdot(${-n}) = ${P2}$.`},
+        {t:'Man stryker alltid den andra roten i pq-formeln.', msg:'Vilken rot som stryks beror på sammanhanget, inte på ordningen.'}]),
+      steps:[`Båda rötterna löser ekvationen: $${-(n+1)}\\cdot(${-n}) = ${P2}$ också.`,'Men uppgiften säger positiva heltal.',`Därför gäller bara $x = ${n}$, och talen är $${n}$ och $${n+1}$.`,`Kontroll: $${n}\\cdot ${n+1} = ${P2}$ ✓`],
+      verify:()=>n*(n+1)===P2};
+  }
+  const t1=ri(2,5), t2=-ri(1,t1-1), a=-5, b=-a*(t1+t2), c=a*t1*t2;
+  return {diff:3, lines:[`Höjden är $h(t) = ${poly([a,b,c],'t')}$ meter. Bollen är på marken när $h(t) = 0$`,`$${poly([1,-(t1+t2),t1*t2],'t')} = 0$`,`$t_1 = ${t1}$ och $t_2 = ${t2}$`,`Bollen slår i marken efter $${t1}$ s`], mark:3,
+    prompt:`En boll kastas uppåt från ett tak. Varför är svaret $${t1}$ s och inte $${t2}$ s?`,
+    answer:mc('Modellen gäller från kastet, $t = 0$, och framåt. En negativ tid ligger före kastet.',[
+      {t:'Tiden $'+t2+'$ s gav fel i ekvationen.', msg:`Den löser ekvationen: $h(${t2}) = 0$. Den stryks för att den ligger före kastet.`},
+      {t:'Man tar alltid den största roten.', msg:'Det är inte regeln. Det är definitionsmängden $t \\ge 0$ som avgör.'},
+      {t:'Bollen kan inte vara på marken två gånger.', msg:'Det handlar om när, inte hur många gånger. Den negativa tiden finns inte i modellen.'}]),
+    steps:['Dela med $'+a+'$ så att pq-formeln går att använda. Rötterna är $'+t1+'$ och $'+t2+'$.',`$t = ${t2}$ betyder ${-t2} sekunder före kastet. Då fanns ingen boll i luften.`,`Rimlig definitionsmängd: $t \\ge 0$. Alltså $t = ${t1}$ s.`,`Kontroll: $h(${t1}) = ${subsTex([a,b,c],t1)} = 0$ ✓`],
+    verify:()=>a*t1*t1+b*t1+c===0 && a*t2*t2+b*t2+c===0};
+});
+defU('u-vieta',21,'varfor','rot-samband','Rötter och koefficienter',()=>{
+  const x1=nzi(-8,8), x2=nzi(-8,8,[0,x1]), p=-(x1+x2), q=x1*x2;
+  if(p===0) return null;
+  const lines=[`$${poly([1,p,q])} = 0$ har rötterna $x_1 = ${x1}$ och $x_2 = ${x2}$`,`Då kan den skrivas $(${poly([1,-x1])})(${poly([1,-x2])}) = 0$`,`Multiplicera ut: $x^2 - (${x1}${plus(x2)})x + ${P(x1)}\\cdot ${P(x2)} = 0$`,`Alltså är $x_1 + x_2 = -p = ${-p}$ och $x_1x_2 = q = ${q}$`];
+  const askSum=rand()<0.5;
+  return {diff:askSum?3:2, card:'rot-samband', lines, mark:3,
+    prompt: askSum ? 'Varför är summan av rötterna $-p$ och inte $p$ (rad 4)?' : 'Varför är produkten av rötterna lika med $q$ (rad 4)?',
+    answer: askSum
+      ? mc('Mittentermen blir $-(x_1 + x_2)x$. Den ska vara samma sak som $px$, så $x_1 + x_2 = -p$.',[
+          {t:'Det är ett tryckfel, det ska vara $p$.', msg:`Testa: $${x1}${plus(x2)} = ${-p}$, och $p = ${p}$. Summan är verkligen $-p$.`},
+          {t:'Man byter alltid tecken när man flyttar över.', msg:'Här flyttas inget. Tecknet kommer från minustecknen i $(x - x_1)(x - x_2)$.'},
+          {t:'Summan är alltid negativ.', msg:`Inte alltid. Här är den $${-p}$.`}])
+      : mc('När $(x - x_1)(x - x_2)$ multipliceras ut blir konstanttermen $x_1x_2$, och den ska vara lika med $q$.',[
+          {t:'Man gångrar rötterna för att få $p$.', msg:'Produkten ger $q$. Det är summan som hänger ihop med $p$.'},
+          {t:'Det gäller bara när rötterna är heltal.', msg:'Det gäller alla ekvationer på formen $x^2 + px + q = 0$, även med bråk och rötter.'},
+          {t:'För att $q$ står sist i ekvationen.', msg:'Platsen spelar ingen roll. Det är utmultipliceringen som visar det.'}]),
+    steps:['Om $x_1$ och $x_2$ är rötter är $(x - x_1)(x - x_2) = 0$ samma ekvation.','Utmultiplicerat: $x^2 - (x_1 + x_2)x + x_1x_2$.','Jämför med $x^2 + px + q$: $p = -(x_1 + x_2)$ och $q = x_1x_2$.',`Kontroll: $${x1}${plus(x2)} = ${-p}$ och $${x1}\\cdot ${P(x2)} = ${q}$ ✓`],
+    verify:()=>x1+x2===-p && x1*x2===q};
+});
+
+/* ---------- Förståelse: 2.3 ---------- */
+defU('u-felet-potlag',23,'felet','potenslagar','Fel i potenslagarna',()=>{
+  const v=ri(0,2), a=ri(2,7), b=ri(2,6), c=ri(2,5);
+  if(a+b===a*b) return null;
+  let lines, err, why, right;
+  if(v===0){
+    right=a*b+c;
+    lines=[`$(x^{${a}})^{${b}}\\cdot x^{${c}}$`,`$= x^{${a+b}}\\cdot x^{${c}}$`,`$= x^{${a+b+c}}$`]; err=1;
+    why=`Rad 2 är fel: en potens av en potens ger produkten av exponenterna, $(x^{${a}})^{${b}} = x^{${a*b}}$.`;
+  } else if(v===1){
+    right=a+b-c;
+    lines=[`$\\frac{x^{${a}}\\cdot x^{${b}}}{x^{${c}}}$`,`$= \\frac{x^{${a*b}}}{x^{${c}}}$`,`$= x^{${a*b-c}}$`]; err=1;
+    why=`Rad 2 är fel: när potenser gångras läggs exponenterna ihop, $x^{${a}}\\cdot x^{${b}} = x^{${a+b}}$.`;
+  } else {
+    right=a+b-c;
+    lines=[`$\\frac{x^{${a}}\\cdot x^{${b}}}{x^{${c}}}$`,`$= \\frac{x^{${a+b}}}{x^{${c}}}$`,`$= x^{${(a+b)*c}}$`]; err=2;
+    if((a+b)*c===right) return null;
+    why=`Rad 3 är fel: vid division dras exponenterna ifrån, $\\frac{x^{${a+b}}}{x^{${c}}} = x^{${a+b-c}}$.`;
+  }
+  if(new Set(lines).size!==lines.length) return null;
+  return {diff:v===2?2:1, prompt:'Någon har förenklat uttrycket. På vilken rad blir det fel först?', answer:feletAns(lines,err),
+    steps:[why,'Potenslagarna: $a^m\\cdot a^n = a^{m + n}$, $\\frac{a^m}{a^n} = a^{m - n}$ och $(a^m)^n = a^{mn}$.',`Rätt svar: $x^{${right}}$`,`Kontroll med $x = 2$: ${v===0?`$(2^{${a}})^{${b}}\\cdot 2^{${c}} = 2^{${right}}$`:`$\\frac{2^{${a}}\\cdot 2^{${b}}}{2^{${c}}} = 2^{${right}}$`} ✓`],
+    verify:()=>v===0?(2**a)**b*2**c===2**right:2**a*2**b/2**c===2**right};
+});
+defU('u-varfor-jamn',23,'varfor','jamn-exponent','Två lösningar eller en?',()=>{
+  const even=rand()<0.55;
+  if(even){
+    const n=pick([2,4,4]), s=n===2?ri(2,12):ri(2,5), b=s**n;
+    return {diff:1, lines:[`$x^{${n}} = ${b}$`,`$x = \\pm ${b}^{\\frac{1}{${n}}}$`,`$x = \\pm ${s}$`], mark:1,
+      prompt:'Varför står det $\\pm$ på rad 2?',
+      answer:mc(`Exponenten är jämn, så både $${s}$ och $-${s}$ blir $${b}$ när de upphöjs till $${n}$.`,[
+        {t:'Det står alltid $\\pm$ när man drar en rot.', msg:'Inte vid udda exponent: $x^3 = 27$ har bara lösningen $x = 3$, eftersom $(-3)^3 = -27$.'},
+        {t:'För att man ska få två svar att välja mellan.', msg:'Båda är lösningar. Ingen av dem ska väljas bort.'},
+        {t:`För att $x$ kan vara både större och mindre än $${b}$.`, msg:'Det handlar om tecknet på $x$, inte om storleken jämfört med högerledet.'}]),
+      steps:[`$(-${s})^{${n}}$: ${n} minustecken tar ut varandra parvis, så resultatet blir positivt.`,`Alltså är både $${s}$ och $-${s}$ lösningar.`,'Med udda exponent hade bara den positiva fungerat.',`Kontroll: $(-${s})^{${n}} = ${b}$ ✓`],
+      verify:()=>(-s)**n===b};
+  }
+  const n=pick([3,3,5]), s=n===3?ri(2,6):ri(2,3), b=s**n;
+  return {diff:2, lines:[`$x^{${n}} = ${b}$`,`$x = ${b}^{\\frac{1}{${n}}} = ${s}$`,'Det finns bara en lösning'], mark:2,
+    prompt:'Varför finns det bara en lösning (rad 3)?',
+    answer:mc(`Exponenten är udda. $(-${s})^{${n}} = -${b}$, så $-${s}$ fungerar inte.`,[
+      {t:'Man tar aldrig med negativa lösningar.', msg:'Vid jämn exponent finns en negativ lösning också, t.ex. $x^2 = 25$ ger $x = \\pm 5$.'},
+      {t:`För att $${b}$ inte är en jämn kvadrat.`, msg:'Det spelar ingen roll. Det är exponentens paritet som avgör.'},
+      {t:`För att $\\frac{1}{${n}}$ är ett bråk.`, msg:'$x^4 = 16$ löses också med ett bråk, $\\frac{1}{4}$, och har två lösningar.'}]),
+    steps:[`$(-${s})^{${n}}$ har ${n} minustecken. Ett blir kvar, så resultatet är negativt.`,`Alltså ger $-${s}$ värdet $-${b}$, inte $${b}$.`,'Udda exponent: en lösning, med samma tecken som högerledet.',`Kontroll: $${s}^{${n}} = ${b}$ ✓`],
+    verify:()=>s**n===b && (-s)**n===-b};
+});
+defU('u-varfor-faktor',23,'varfor','forandringsfaktor','Varför den faktorn?',()=>{
+  const v=ri(0,2), C=pick([2000,5000,8000,12000,20000,250,400]);
+  if(v===0){
+    const p=pick([2,3,4,5,6,8]), f=1+p/100, fs=dc(f,2), n=ri(3,12);
+    return {diff:1, lines:[`Startvärdet är $${C}$ och ökar med $${p}$ % per år`,`Förändringsfaktorn är $${fs}$`,`Efter $${n}$ år: $${C}\\cdot ${fs}^{${n}}$`], mark:1,
+      prompt:`Varför är förändringsfaktorn $${fs}$ och inte $${dc(p/100,2)}$ (rad 2)?`,
+      answer:mc(`Nya värdet är hela det gamla ($100$ %) plus ökningen ($${p}$ %), alltså $${100+p}$ % $= ${fs}$.`,[
+        {t:`$${dc(p/100,2)}$ fungerar också, man lägger bara till den varje år.`, msg:`Gånger $${dc(p/100,2)}$ ger bara själva ökningen. Värdet skulle då krympa till $${p}$ % av det gamla.`},
+        {t:'Man lägger alltid till $1$ i exponentialfunktioner.', msg:`Vid minskning blir faktorn mindre än $1$, t.ex. $0{,}95$. Ettan står för hela det gamla värdet.`},
+        {t:`$${fs}$ är ett avrundat värde av $${dc(p/100,2)}$.`, msg:'Det är två helt olika tal. Det ena är förändringen, det andra är det nya värdet jämfört med det gamla.'}]),
+      steps:[`Efter ett år finns hela startvärdet kvar plus $${p}$ % av det.`,`$100$ % $+ ${p}$ % $= ${100+p}$ % $= ${fs}$`,'Varje år gångras värdet med samma faktor igen.',`Kontroll: $${C}\\cdot ${fs} = ${dd(C*f)}$, som är $${dd(C*p/100)}$ mer än $${C}$ ✓`],
+      verify:()=>Math.abs(C*f-C-C*p/100)<1e-9};
+  }
+  if(v===1){
+    const p=pick([5,10,12,15,20,25,30]), f=1-p/100, fs=dc(f,2);
+    return {diff:2, lines:[`Värdet är $${C}$ kr och minskar med $${p}$ % per år`,`Förändringsfaktorn är $${fs}$`,`Efter $x$ år: $${C}\\cdot ${fs}^{x}$`], mark:1,
+      prompt:`Varför är förändringsfaktorn $${fs}$ (rad 2)?`,
+      answer:mc(`Det som är kvar efter ett år är $100 - ${p} = ${100-p}$ % av värdet, och $${100-p}$ % $= ${fs}$.`,[
+        {t:`Det ska vara $-${dc(p/100,2)}$ eftersom värdet minskar.`, msg:`Gånger $-${dc(p/100,2)}$ ger ett negativt värde. Faktorn ska visa hur mycket som finns kvar.`},
+        {t:`Det ska vara $${dc(1+p/100,2)}$, fast minskande.`, msg:`$${dc(1+p/100,2)}$ betyder ökning med $${p}$ %. Minskning ger en faktor under $1$.`},
+        {t:`$${fs}$ är förändringen i kronor per år.`, msg:'Faktorn är ett förhållande, inte kronor. Minskningen i kronor ändras varje år.'}]),
+      steps:[`Minskning med $${p}$ % betyder att $${100-p}$ % finns kvar.`,`$${100-p}$ % skrivs $${fs}$.`,'Varje år gångras det som finns kvar med samma faktor.',`Kontroll: $${C}\\cdot ${fs} = ${dd(C*f)}$, och $${C} - ${dd(C*p/100)} = ${dd(C*f)}$ ✓`],
+      verify:()=>Math.abs(C*f-(C-C*p/100))<1e-9};
+  }
+  const p=pick([3,4,5,6,8,10]), fs=dc(1+p/100,2);
+  return {diff:2, lines:[`Ett belopp på $${C}$ kr ökar med $${p}$ % per år`,`Efter $1$ år: $${C}\\cdot ${fs}$`,`Efter $2$ år: $${C}\\cdot ${fs}\\cdot ${fs} = ${C}\\cdot ${fs}^2$`,`Efter $x$ år: $${C}\\cdot ${fs}^{x}$`], mark:3,
+    prompt:'Varför står $x$ i exponenten och inte som $'+fs+'\\cdot x$ (rad 4)?',
+    answer:mc(`Varje år gångras beloppet med $${fs}$ en gång till. Efter $x$ år har man gångrat $x$ gånger, och det skrivs $${fs}^{x}$.`,[
+      {t:`$${fs}^{x}$ och $${fs}\\cdot x$ är samma sak.`, msg:`Testa $x = 2$: $${fs}^2 = ${dc((1+p/100)**2,4)}$ men $${fs}\\cdot 2 = ${dc(2*(1+p/100),2)}$.`},
+      {t:'För att beloppet ökar med lika många kronor varje år.', msg:'Det vore en linjär ökning. Här ökar det med lika många procent, och kronorna blir fler varje år.'},
+      {t:'Exponenten visar hur många procent ökningen är.', msg:`Procenten finns i basen $${fs}$. Exponenten räknar antalet år.`}]),
+    steps:['Ökningen räknas varje år på det nya beloppet.','Därför gångras med samma faktor om och om igen.',`Upprepad multiplikation skrivs som en potens: $${fs}\\cdot ${fs}\\cdots = ${fs}^{x}$`,`Kontroll: $${C}\\cdot ${fs}^2 = ${dd(C*(1+p/100)**2)}$ ✓`],
+    verify:()=>Math.abs(C*(1+p/100)**2-C*(1+p/100)*(1+p/100))<1e-9};
+});
+defU('u-felet-procent',23,'felet','forandringsfaktor','Fel i procentuträkningen',()=>{
+  const p=pick([10,20,25,40,50,60]), base=pick([40,80,120,160,200,240,320,400,480,600,660,800]), after=base*(1+p/100);
+  if(!Number.isInteger(after)) return null;
+  const v=rand()<0.5, fs=dc(1+p/100,2);
+  const lines = v
+    ? [`Efter en ökning med $${p}$ % kostar varan $${after}$ kr. Vad kostade den före?`,`Förändringsfaktorn är $${fs}$`,`Före-priset: $${after}\\cdot ${dc(1-p/100,2)} = ${dd(after*(1-p/100))}$ kr`]
+    : [`Efter en ökning med $${p}$ % kostar varan $${after}$ kr. Vad kostade den före?`,`Förändringsfaktorn är $${dc(p/100,2)}$`,`Före-priset: $\\frac{${after}}{${dc(p/100,2)}} = ${dd(after/(p/100))}$ kr`];
+  return {diff:v?2:1, prompt:'Någon har räknat ut priset före höjningen. På vilken rad blir det fel först?', answer:feletAns(lines,v?2:1),
+    steps:[v?`Rad 3 är fel: $${p}$ % av det nya priset är inte samma sak som $${p}$ % av det gamla. Dela med faktorn i stället.`:`Rad 2 är fel: ökning med $${p}$ % ger faktorn $${fs}$, inte $${dc(p/100,2)}$.`,
+      `Gamla priset gånger $${fs}$ blir $${after}$. Alltså är gamla priset $\\frac{${after}}{${fs}}$.`,`$\\frac{${after}}{${fs}} = ${base}$ kr`,`Kontroll: $${base}\\cdot ${fs} = ${after}$ ✓`],
+    verify:()=>Math.abs(base*(1+p/100)-after)<1e-9};
+});
+
+/* ---------- Förståelse: 2.4 ---------- */
+defU('u-varfor-lg',24,'varfor','lg-def','Vad betyder lg?',()=>{
+  const v=ri(0,2);
+  if(v===0){
+    const b=pick([3,5,7,20,40,50,80,200,300,500,700,2000]), k=Math.floor(lg(b));
+    return {diff:1, lines:[`$10^x = ${b}$`,`$x = \\lg ${b}$`,`$x \\approx ${dc(lg(b),3)}$`], mark:1,
+      prompt:`Varför blir $x = \\lg ${b}$ på rad 2?`,
+      answer:mc(`$\\lg ${b}$ är per definition det tal som $10$ ska upphöjas till för att bli $${b}$, och det är precis vad $x$ är.`,[
+        {t:'Man delar båda sidor med $10$.', msg:`Då skulle det stå $x = ${dc(b/10,1)}$, men $10^{${dc(b/10,1)}}$ är inte $${b}$.`},
+        {t:'$\\lg$ betyder roten ur.', msg:'$\\lg$ är tiologaritmen, en exponent. Roten ur är något annat.'},
+        {t:`Man drar bort $10$ från båda sidor.`, msg:'Det går inte att dra bort basen från en potens. Ekvationen frågar efter exponenten.'}]),
+      steps:[`Ekvationen frågar: vilken exponent gör $10^x$ till $${b}$?`,`Den exponenten har ett namn: $\\lg ${b}$.`,`$10^{${k}} = ${10**k}$ och $10^{${k+1}} = ${10**(k+1)}$, så $x$ ligger mellan $${k}$ och $${k+1}$.`,`Kontroll: $10^{${dc(lg(b),3)}} \\approx ${b}$ ✓`],
+      verify:()=>Math.abs(10**lg(b)-b)<1e-9};
+  }
+  if(v===1){
+    const k=pick([2,3,4,5,-1,-2]), x=10**k, xs=k<0?dc(x,-k):String(x);
+    return {diff:1, lines:[`$\\lg x = ${k}$`,`$x = 10^{${k}}$`,`$x = ${xs}$`], mark:1,
+      prompt:'Varför blir $x = 10^{'+k+'}$ på rad 2?',
+      answer:mc(`$\\lg x = ${k}$ betyder att $10$ upphöjt till $${k}$ är $x$. Logaritmen är exponenten.`,[
+        {t:`Man gångrar $${k}$ med $10$.`, msg:`Då blir det $${10*k}$, men $\\lg ${10*k}$ är inte $${k}$.`},
+        {t:'Man flyttar $\\lg$ till andra sidan och byter tecken.', msg:'$\\lg$ är ingen term som kan flyttas. Man använder definitionen.'},
+        {t:`$\\lg$ och $10$ tar ut varandra, så $x = ${k}$.`, msg:`$\\lg ${k}$ är inte $${k}$. Det är $10^{\\lg x} = x$ som gäller.`}]),
+      steps:['$\\lg x$ är den exponent som $10$ ska upphöjas till för att bli $x$.',`Här är den exponenten $${k}$.`,`Alltså är $x = 10^{${k}} = ${xs}$`,`Kontroll: $\\lg ${xs} = ${k}$ ✓`],
+      verify:()=>Math.abs(lg(x)-k)<1e-12};
+  }
+  const b=pick([30,60,90,150,400,800,1500,3000,9000,25000,70000]), k=Math.floor(lg(b));
+  return {diff:2, prompt:`Utan miniräknare: mellan vilka heltal ligger $\\lg ${b}$?`,
+    answer:mcOpts([{t:`Mellan $${k}$ och $${k+1}$`,ok:true},{t:`Mellan $${k+1}$ och $${k+2}$`,msg:`$10^{${k+1}} = ${10**(k+1)}$, som redan är större än $${b}$.`},{t:`Mellan $${k-1}$ och $${k}$`,msg:`$10^{${k}} = ${dc(10**k,k<0?-k:0)}$, som är mindre än $${b}$. Logaritmen är alltså större än $${k}$.`},{t:`Mellan $${Math.floor(b/10)}$ och $${Math.floor(b/10)+1}$`,msg:'Det vore $\\frac{b}{10}$. Logaritmen räknar exponenter, inte tiotal.'}]),
+    steps:[`Jämför $${b}$ med tiopotenser: $10^{${k}} = ${10**k}$ och $10^{${k+1}} = ${10**(k+1)}$.`,`$${10**k} < ${b} < ${10**(k+1)}$`,`Därför ligger exponenten, $\\lg ${b}$, mellan $${k}$ och $${k+1}$.`,`Kontroll: $\\lg ${b} \\approx ${dc(lg(b),3)}$ ✓`],
+    verify:()=>lg(b)>k && lg(b)<k+1 && Math.floor(b/10)!==k && Math.floor(b/10)!==k+1 && Math.floor(b/10)!==k-1};
+});
+defU('u-felet-10x',24,'felet','lg-def','Fel i en exponentialekvation',()=>{
+  const v=ri(0,2);
+  if(v===0){
+    const a=pick([2,3,4,5,8]), q=pick([20,40,50,60,80,120,300]), b=a*q;
+    const lines=[`$${a}\\cdot 10^x = ${b}$`,`$10^x = ${b-a}$`,`$x = \\lg ${b-a} \\approx ${dc(lg(b-a),3)}$`];
+    return {diff:1, prompt:'Någon har löst ekvationen. På vilken rad blir det fel först?', answer:feletAns(lines,1),
+      steps:[`Rad 2 är fel: $${a}$ gångrar $10^x$. Då ska man dela med $${a}$, inte dra ifrån.`,`Rätt: $10^x = \\frac{${b}}{${a}} = ${q}$`,`$x = \\lg ${q} \\approx ${dc(lg(q),3)}$`,`Kontroll: $${a}\\cdot 10^{${dc(lg(q),3)}} \\approx ${a}\\cdot ${q} = ${b}$ ✓`],
+      verify:()=>Math.abs(a*10**lg(q)-b)<1e-9};
+  }
+  const a=pick([2,3,5,7,1.5]), b=pick([10,20,30,50,90,200]), as=dc(a,a%1?1:0), x=lg(b)/lg(a);
+  const lines = v===1
+    ? [`$${as}^x = ${b}$`,`$\\lg ${as}^x = \\lg ${b}$`,`$x\\cdot\\lg ${as} = \\lg ${b}$`,`$x = \\lg ${b} - \\lg ${as} \\approx ${dc(lg(b)-lg(a),3)}$`]
+    : [`$${as}^x = ${b}$`,`$\\lg ${as}^x = \\lg ${b}$`,`$\\lg ${as}\\cdot\\lg x = \\lg ${b}$`,`$\\lg x = \\frac{\\lg ${b}}{\\lg ${as}}$`];
+  return {diff:v===1?2:3, prompt:'Någon har löst ekvationen. På vilken rad blir det fel först?', answer:feletAns(lines,v===1?3:2),
+    steps:[v===1?`Rad 4 är fel: $x$ gångras med $\\lg ${as}$. Då ska man dela, inte dra ifrån.`:`Rad 3 är fel: logaritmlagen säger $\\lg ${as}^x = x\\cdot\\lg ${as}$. $x$ flyttas ner som en faktor, det blir inget $\\lg x$.`,
+      `Rätt: $x\\cdot\\lg ${as} = \\lg ${b}$`,`$x = \\frac{\\lg ${b}}{\\lg ${as}} \\approx ${dc(x,3)}$`,`Kontroll: $${as}^{${dc(x,3)}} \\approx ${dc(a**rnd(x,3),2)} \\approx ${b}$ ✓`],
+    verify:()=>Math.abs(a**x-b)<1e-9};
+});
+defU('u-felet-lglag',24,'felet','lg-lagar','Fel i logaritmlagarna',()=>{
+  const v=ri(0,2);
+  if(v===0){
+    const [a,b,k]=pick([[20,5,2],[4,25,2],[2,50,2],[40,25,3],[8,125,3],[50,20,3],[200,5,3],[250,4,3],[2,500,3],[25,40,3]]);
+    const lines=[`$\\lg ${a} + \\lg ${b}$`,`$= \\lg(${a} + ${b})$`,`$= \\lg ${a+b}$`];
+    return {diff:1, prompt:'Någon har förenklat uttrycket. På vilken rad blir det fel först?', answer:feletAns(lines,1),
+      steps:[`Rad 2 är fel: en summa av logaritmer är logaritmen av en produkt, $\\lg ${a} + \\lg ${b} = \\lg(${a}\\cdot ${b})$.`,`$\\lg(${a}\\cdot ${b}) = \\lg ${a*b} = ${k}$`,'$\\lg(a + b)$ går inte att dela upp i två logaritmer.',`Kontroll: $\\lg ${a} + \\lg ${b} \\approx ${dc(lg(a),3)} + ${dc(lg(b),3)} = ${dc(lg(a)+lg(b),3)}$ ✓`],
+      verify:()=>Math.abs(lg(a)+lg(b)-k)<1e-9};
+  }
+  if(v===1){
+    const [a,b,k]=pick([[500,5,2],[300,3,2],[2000,2,3],[700,7,2],[60,6,1],[4000,4,3],[90,9,1],[8000,8,3]]);
+    const lines=[`$\\lg ${a} - \\lg ${b}$`,`$= \\frac{\\lg ${a}}{\\lg ${b}}$`,`$\\approx ${dc(lg(a)/lg(b),3)}$`];
+    return {diff:2, prompt:'Någon har förenklat uttrycket. På vilken rad blir det fel först?', answer:feletAns(lines,1),
+      steps:[`Rad 2 är fel: en skillnad av logaritmer är logaritmen av en kvot, $\\lg ${a} - \\lg ${b} = \\lg\\frac{${a}}{${b}}$.`,`$\\lg\\frac{${a}}{${b}} = \\lg ${a/b} = ${k}$`,'$\\frac{\\lg a}{\\lg b}$ är något helt annat, det är inte en logaritmlag.',`Kontroll: $${dc(lg(a),3)} - ${dc(lg(b),3)} = ${dc(lg(a)-lg(b),3)}$ ✓`],
+      verify:()=>Math.abs(lg(a)-lg(b)-k)<1e-9};
+  }
+  const [p,c,d,k]=pick([[2,5,4,2],[3,2,125,3],[2,4,625,4],[3,5,8,3],[2,20,25,4],[2,50,4,4],[4,5,16,4]]);
+  const lines=[`$${p}\\lg ${c} + \\lg ${d}$`,`$= \\lg ${p*c} + \\lg ${d}$`,`$= \\lg ${p*c*d}$`];
+  if(p*c*d===c**p*d) return null;
+  return {diff:3, prompt:'Någon har förenklat uttrycket. På vilken rad blir det fel först?', answer:feletAns(lines,1),
+    steps:[`Rad 2 är fel: $${p}\\lg ${c} = \\lg ${c}^{${p}} = \\lg ${c**p}$, inte $\\lg ${p*c}$.`,`Rätt: $\\lg ${c**p} + \\lg ${d} = \\lg(${c**p}\\cdot ${d}) = \\lg ${c**p*d}$`,`$\\lg ${c**p*d} = ${k}$`,`Kontroll: $${p}\\cdot ${dc(lg(c),3)} + ${dc(lg(d),3)} \\approx ${dc(p*lg(c)+lg(d),3)}$ ✓`],
+    verify:()=>Math.abs(p*lg(c)+lg(d)-k)<1e-9};
+});
+defU('u-ordna-expek',24,'ordna','lg-lagar','Ordna lösningen',()=>{
+  const C=pick([2,3,4,5,8]), a=pick([2,3,5,1.5,1.2,1.05]), q=pick([6,10,12,20,50]), b=C*q, as=dc(a,a===1.05?2:a%1?1:0), x=lg(q)/lg(a);
+  const items=[`$${C}\\cdot ${as}^x = ${b}$`,`Dela med $${C}$: $${as}^x = ${q}$`,`Logaritmera: $x\\cdot\\lg ${as} = \\lg ${q}$`,`$x = \\frac{\\lg ${q}}{\\lg ${as}} \\approx ${dc(x,3)}$`];
+  return {diff:a<2?2:1, prompt:'Stegen i lösningen har hamnat i fel ordning. Dra dem till rätt ordning.', answer:order(items),
+    steps:['Först ska potensen stå ensam. Dela därför med faktorn framför.','Sedan logaritmeras båda leden och $x$ flyttas ner som en faktor.','Sist delas båda leden med logaritmen framför $x$.',`Kontroll: $${C}\\cdot ${as}^{${dc(x,3)}} \\approx ${C}\\cdot ${q} = ${b}$ ✓`],
+    verify:()=>Math.abs(C*a**x-b)<1e-9};
+});
+defU('u-varfor-halv',24,'varfor','halveringstid','Varför så i exponenten?',()=>{
+  const T=pick([4,5,6,8,10,12,30]), M=pick([400,800,1600,640,960]), k=ri(2,4), t=k*T, rest=M/2**k;
+  if(rand()<0.5) return {diff:1, lines:[`Halveringstiden är $${T}$ dygn. Från början finns $${M}$ mg`,`$${t}$ dygn är $\\frac{${t}}{${T}} = ${k}$ halveringstider`,`Kvar: $${M}\\cdot 0{,}5^{${k}} = ${dc(rest,rest%1?1:0)}$ mg`], mark:2,
+    prompt:`Varför räknar man $0{,}5^{${k}}$ och inte $0{,}5\\cdot ${k}$ på rad 3?`,
+    answer:mc(`Mängden halveras ${k} gånger efter varandra: $0{,}5\\cdot 0{,}5${k>2?'\\cdot 0{,}5':''}${k>3?'\\cdot 0{,}5':''} = 0{,}5^{${k}}$.`,[
+      {t:`$0{,}5\\cdot ${k}$ och $0{,}5^{${k}}$ är samma sak.`, msg:`$0{,}5\\cdot ${k} = ${dc(0.5*k,1)}$ men $0{,}5^{${k}} = ${dc(0.5**k,4)}$.`},
+      {t:`Mängden minskar med lika många mg varje halveringstid.`, msg:`Nej, den första halveringen tar bort $${M/2}$ mg, nästa bara $${M/4}$ mg.`},
+      {t:'Det är en avrundning för att räkna snabbare.', msg:'Det är exakt. Varje halvering gångrar det som finns kvar med $0{,}5$.'}]),
+    steps:['Efter en halveringstid är hälften kvar.','Efter nästa är hälften av hälften kvar, och så vidare.',`${k} halveringar ger faktorn $0{,}5^{${k}}$.`,`Kontroll: $${M}\\to ${M/2}\\to ${M/4}${k>2?`\\to ${M/8}`:''}${k>3?`\\to ${M/16}`:''}$ mg ✓`],
+    verify:()=>M*0.5**k===rest};
+  return {diff:2, lines:[`Halveringstiden är $${T}$ år. Från början finns $${M}$ g`,`Kvar efter $t$ år: $y = ${M}\\cdot 0{,}5^{\\frac{t}{${T}}}$`], mark:1,
+    prompt:`Varför står det $\\frac{t}{${T}}$ i exponenten?`,
+    answer:mc(`$\\frac{t}{${T}}$ är antalet halveringar som hunnit ske. Varje halvering gångrar mängden med $0{,}5$.`,[
+      {t:`För att mängden minskar med $${T}$ g per år.`, msg:'Halveringstiden är en tid, inte en minskning i gram.'},
+      {t:'Det är bara ett annat sätt att skriva $0{,}5\\cdot t$.', msg:`$0{,}5\\cdot t$ växer med tiden. Mängden ska minska.`},
+      {t:`För att exponenten alltid ska vara mindre än $1$.`, msg:`Exponenten blir större än $1$ när $t > ${T}$, till exempel $2$ efter $${2*T}$ år.`}]),
+    steps:[`Efter $${T}$ år har en halvering skett: $\\frac{${T}}{${T}} = 1$.`,`Efter $${2*T}$ år har två skett: $\\frac{${2*T}}{${T}} = 2$.`,'Exponenten räknar alltså halveringar.',`Kontroll: $t = ${2*T}$ ger $${M}\\cdot 0{,}5^2 = ${M/4}$ g ✓`],
+    verify:()=>M*0.5**2===M/4};
+});
+defU('u-ordna-ranta',24,'ordna','forandringsfaktor','Ordna lösningen',()=>{
+  const P0=pick([1000,2000,5000,8000,20000]), r=pick([2,1.5,3,0.5,0.25,0.6]), n=pick([5,8,10,12,15]), Q=P0*r, a=r**(1/n), pct=Math.abs(a-1)*100;
+  const rs=String(r).replace('.','{,}');
+  const items=[`$${P0}\\cdot a^{${n}} = ${dd(Q)}$`,`$a^{${n}} = \\frac{${dd(Q)}}{${P0}} = ${rs}$`,`$a = ${rs}^{\\frac{1}{${n}}} \\approx ${dc(a,4)}$`,`Förändringen är ungefär $${dc(pct,1)}$ % per år`];
+  return {diff:r<1?2:1, prompt:`Ett värde gick från $${P0}$ kr till $${dd(Q)}$ kr på $${n}$ år. Stegen som ger den årliga procentuella förändringen har hamnat i fel ordning. Dra dem till rätt ordning.`, answer:order(items),
+    steps:['Ställ upp ekvationen med förändringsfaktorn $a$.','Dela bort startvärdet så att $a^n$ står ensamt.',`Upphöj till $\\frac{1}{${n}}$ för att få $a$, och översätt faktorn till procent.`,`Kontroll: $${P0}\\cdot ${dc(a,4)}^{${n}} \\approx ${dc(P0*rnd(a,4)**n,0)}$ ✓`],
+    verify:()=>Math.abs(P0*a**n-Q)<1e-6 && pct>0.05};
+});
+
+/* ---------- Förståelse: 2.5 ---------- */
+defU('u-varfor-regtyp',25,'varfor','modellval','Varför den modellen?',()=>{
+  const v=ri(0,2), xs=[0,1,2,3,4];
+  let ys, model, why, wrong;
+  if(v===0){ const m=ri(2,30), k=nzi(-9,12); ys=xs.map(x=>k*x+m); model='linjär'; why=`Differensen är $${k}$ varje steg.`; }
+  else if(v===1){ const C=pick([1,2,3,4,5]), a=pick([2,3]); ys=xs.map(x=>C*a**x); model='exponentiell'; why=`Kvoten är $${a}$ varje steg.`; }
+  else { const a=pick([1,2,3,-1]), b=nzi(-4,4), c=ri(0,9); ys=xs.map(x=>a*x*x+b*x+c); model='kvadratisk'; why=`Andradifferensen är $${2*a}$ varje steg.`; }
+  const tab=`$\\begin{array}{c|ccccc} x & ${xs.join(' & ')} \\\\ \\hline y & ${ys.join(' & ')} \\end{array}$`;
+  const d1=ys.slice(1).map((y,i)=>y-ys[i]);
+  const reasons={linjär:'Differensen mellan på varandra följande $y$-värden är lika hela tiden.',exponentiell:'Kvoten mellan på varandra följande $y$-värden är lika hela tiden.',kvadratisk:'Differenserna ändras, men differensernas differens är lika hela tiden.'};
+  const msgs={linjär:'Kolla differenserna: '+d1.map(d=>'$'+d+'$').join(', ')+'.',exponentiell:'Kvoterna är inte lika här. Räkna $\\frac{y_2}{y_1}$ och $\\frac{y_3}{y_2}$.',kvadratisk:'Andradifferenserna avgör om modellen är kvadratisk. Räkna dem.'};
+  const opts=Object.keys(reasons).map(k=>({t:reasons[k], ok:k===model, msg:k===model?null:msgs[k]}));
+  opts.push({t:'$y$-värdena ökar, och det räcker för att välja modell.', msg:'Både linjära, kvadratiska och exponentiella värden kan öka. Det är mönstret i ökningen som avgör.'});
+  if(new Set(ys).size<5) return null;
+  return {diff:v===2?3:2, prompt:`Tabellen passar en ${model} modell. Vilken är anledningen? ${tab}`, answer:mcOpts(opts),
+    steps:['Räkna differenserna mellan på varandra följande $y$-värden: '+d1.map(d=>'$'+d+'$').join(', ')+'.',why,`Därför är modellen ${model}.`,`Kontroll: ${v===0?`$${ys[1]} - ${ys[0]} = ${ys[4]} - ${ys[3]}$`:v===1?`$\\frac{${ys[1]}}{${ys[0]}} = \\frac{${ys[4]}}{${ys[3]}}$`:`$(${ys[2]} - ${ys[1]}) - (${ys[1]} - ${ys[0]}) = (${ys[4]} - ${ys[3]}) - (${ys[3]} - ${ys[2]})$`} ✓`],
+    verify:()=>v===0?d1.every(d=>d===d1[0]):v===1?ys.slice(1).every((y,i)=>y*ys[0]===ys[1]*ys[i]):d1.slice(1).every((d,i)=>d-d1[i]===d1[1]-d1[0])};
+});
+defU('u-felet-grafformel',25,'felet','tva-punkter','Fel när formeln bestäms',()=>{
+  if(rand()<0.55){
+    const C=pick([2,3,4,5,10,20,50]), a=pick([2,3,4,5]), n=pick([2,3]), D=C*a**n;
+    const lines=[`$y = C\\cdot a^x$ går genom $(0, ${C})$ och $(${n}, ${D})$`,`$C = ${C}$, så $${C}\\cdot a^{${n}} = ${D}$`,`$a^{${n}} = ${a**n}$`,`$a = \\frac{${a**n}}{${n}} = ${dc(a**n/n,a**n%n?2:0)}$`];
+    if(a**n/n===a) return null;
+    return {diff:2, prompt:'Någon har bestämt formeln. På vilken rad blir det fel först?', answer:feletAns(lines,3),
+      steps:[`Rad 4 är fel: $a^{${n}} = ${a**n}$ löses genom att dra ${n===2?'roten':'tredje roten'} ur, inte genom att dela med $${n}$.`,`$a = ${a**n}^{\\frac{1}{${n}}} = ${a}$`,`Formeln är $y = ${C}\\cdot ${a}^x$`,`Kontroll: $${C}\\cdot ${a}^{${n}} = ${D}$ ✓`],
+      verify:()=>C*a**n===D};
+  }
+  const k=nzi(-6,8), m=ri(-10,10), x1=ri(0,3), x2=x1+pick([2,3,4]), y1=k*x1+m, y2=k*x2+m;
+  if(Math.abs(k)===1) return null;
+  const lines=[`Linjen går genom $(${x1}, ${y1})$ och $(${x2}, ${y2})$`,`$k = \\frac{${x2} - ${x1}}{${P(y2)} - ${P(y1)}} = ${T(F(x2-x1,y2-y1))}$`,`$m = ${y1} - ${T(F(x2-x1,y2-y1))}\\cdot ${P(x1)}$`];
+  return {diff:1, prompt:'Någon har bestämt $k$ och $m$ i $y = kx + m$. På vilken rad blir det fel först?', answer:feletAns(lines,1),
+    steps:[`Rad 2 är fel: $k = \\frac{\\Delta y}{\\Delta x}$, alltså förändringen i $y$ delat med förändringen i $x$.`,`$k = \\frac{${P(y2)} - ${P(y1)}}{${x2} - ${x1}} = ${k}$`,`$m = ${y1}${plus(-k*x1)} = ${m}$`,`Kontroll: $${k}\\cdot ${x2}${plus(m)} = ${y2}$ ✓`],
+    verify:()=>k*x2+m===y2 && k*x1+m===y1};
+});
+
+/* ---------- A-nivå: uppgifter som kräver flera steg och eget tänkande ---------- */
+def('a-211',21,'A-nivå: dela aldrig med x',()=>{
+  if(rand()<0.5){
+    const a=nzi(-6,6), k=nzi(-6,6);
+    return {diff:3, prompt:`Lös ekvationen $(${poly([1,-a])})^2 = ${k}(${poly([1,-a])})$.`,
+      answer:num([a,a+k],`x_1 = ${a},\\ x_2 = ${a+k}`),
+      errors:[{values:[a+k], msg:`Du har delat med $(${poly([1,-a])})$. Då försvinner lösningen $x = ${a}$, där parentesen är noll.`}],
+      steps:[`Flytta allt till vänster: $(${poly([1,-a])})^2${k<0?' + '+(-k):' - '+k}(${poly([1,-a])}) = 0$`,`Bryt ut $(${poly([1,-a])})$: $(${poly([1,-a])})(${poly([1,-a])}${plus(-k)}) = 0$`,`Nollproduktmetoden: $x = ${a}$ eller $x = ${a+k}$`,`Kontroll med $x = ${a+k}$: $${P(k)}^2 = ${k}\\cdot ${P(k)}$ ✓`],
+      verify:()=>(a+k-a)**2===k*(a+k-a)};
+  }
+  const k=ri(2,9), c=pick([1,2,3]);
+  return {diff:3, prompt:`Lös ekvationen $${c===1?'':c}x^3 = ${c*k*k}x$.`,
+    answer:num([0,k,-k],`x_1 = 0,\\ x_2 = ${k},\\ x_3 = -${k}`,{hint:'Tre svar: skriv dem med ; emellan'}),
+    errors:[{values:[k,-k], msg:'Du har delat med $x$. Då försvinner $x = 0$. Bryt ut $x$ i stället.'},{values:[0,k], msg:`$x^2 = ${k*k}$ har två lösningar, $\\pm ${k}$.`}],
+    steps:[`Flytta allt till vänster: $${c===1?'':c}x^3 - ${c*k*k}x = 0$`,`Bryt ut $${c===1?'':c}x$: $${c===1?'':c}x(x^2 - ${k*k}) = 0$`,`$x = 0$ eller $x^2 = ${k*k}$, alltså $x = \\pm ${k}$`,`Kontroll: $${c===1?'':c+'\\cdot '}${k}^3 = ${c*k**3}$ och $${c*k*k}\\cdot ${k} = ${c*k**3}$ ✓`],
+    verify:()=>c*k**3===c*k*k*k};
+});
+def('a-212',21,'A-nivå: skriv om först',()=>{
+  const r1=nzi(-7,7), r2=nzi(-7,7,[0,r1]), a=nzi(-5,5), b=nzi(-5,5);
+  const S=r1+r2, Pp=r1*r2, c=(a-b)+S, d=-a*b-Pp;
+  if(c===0||d===0||Math.abs(c)>12||Math.abs(d)>40) return null;
+  return {diff:3, prompt:`Lös ekvationen $(${poly([1,a])})(${poly([1,-b])}) = ${poly([c,d])}$.`,
+    answer:num([r1,r2],`x_1 = ${r1},\\ x_2 = ${r2}`),
+    errors:[{values:[-a,b], msg:'Nollproduktmetoden fungerar bara när högerledet är $0$. Multiplicera ut och samla allt på en sida först.'}],
+    steps:[`Multiplicera ut vänsterledet: $${poly([1,a-b,-a*b])}$`,`Samla allt på en sida: $${poly([1,a-b-c,-a*b-d])} = 0$`,`pq-formeln eller faktorisering: $(${poly([1,-r1])})(${poly([1,-r2])}) = 0$, så $x = ${r1}$ eller $x = ${r2}$`,`Kontroll med $x = ${r1}$: $${P(r1+a)}\\cdot ${P(r1-b)} = ${(r1+a)*(r1-b)}$ och $${c}\\cdot ${P(r1)}${plus(d)} = ${c*r1+d}$ ✓`],
+    verify:()=>(r1+a)*(r1-b)===c*r1+d && (r2+a)*(r2-b)===c*r2+d && a-b-c===-S && -a*b-d===Pp};
+});
+def('a-221',22,'A-nivå: funktioner med obekanta',()=>{
+  if(rand()<0.5){
+    const b=nzi(-8,8), c=ri(-9,9), k=pick([1,2,3]), x0=F(-(k+b),2);
+    return {diff:3, prompt:`$f(x) = ${poly([1,b,c])}$. Lös ekvationen $f(x + ${k}) = f(x)$.`,
+      answer:num([x0],`x = ${T(x0)}`),
+      errors:[{values:[F(-b,2)], msg:`Du har glömt termerna som kommer från $${k}$ när $(x + ${k})^2$ utvecklas.`}],
+      steps:[`$f(x + ${k}) = (x + ${k})^2${b<0?' - ':' + '}${Math.abs(b)===1?'':Math.abs(b)}(x + ${k})${plus(c)} = x^2 + ${2*k}x + ${k*k}${plusM(b,'x')}${plus(b*k)}${plus(c)}$`,`Sätt lika med $f(x)$. $x^2$, $${mono(b,'x')}$ och $${c}$ tar ut varandra.`,`Kvar: $${2*k}x + ${k*k}${plus(b*k)} = 0$, alltså $x = ${T(x0)}$`,`Kontroll: $f(${T(x0)}) = ${T(x0.mul(x0).add(x0.mul(b)).add(c))}$ och $f(${T(x0.add(k))}) = ${T(x0.add(k).mul(x0.add(k)).add(x0.add(k).mul(b)).add(c))}$ ✓`],
+      verify:()=>{ const f=x=>x.mul(x).add(x.mul(b)).add(c); return f(x0).eq(f(x0.add(k))); }};
+  }
+  const p=pick([2,3,4,-2,-3]), q=nzi(-6,6), R=p*(2*p+q)+q;
+  return {diff:3, prompt:`$f(x) = ${p}x + k$ och $f(f(2)) = ${R}$. Bestäm $k$.`,
+    answer:num([q],`k = ${q}`),
+    errors:[{values:[F(R-2*p*p,1)], msg:'$k$ läggs till två gånger, en gång i varje insättning. Glöm inte $k$ i den inre.'}],
+    steps:[`Inre: $f(2) = ${2*p} + k$`,`Yttre: $f(${2*p} + k) = ${p}(${2*p} + k) + k = ${2*p*p}${plusM(p+1,'k')}$`,`$${2*p*p}${plusM(p+1,'k')} = ${R}$ ger $k = \\frac{${R - 2*p*p}}{${p+1}} = ${q}$`,`Kontroll: $f(2) = ${2*p+q}$ och $f(${2*p+q}) = ${p}\\cdot ${P(2*p+q)}${plus(q)} = ${R}$ ✓`],
+    verify:()=>p*(2*p+q)+q===R && (R-2*p*p)===q*(p+1)};
+});
+def('a-222',22,'A-nivå: symmetri och värdemängd',()=>{
+  if(rand()<0.5){
+    const h=nzi(-5,5), d=ri(1,4), m=h-d, n=h+d, vtx=ri(-9,6);
+    const b=-2*h, c=h*h+vtx, x3=h+pick([1,2,3]), y3=(x3-h)**2+vtx;
+    return {diff:3, prompt:`$f(x) = x^2 + bx + c$ uppfyller $f(${m}) = f(${n})$ och $f(${x3}) = ${y3}$. Beräkna $f(0)$.`,
+      answer:num([c],`f(0) = ${c}`),
+      errors:[{values:[y3], msg:'$f(0)$ är konstanttermen $c$. Bestäm först $b$ med symmetrin och sedan $c$.'}],
+      steps:[`$f(${m}) = f(${n})$: symmetrilinjen ligger mitt emellan, $x = \\frac{${m}${plus(n)}}{2} = ${h}$`,`Symmetrilinjen för $x^2 + bx + c$ är $x = -\\frac{b}{2}$, så $b = ${b}$`,`$f(${x3}) = ${P(x3)}^2${plus(b*x3)} + c = ${y3}$ ger $c = ${c}$`,`Kontroll: $f(0) = c = ${c}$ och $f(${m}) = ${m*m+b*m+c} = f(${n}) = ${n*n+b*n+c}$ ✓`],
+      verify:()=>m*m+b*m+c===n*n+b*n+c && x3*x3+b*x3+c===y3};
+  }
+  const A=ri(2,9), h=ri(-2,3), lo=h-ri(1,3), hi=h+ri(2,4), f=x=>A-(x-h)**2, mn=Math.min(f(lo),f(hi));
+  return {diff:3, prompt:`$f(x) = ${A} - (${poly([1,-h])})^2$ har definitionsmängden $${lo} \\le x \\le ${hi}$. Ange det minsta och det största värdet, minsta först.`,
+    answer:num([mn,A],`\\min = ${mn},\\ \\max = ${A}`,{ordered:true,hint:'Två tal: minsta först, t.ex. -7; 5'}),
+    errors:[{values:[Math.max(f(lo),f(hi)),A].sort((x,y)=>x-y), msg:'Den ändpunkt som ligger längst från vändpunkten ger det minsta värdet.'},{values:[Math.min(f(lo),f(hi)),Math.max(f(lo),f(hi))], msg:`Vändpunkten $x = ${h}$ ligger i intervallet. Där är värdet störst, $${A}$.`}],
+    steps:[`Vändpunkten är $(${h}, ${A})$, och $x = ${h}$ ligger i definitionsmängden. Största värdet är $${A}$.`,`Ändpunkterna: $f(${lo}) = ${f(lo)}$ och $f(${hi}) = ${f(hi)}$`,`Det minsta är $${mn}$, vid ändpunkten längst från $x = ${h}$.`,`Kontroll: alla värden ligger mellan $${mn}$ och $${A}$ ✓`],
+    verify:()=>lo<h && h<hi && f(h)===A};
+});
+def('a-223',22,'A-nivå: från extremvärde till ekvation',()=>{
+  const h=nzi(-6,6), m=ri(-9,5), s=ri(1,6), k=m+s*s, b=-2*h, c=h*h+m;
+  return {diff:3, prompt:`$f(x) = x^2 + bx + c$ har sitt minsta värde $${m}$ när $x = ${h}$. Lös ekvationen $f(x) = ${k}$.`,
+    answer:num([h+s,h-s],`x_1 = ${h+s},\\ x_2 = ${h-s}`),
+    errors:[{values:[h+s], msg:`Parabeln är symmetrisk kring $x = ${h}$. Om $${h+s}$ är en lösning är $${h-s}$ det också.`}],
+    steps:[`Vändpunkten $(${h}, ${m})$ ger $f(x) = (${poly([1,-h])})^2${plus(m)}$`,`$f(x) = ${k}$: $(${poly([1,-h])})^2 = ${s*s}$`,`$${poly([1,-h])} = \\pm ${s}$, så $x = ${h+s}$ eller $x = ${h-s}$`,`Kontroll: $f(${h+s}) = ${s*s}${plus(m)} = ${k}$ ✓`],
+    verify:()=>(h+s)**2+b*(h+s)+c===k && (h-s)**2+b*(h-s)+c===k};
+});
+def('a-224',22,'A-nivå: hage med mellanväggar',()=>{
+  const n=pick([1,2,3]), L=2*(n+2)*pick([3,4,5,6,8,10]), x=L/(2*(n+2)), y=L-(n+2)*x, Am=x*y;
+  return {diff:3, noTime:true, prompt:`Med $${L}$ m staket ska en rektangulär hage byggas mot en lång vägg (väggen är den fjärde sidan). Hagen delas dessutom i ${n+1} delar med ${n===1?'ett staket':n+' staket'} som går rakt ut från väggen. Hur stor kan hela hagens area bli?`,
+    answer:num([Am],`A_{\\max} = ${Am}\\text{ m}^2`,{hint:'Ett tal, arean i m²'}),
+    errors:[{values:[F(L*L,8)], msg:'Du har räknat utan mellanväggarna. Varje staket ut från väggen är också $x$ m långt.'},{values:[F(L*L,16)], msg:'Hagen står mot en vägg. Bara tre sidor plus mellanväggarna behöver staket.'}],
+    steps:[`Låt $x$ vara längden ut från väggen. Det finns ${n+2} sådana staket: $${n+2}x$ m.`,`Sidan längs väggen blir $${L} - ${n+2}x$, så $A(x) = x(${L} - ${n+2}x)$`,`Nollställen $x = 0$ och $x = \\frac{${L}}{${n+2}}$. Störst mitt emellan: $x = ${x}$`,`$A(${x}) = ${x}\\cdot ${y} = ${Am}$ m²`,`Kontroll: $${n+2}\\cdot ${x} + ${y} = ${L}$ m staket ✓`],
+    verify:()=>(n+2)*x+y===L && x*(L-(n+2)*x)>=(x+1)*(L-(n+2)*(x+1))};
+});
+def('a-231',23,'A-nivå: bråk i exponenten',()=>{
+  const q=pick([2,3]), p=q===2?pick([3,5]):pick([2,4,5]), s=q===2?ri(2,5):ri(2,4), x=s**q, b=s**p;
+  if(b>3200) return null;
+  return {diff:3, prompt:`Lös ekvationen $x^{\\frac{${p}}{${q}}} = ${b}$ för $x > 0$.`,
+    answer:num([x],`x = ${x}`),
+    errors:[{values:[s], msg:`$${s}^{\\frac{${p}}{${q}}}$ är inte $${b}$. Upphöj båda leden till $\\frac{${q}}{${p}}$.`},{values:[F(b*q,p)], msg:'Exponenten ska inte gångras med talet. Upphöj båda leden till det inverterade bråket.'}],
+    steps:[`Upphöj båda leden till $\\frac{${q}}{${p}}$, så att exponenten blir $1$: $\\frac{${p}}{${q}}\\cdot\\frac{${q}}{${p}} = 1$`,`$x = ${b}^{\\frac{${q}}{${p}}}$`,`$${b} = ${s}^{${p}}$, så $x = (${s}^{${p}})^{\\frac{${q}}{${p}}} = ${s}^{${q}} = ${x}$`,`Kontroll: $${x}^{\\frac{${p}}{${q}}} = (${x}^{\\frac{1}{${q}}})^{${p}} = ${s}^{${p}} = ${b}$ ✓`],
+    verify:()=>Math.abs(x**(p/q)-b)<1e-6};
+});
+def('a-241',24,'A-nivå: substitution med 10 upphöjt till x',()=>{
+  const [e1,e2]=shuffle([-2,-1,0,1,2,3]).slice(0,2), A=rnd(10**e1,4), B=rnd(10**e2,4), S=rnd(A+B,4), Pr=rnd(A*B,6);
+  const Ts=v=>{ const r=rnd(v,6); return Number.isInteger(r)?String(r):String(r).replace('.','{,}'); };
+  return {diff:3, prompt:`Lös ekvationen $10^{2x} - ${Ts(S)}\\cdot 10^x + ${Ts(Pr)} = 0$.`,
+    answer:num([e1,e2],`x_1 = ${e1},\\ x_2 = ${e2}`),
+    errors:[{values:[F(Math.round(A*100),100),F(Math.round(B*100),100)], msg:'De talen är $t = 10^x$. Svara med $x$: $x = \\lg t$.'}],
+    steps:[`$10^{2x} = (10^x)^2$. Sätt $t = 10^x$: $t^2 - ${Ts(S)}t + ${Ts(Pr)} = 0$`,`pq-formeln eller faktorisering: $t = ${Ts(A)}$ eller $t = ${Ts(B)}$`,`$10^x = ${Ts(A)}$ ger $x = ${e1}$ och $10^x = ${Ts(B)}$ ger $x = ${e2}$`,`Kontroll med $x = ${e2}$: $${Ts(B*B)} - ${Ts(S)}\\cdot ${Ts(B)} + ${Ts(Pr)} = 0$ ✓`],
+    verify:()=>Math.abs(B*B-S*B+Pr)<1e-9 && Math.abs(A*A-S*A+Pr)<1e-9};
+});
+def('a-242',24,'A-nivå: falska rötter',()=>{
+  const r=ri(1,12), d=ri(1,9), Pr=r*(r+d);
+  return {diff:3, prompt:`Lös ekvationen $\\lg x + \\lg(x + ${d}) = \\lg ${Pr}$.`,
+    answer:num([r],`x = ${r}`),
+    errors:[{values:[r,-(r+d)], msg:`$x = ${-(r+d)}$ ger $\\lg(${-(r+d)})$, som inte finns. Den roten är falsk.`},{values:[F(Pr-d,2)], msg:'$\\lg x + \\lg(x + d)$ är $\\lg(x(x + d))$, inte $\\lg(2x + d)$.'}],
+    steps:[`Logaritmlagen: $\\lg x + \\lg(x + ${d}) = \\lg(x(x + ${d}))$`,`$x(x + ${d}) = ${Pr}$, alltså $${poly([1,d,-Pr])} = 0$`,`pq-formeln: $x = ${r}$ eller $x = ${-(r+d)}$. Men $\\lg x$ kräver $x > 0$, så bara $x = ${r}$.`,`Kontroll: $\\lg ${r} + \\lg ${r+d} = \\lg(${r}\\cdot ${r+d}) = \\lg ${Pr}$ ✓`],
+    verify:()=>Math.abs(lg(r)+lg(r+d)-lg(Pr))<1e-12};
+});
+def('a-251',25,'A-nivå: linjär mot exponentiell',()=>{
+  const N0=pick([2000,4000,5000,8000]), inc=pick([300,400,500,600]), p=pick([5,6,7,8]);
+  let x=1; while(N0*(1+p/100)**x<=N0+inc*x && x<80) x++;
+  if(x<4||x>40) return null;
+  return {diff:3, calc:true, noTime:true, prompt:`Två företag har $${N0}$ kunder vardera. Företag A får $${inc}$ nya kunder per år. Företag B ökar med $${p}$ % per år. Efter hur många hela år har B för första gången fler kunder än A?`,
+    answer:num([x],`${x}\\text{ år}`,{hint:'Ett heltal: antal år'}),
+    errors:[{values:[x-1], msg:`Efter $${x-1}$ år har A fortfarande minst lika många: $${N0 + inc*(x-1)}$ mot $${dc(N0*(1+p/100)**(x-1),0)}$.`}],
+    steps:[`A: $y = ${N0} + ${inc}x$ (linjär). B: $y = ${N0}\\cdot ${dc(1+p/100,2)}^x$ (exponentiell)`,'Ekvationen går inte att lösa med logaritmer direkt. Pröva år för år med miniräknaren, eller läs av graferna.',`År $${x-1}$: A $${N0+inc*(x-1)}$, B $\\approx ${dc(N0*(1+p/100)**(x-1),0)}$. År $${x}$: A $${N0+inc*x}$, B $\\approx ${dc(N0*(1+p/100)**x,0)}$`,`Kontroll: år $${x}$ är det första året då B är störst ✓`],
+    verify:()=>N0*(1+p/100)**x>N0+inc*x && N0*(1+p/100)**(x-1)<=N0+inc*(x-1)};
+});
+def('a-252',25,'A-nivå: andragradsfunktion ur nollställen',()=>{
+  const r1=nzi(-5,4), r2=r1+ri(2,7), x0=pick([r1-1,r2+1,Math.round((r1+r2)/2)]), a=nzi(-3,3), y0=a*(x0-r1)*(x0-r2);
+  if(y0===0) return null;
+  const b=-a*(r1+r2), c=a*r1*r2;
+  return {diff:3, prompt:`En andragradsfunktion $y = ax^2 + bx + c$ har nollställena $x = ${r1}$ och $x = ${r2}$ och går genom punkten $(${x0}, ${y0})$. Bestäm $a$, $b$ och $c$ i den ordningen.`,
+    answer:num([a,b,c],`a = ${a},\\ b = ${b},\\ c = ${c}`,{ordered:true,hint:'Tre tal: a; b; c'}),
+    errors:[{values:[-a,-b,-c], msg:`Kontrollera tecknet på $a$: sätt in $x = ${x0}$ och jämför med $${y0}$.`},{values:[1,-(r1+r2),r1*r2], msg:'Nollställena bestämmer bara formen. Faktorn $a$ bestäms med den tredje punkten.'}],
+    steps:[`Nollställena ger $y = a(${poly([1,-r1])})(${poly([1,-r2])})$`,`Punkten: $${y0} = a\\cdot ${P(x0-r1)}\\cdot ${P(x0-r2)} = ${(x0-r1)*(x0-r2)}a$, så $a = ${a}$`,`Multiplicera ut: $y = ${poly([a,b,c])}$`,`Kontroll: $x = ${x0}$ ger $${subsTex([a,b,c],x0)} = ${y0}$ ✓`],
+    verify:()=>a*x0*x0+b*x0+c===y0 && a*r1*r1+b*r1+c===0 && a*r2*r2+b*r2+c===0};
+});
+
+// Förklara mer för A-nivåuppgifterna
+Object.assign(METHOD,{
+  'a-211':{topic:'l21-kvrot', how:['Flytta allt till en sida så att högerledet blir $0$.','Bryt ut det som är gemensamt, även om det är en hel parentes.','Nollproduktmetoden: varje faktor ger en lösning.'], trap:'Att dela båda sidor med $x$ eller med en parentes. Då försvinner lösningen där den är noll.'},
+  'a-212':{topic:'l4-pq', how:['En produkt får bara delas upp när den är lika med $0$. Här är högerledet inte $0$.','Multiplicera ut vänsterledet och samla alla termer på en sida.','Lös med pq-formeln eller faktorisera. Kontrollera i den ursprungliga ekvationen.'], trap:'Att sätta varje parentes lika med noll fast högerledet inte är $0$.'},
+  'a-221':{topic:'l6-ka', how:['Skriv ut uttrycket med den okända kvar. $f(x + k)$ betyder att varje $x$ byts mot $(x + k)$.','Förenkla och se vilka termer som tar ut varandra.','Det som blir kvar är en enkel ekvation. Kontrollera genom att sätta in.'], trap:'Att glömma termerna som uppstår när $(x + k)^2$ utvecklas, eller att $k$ läggs till i varje insättning.'},
+  'a-222':{topic:'l22-graf', how:['Två punkter med samma $y$-värde ligger symmetriskt: symmetrilinjen är mitt emellan.','Symmetrilinjen $x = -\\frac{b}{2}$ ger $b$. En punkt till ger $c$.','Med begränsad definitionsmängd: kolla vändpunkten och båda ändpunkterna.'], trap:'Att tro att största och minsta värdet alltid ligger i ändpunkterna.'},
+  'a-223':{topic:'l22-extrem', how:['Minsta värdet $m$ vid $x = h$ betyder $f(x) = (x - h)^2 + m$.','Sätt in det givna värdet och lös med kvadratrotsmetoden.','Två lösningar, symmetriskt kring $x = h$.'], trap:'Att bara ta den positiva roten.'},
+  'a-224':{topic:'l22-rekt', how:['Låt $x$ vara längden ut från väggen. Räkna hur många sådana staket det blir.','Resten av staketet blir sidan längs väggen. Ställ upp arean $A(x)$.','Största värdet ligger mitt emellan nollställena.'], trap:'Att glömma mellanväggarna, som också är $x$ långa.'},
+  'a-231':{topic:'l23-pot', how:['Gör exponenten till $1$: upphöj båda leden till det inverterade bråket.','Skriv talet som en potens, så går det att räkna utan miniräknare.','Kontrollera genom att sätta in.'], trap:'Att gånga med bråket i stället för att upphöja till det.'},
+  'a-241':{topic:'l24-lg', how:['$10^{2x} = (10^x)^2$. Sätt $t = 10^x$ så blir det en andragradsekvation.','Lös för $t$ och gå sedan tillbaka: $10^x = t$ ger $x = \\lg t$.','Kontrollera båda lösningarna.'], trap:'Att svara med $t$-värdena i stället för $x$.'},
+  'a-242':{topic:'l24-lag', how:['Slå ihop logaritmerna: $\\lg a + \\lg b = \\lg ab$.','Två lika logaritmer ger lika tal. Lös andragradsekvationen.','Stryk lösningar där något logaritmeras som inte är positivt.'], trap:'Att behålla den negativa roten. $\\lg$ av ett negativt tal finns inte.'},
+  'a-251':{topic:'l25-reg', how:['Skriv en modell för varje: linjär $y = m + kx$ och exponentiell $y = C\\cdot a^x$.','Ekvationen går inte att lösa exakt i Matte 2. Pröva år för år eller jämför graferna.','Svara med det första hela året då villkoret gäller.'], trap:'Att tro att den exponentiella modellen alltid ligger över från början.'},
+  'a-252':{topic:'l25-graf', how:['Nollställena ger faktorformen $y = a(x - x_1)(x - x_2)$.','Den tredje punkten bestämmer $a$.','Multiplicera ut och läs av $a$, $b$ och $c$.'], trap:'Att glömma faktorn $a$.'}
+});
+/* ---------- Nya utmaningar (A+) för 2.3–2.5 ---------- */
+CHALLENGES.push(
+  {id:'c23a', w:23, prompt:'Lös ekvationen $x^{\\frac{3}{2}} = 27$.',
+   values:['9'], tex:'x = 9',
+   ok:v=>v.length===1 && Math.abs(v[0]**1.5-27)<1e-9,
+   errors:[{values:['3'], msg:'$3^{\\frac{3}{2}} = \\sqrt{27} \\approx 5{,}2$, inte $27$. Upphöj båda leden till $\\frac{2}{3}$.'},{values:['18'], msg:'Exponenten ska inte gångras med talet. Upphöj båda leden till $\\frac{2}{3}$.'}],
+   how:['Gör exponenten till $1$ genom att upphöja båda leden till det inverterade bråket.','$27$ är en jämn tredjepotens, så räkningen går utan miniräknare.'],
+   trap:'Att gångra $27$ med $\\frac{2}{3}$ i stället för att upphöja till $\\frac{2}{3}$.',
+   steps:['Upphöj båda leden till $\\frac{2}{3}$: $x = 27^{\\frac{2}{3}}$','$27^{\\frac{1}{3}} = 3$ eftersom $3^3 = 27$','$27^{\\frac{2}{3}} = 3^2 = 9$','Svar: $x = 9$','Kontroll: $9^{\\frac{3}{2}} = (\\sqrt{9})^3 = 3^3 = 27$ ✓']},
+  {id:'c23b', w:23, prompt:'Beräkna exakt: $\\frac{8^{\\frac{2}{3}}\\cdot 4^{-\\frac{1}{2}}}{2^{-3}}$.',
+   values:['16'], tex:'16',
+   ok:v=>v.length===1 && Math.abs(v[0]-8**(2/3)*4**-0.5/2**-3)<1e-9,
+   errors:[{values:['1/4'], msg:'Att dela med $2^{-3}$ är att gånga med $2^3 = 8$.'}],
+   how:['Skriv alla tal som potenser av $2$.','Använd potenslagarna och lägg ihop exponenterna.'],
+   trap:'Att tro att en negativ exponent ger ett negativt tal. $4^{-\\frac{1}{2}} = \\frac{1}{2}$.',
+   steps:['$8^{\\frac{2}{3}} = (2^3)^{\\frac{2}{3}} = 2^2$','$4^{-\\frac{1}{2}} = (2^2)^{-\\frac{1}{2}} = 2^{-1}$','$\\frac{2^2\\cdot 2^{-1}}{2^{-3}} = 2^{2 - 1 + 3} = 2^4 = 16$','Svar: $16$','Kontroll: $\\frac{4\\cdot 0{,}5}{0{,}125} = \\frac{2}{0{,}125} = 16$ ✓']},
+  {id:'c23c', w:23, prompt:'Lös ekvationen $(x - 1)^4 = 81$.',
+   values:['4','-2'], tex:'x_1 = 4,\\ x_2 = -2', hint:'Två svar: skriv dem med ; emellan',
+   ok:v=>v.length===2 && v[0]!==v[1] && v.every(x=>Math.abs((x-1)**4-81)<1e-9),
+   errors:[{values:['4'], msg:'Jämn exponent: $x - 1 = -3$ fungerar också, eftersom $(-3)^4 = 81$.'},{values:['3','-3'], msg:'Det är $x - 1$ som är $\\pm 3$, inte $x$.'}],
+   how:['Jämn exponent ger två möjligheter för det som upphöjs.','Lös sedan två enkla ekvationer.'],
+   trap:'Att glömma den negativa lösningen vid jämn exponent.',
+   steps:['$(x - 1)^4 = 81$ ger $x - 1 = \\pm 81^{\\frac{1}{4}} = \\pm 3$','$x - 1 = 3$ ger $x = 4$','$x - 1 = -3$ ger $x = -2$','Svar: $x = 4$ eller $x = -2$','Kontroll: $(-2 - 1)^4 = (-3)^4 = 81$ ✓']},
+  {id:'c23d', w:23, prompt:'För exponentialfunktionen $f(x) = C\\cdot a^x$ gäller $f(2) = 12$ och $f(5) = 96$. Beräkna $f(0)$.',
+   values:['3'], tex:'f(0) = 3',
+   ok:v=>v.length===1 && Math.abs(v[0]*2**2-12)<1e-9 && Math.abs(v[0]*2**5-96)<1e-9,
+   errors:[{values:['6'], msg:'Från $x = 2$ till $x = 0$ är två steg bakåt. Dela med $a$ två gånger: $\\frac{12}{2^2} = 3$.'},{values:['12'], msg:'$f(0) = C$, och $C$ är inte samma sak som $f(2)$.'}],
+   how:['Dela de två funktionsvärdena med varandra, så försvinner $C$.','$f(0) = C$.'],
+   trap:'Att tro att $f(0)$ är $f(2)$ delat med $a$ bara en gång.',
+   steps:['$\\frac{f(5)}{f(2)} = \\frac{C\\cdot a^5}{C\\cdot a^2} = a^3 = \\frac{96}{12} = 8$','$a^3 = 8$ ger $a = 2$','$f(2) = C\\cdot 2^2 = 4C = 12$, så $C = 3$','$f(0) = C\\cdot 2^0 = 3$','Kontroll: $f(5) = 3\\cdot 2^5 = 96$ ✓']},
+  {id:'c23e', w:23, prompt:'Ett belopp växer med $6$ % per år. Efter hur många hela år har det för första gången blivit mer än dubbelt så stort?',
+   values:['12'], tex:'12\\text{ år}', hint:'Ett heltal: antal år',
+   ok:v=>v.length===1 && 1.06**v[0]>2 && 1.06**(v[0]-1)<=2,
+   errors:[{values:['11'], msg:'$1{,}06^{11} \\approx 1{,}90$. Beloppet är inte dubbelt så stort än.'},{values:['17'], msg:'Ökningen räknas på det nya beloppet varje år. $\\frac{100}{6} \\approx 17$ gäller bara om ökningen är lika många kronor varje år.'}],
+   how:['Ställ upp $1{,}06^x = 2$ och lös med logaritmer.','Frågan gäller hela år, så avrunda uppåt.'],
+   trap:'Att avrunda $11{,}9$ till $11$ i stället för uppåt.',
+   steps:['$1{,}06^x = 2$','$x = \\frac{\\lg 2}{\\lg 1{,}06} \\approx 11{,}9$','Efter $11$ år är det inte dubbelt än, efter $12$ år är det mer än dubbelt','Svar: $12$ år','Kontroll: $1{,}06^{11} \\approx 1{,}898$ och $1{,}06^{12} \\approx 2{,}012$ ✓']},
+  {id:'c24a', w:24, prompt:'Lös ekvationen $\\lg x + \\lg(x + 3) = 1$.',
+   values:['2'], tex:'x = 2',
+   ok:v=>v.length===1 && Math.abs(Math.log10(v[0])+Math.log10(v[0]+3)-1)<1e-9,
+   errors:[{values:['2','-5'], msg:'$x = -5$ ger $\\lg(-5)$, som inte finns. Den roten är falsk.'}],
+   how:['Slå ihop logaritmerna med logaritmlagen.','$\\lg y = 1$ betyder $y = 10$.','Kontrollera alla rötter i den ursprungliga ekvationen.'],
+   trap:'Att ta med $x = -5$. Logaritmen av ett negativt tal finns inte.',
+   steps:['$\\lg x + \\lg(x + 3) = \\lg(x(x + 3)) = 1$','$x(x + 3) = 10$, alltså $x^2 + 3x - 10 = 0$','$(x + 5)(x - 2) = 0$ ger $x = 2$ eller $x = -5$','$x = -5$ stryks eftersom $\\lg(-5)$ inte finns','Kontroll: $\\lg 2 + \\lg 5 = \\lg 10 = 1$ ✓']},
+  {id:'c24b', w:24, prompt:'Lös ekvationen $\\lg x^2 = 4$.',
+   values:['100','-100'], tex:'x = \\pm 100', hint:'Två svar: skriv dem med ; emellan',
+   ok:v=>v.length===2 && v[0]!==v[1] && v.every(x=>Math.abs(Math.log10(x*x)-4)<1e-9),
+   errors:[{values:['100'], msg:'$x = -100$ fungerar också: $(-100)^2 = 10000$ och $\\lg 10000 = 4$. Här står hela $x^2$ inuti logaritmen.'},{values:['2'], msg:'$\\lg x^2 = 4$ betyder $x^2 = 10^4$, inte $x^2 = 4$.'}],
+   how:['Använd definitionen: $\\lg y = 4$ betyder $y = 10^4$.','Fundera på om negativa $x$ fungerar. Det som logaritmeras är $x^2$.'],
+   trap:'Att skriva om till $2\\lg x = 4$ och tappa den negativa lösningen. Den omskrivningen gäller bara för $x > 0$.',
+   steps:['$\\lg x^2 = 4$ betyder $x^2 = 10^4 = 10000$','$x = \\pm 100$','Båda fungerar, eftersom $x^2$ är positivt för båda','Svar: $x = 100$ eller $x = -100$','Kontroll: $\\lg(-100)^2 = \\lg 10000 = 4$ ✓']},
+  {id:'c24c', w:24, prompt:'Beräkna exakt utan miniräknare: $\\lg 8 + 3\\lg 5$.',
+   values:['3'], tex:'3',
+   ok:v=>v.length===1 && Math.abs(v[0]-(Math.log10(8)+3*Math.log10(5)))<1e-9,
+   errors:[{values:['2'], msg:'$3\\lg 5 = \\lg 125$, och $8\\cdot 125 = 1000$.'}],
+   how:['Flytta in trean som en exponent.','Slå ihop till en logaritm med logaritmlagen.'],
+   trap:'Att räkna $3\\lg 5$ som $\\lg 15$.',
+   steps:['$3\\lg 5 = \\lg 5^3 = \\lg 125$','$\\lg 8 + \\lg 125 = \\lg(8\\cdot 125)$','$8\\cdot 125 = 1000$, och $\\lg 1000 = 3$','Svar: $3$','Kontroll: $\\lg 8 \\approx 0{,}903$ och $3\\lg 5 \\approx 2{,}097$, summan är $3$ ✓']},
+  {id:'c24d', w:24, prompt:'Lös ekvationen $10^{2x} - 11\\cdot 10^x + 10 = 0$.',
+   values:['0','1'], tex:'x_1 = 0,\\ x_2 = 1', hint:'Två svar: skriv dem med ; emellan',
+   ok:v=>v.length===2 && v[0]!==v[1] && v.every(x=>Math.abs(10**(2*x)-11*10**x+10)<1e-9),
+   errors:[{values:['1','10'], msg:'$1$ och $10$ är värdena på $t = 10^x$. Svara med $x$.'}],
+   how:['$10^{2x} = (10^x)^2$. Sätt $t = 10^x$.','Lös andragradsekvationen i $t$ och gå sedan tillbaka till $x$.'],
+   trap:'Att svara med $t$-värdena i stället för $x$.',
+   steps:['Sätt $t = 10^x$: $t^2 - 11t + 10 = 0$','$(t - 1)(t - 10) = 0$, så $t = 1$ eller $t = 10$','$10^x = 1$ ger $x = 0$ och $10^x = 10$ ger $x = 1$','Svar: $x = 0$ eller $x = 1$','Kontroll: $x = 1$ ger $100 - 110 + 10 = 0$ ✓']},
+  {id:'c24e', w:24, prompt:'Lös ekvationen $2^{x + 3} = 5^x$. Svara med tre decimaler.',
+   values:[(3*Math.log10(2)/Math.log10(2.5)).toFixed(3)], tex:'x = \\frac{3\\lg 2}{\\lg 5 - \\lg 2} \\approx 2{,}269', tol:0.00051, hint:'Ett decimaltal med tre decimaler',
+   ok:v=>v.length===1 && Math.abs(2**(v[0]+3)-5**v[0])<0.02,
+   errors:[{values:[(3/Math.log10(2.5)).toFixed(3)], msg:'$\\lg 2^{x + 3} = (x + 3)\\lg 2$. Hela exponenten gångras med $\\lg 2$, även trean.'}],
+   how:['Logaritmera båda leden och flytta ner exponenterna.','Samla $x$-termerna på en sida och bryt ut $x$.'],
+   trap:'Att bara gånga $x$ med $\\lg 2$ och glömma trean.',
+   steps:['$\\lg 2^{x + 3} = \\lg 5^x$ ger $(x + 3)\\lg 2 = x\\lg 5$','$x\\lg 2 + 3\\lg 2 = x\\lg 5$, så $3\\lg 2 = x(\\lg 5 - \\lg 2)$','$x = \\frac{3\\lg 2}{\\lg 5 - \\lg 2} \\approx \\frac{0{,}9031}{0{,}3979} \\approx 2{,}269$','Svar: $x \\approx 2{,}269$','Kontroll: $2^{5{,}269} \\approx 38{,}6$ och $5^{2{,}269} \\approx 38{,}6$ ✓']},
+  {id:'c24f', w:24, prompt:'Ett radioaktivt ämne minskar med $30$ % på $10$ dygn. Bestäm halveringstiden. Svara med en decimal.',
+   values:[(10*Math.log10(0.5)/Math.log10(0.7)).toFixed(1)], tex:'T \\approx 19{,}4\\text{ dygn}', tol:0.051, hint:'Ett decimaltal: antal dygn',
+   ok:v=>v.length===1 && Math.abs(0.7**(v[0]/10)-0.5)<0.002,
+   errors:[{values:['16.7'], msg:'Minskningen är inte lika många procentenheter per dygn. Den är exponentiell, så $30$ % på $10$ dygn ger inte $50$ % på $\\frac{50}{3}$ dygn.'}],
+   how:['Efter $10$ dygn är faktorn $0{,}7$. Efter $t$ dygn är den $0{,}7^{\\frac{t}{10}}$.','Sätt den lika med $0{,}5$ och lös med logaritmer.'],
+   trap:'Att räkna linjärt, som om $30$ % på $10$ dygn betyder $50$ % på $16{,}7$ dygn.',
+   steps:['Faktor per $10$ dygn: $0{,}7$. Efter $T$ dygn: $0{,}7^{\\frac{T}{10}}$','$0{,}7^{\\frac{T}{10}} = 0{,}5$ ger $\\frac{T}{10}\\cdot\\lg 0{,}7 = \\lg 0{,}5$','$T = \\frac{10\\lg 0{,}5}{\\lg 0{,}7} \\approx 19{,}4$ dygn','Svar: ungefär $19{,}4$ dygn','Kontroll: $0{,}7^{1{,}94} \\approx 0{,}50$ ✓']},
+  {id:'c24g', w:24, prompt:'Konto A har $10\\,000$ kr och får $5$ % ränta per år. Konto B har $15\\,000$ kr och får $2$ % ränta per år. Efter hur många hela år har konto A för första gången mer pengar än konto B?',
+   values:['14'], tex:'14\\text{ år}', hint:'Ett heltal: antal år',
+   ok:v=>v.length===1 && 10000*1.05**v[0]>15000*1.02**v[0] && 10000*1.05**(v[0]-1)<=15000*1.02**(v[0]-1),
+   errors:[{values:['13'], msg:'Efter $13$ år har A ungefär $18\\,857$ kr och B $19\\,404$ kr. B är fortfarande störst.'}],
+   how:['Ställ upp $10\\,000\\cdot 1{,}05^x = 15\\,000\\cdot 1{,}02^x$.','Samla potenserna på en sida: $\\left(\\frac{1{,}05}{1{,}02}\\right)^x = 1{,}5$, och logaritmera.'],
+   trap:'Att avrunda $13{,}99$ nedåt. Frågan gäller när A för första gången har mer.',
+   steps:['$10\\,000\\cdot 1{,}05^x = 15\\,000\\cdot 1{,}02^x$ ger $\\left(\\frac{1{,}05}{1{,}02}\\right)^x = 1{,}5$','$x = \\frac{\\lg 1{,}5}{\\lg\\frac{1{,}05}{1{,}02}} \\approx 13{,}99$','Alltså har A mer pengar först efter $14$ år','Svar: $14$ år','Kontroll: år $14$: A $\\approx 19\\,799$ kr och B $\\approx 19\\,792$ kr ✓']},
+  {id:'c25a', w:25, prompt:'En exponentiell modell $y = C\\cdot a^x$ går genom punkterna $(1, 6)$ och $(3, 54)$. Bestäm $C$ och $a$ ($a > 0$). Ange $C$ först.',
+   values:['2','3'], tex:'C = 2,\\ a = 3', ordered:true, hint:'Två tal: C först, sedan a',
+   ok:v=>v.length===2 && v[1]>0 && Math.abs(v[0]*v[1]-6)<1e-9 && Math.abs(v[0]*v[1]**3-54)<1e-9,
+   errors:[{values:['6','3'], msg:'$C$ är värdet vid $x = 0$, inte vid $x = 1$. Dela $6$ med $a$.'},{values:['2','9'], msg:'Kvoten $\\frac{54}{6} = 9$ är $a^2$, inte $a$. Det är två steg mellan $x = 1$ och $x = 3$.'}],
+   how:['Dela $y$-värdena med varandra så försvinner $C$.','Antalet steg mellan $x$-värdena är exponenten i kvoten.'],
+   trap:'Att tro att kvoten $9$ är $a$, fast den hör till två steg.',
+   steps:['$\\frac{C\\cdot a^3}{C\\cdot a} = a^2 = \\frac{54}{6} = 9$','$a > 0$ ger $a = 3$','$C\\cdot 3 = 6$ ger $C = 2$','Svar: $y = 2\\cdot 3^x$','Kontroll: $2\\cdot 3^3 = 54$ ✓']},
+  {id:'c25b', w:25, prompt:'Två företag har $4000$ kunder vardera. Företag A får $500$ nya kunder per år. Företag B ökar med $8$ % per år. Efter hur många hela år har B för första gången fler kunder än A?',
+   values:['12'], tex:'12\\text{ år}', hint:'Ett heltal: antal år',
+   ok:v=>v.length===1 && 4000*1.08**v[0]>4000+500*v[0] && 4000*1.08**(v[0]-1)<=4000+500*(v[0]-1),
+   errors:[{values:['11'], msg:'Efter $11$ år har A $9500$ kunder och B ungefär $9327$.'}],
+   how:['A är linjär: $4000 + 500x$. B är exponentiell: $4000\\cdot 1{,}08^x$.','Ekvationen kan inte lösas med logaritmer direkt. Pröva år för år eller jämför graferna.'],
+   trap:'Att tro att B går om direkt för att procent låter mer. I början ökar A snabbare.',
+   steps:['A: $y = 4000 + 500x$. B: $y = 4000\\cdot 1{,}08^x$','År $11$: A $9500$, B $\\approx 9327$','År $12$: A $10\\,000$, B $\\approx 10\\,073$','Svar: efter $12$ år','Kontroll: $4000\\cdot 1{,}08^{12} \\approx 10\\,073 > 10\\,000$ ✓']},
+  {id:'c25c', w:25, prompt:'En andragradsfunktion $y = ax^2 + bx + c$ har nollställena $x = -1$ och $x = 5$ och går genom punkten $(2, 18)$. Bestäm $a$, $b$ och $c$ i den ordningen.',
+   values:['-2','8','10'], tex:'a = -2,\\ b = 8,\\ c = 10', ordered:true, hint:'Tre tal: a; b; c',
+   ok:v=>v.length===3 && [-1,5].every(x=>Math.abs(v[0]*x*x+v[1]*x+v[2])<1e-9) && Math.abs(v[0]*4+v[1]*2+v[2]-18)<1e-9,
+   errors:[{values:['2','-8','-10'], msg:'Fel tecken. Sätt in $x = 2$: $2\\cdot 4 - 16 - 10 = -18$, inte $18$.'},{values:['1','-4','-5'], msg:'Nollställena bestämmer bara formen. Faktorn $a$ bestäms med punkten $(2, 18)$.'}],
+   how:['Nollställena ger faktorformen $y = a(x + 1)(x - 5)$.','Punkten bestämmer $a$. Multiplicera sedan ut.'],
+   trap:'Att glömma faktorn $a$ och skriva $y = (x + 1)(x - 5)$.',
+   steps:['$y = a(x + 1)(x - 5)$','$(2, 18)$: $18 = a\\cdot 3\\cdot(-3) = -9a$, så $a = -2$','$y = -2(x^2 - 4x - 5) = -2x^2 + 8x + 10$','Svar: $a = -2$, $b = 8$, $c = 10$','Kontroll: $-2\\cdot 4 + 16 + 10 = 18$ ✓']}
+);
 
 /* =====================================================================
    PROGRESSION: stjärnor, medaljer, Förstådd, Provberedskap, rost
@@ -4913,7 +5594,7 @@ const MEDALS=['Ingen medalj','Brons','Silver','Guld','Diamant'];
 const starsFor = c => c>=9?3:c>=8?2:c>=6?1:0;
 function freshState(){
   return {v:2, level:1, passed:{}, best:{}, low:{level:0,count:0}, rounds:0, answered:0, correct:0, bestStreak:0, totalTime:0, types:{}, history:[],
-    xp:0, insights:0, insightsEarned:0, hintsUsed:0, stars:{}, und:{}, cards:{}, worldLast:{}, read:{}, chal:{}, secBest:{}, timed:false,
+    xp:0, insights:0, insightsEarned:0, hintsUsed:0, stars:{}, und:{}, cards:{}, worldLast:{}, read:{}, chal:{}, secBest:{}, timed:false, guide:guideState(null),
     skin:{owned:['standard'], active:'standard'},
     black:{unlocked:false, beaten:false, name:'', theme:false, lessons:{}, attempts:0, unlockedAt:0}};
 }
@@ -4924,6 +5605,7 @@ function migrate(old){
   S.skin=Object.assign({},f.skin,old.skin||{}); S.black=Object.assign({},f.black,old.black||{});
   for(const k of ['stars','und','cards','worldLast','passed','best','types','read','chal','secBest']) S[k]=Object.assign({},old[k]||{});
   if(!Array.isArray(S.history)) S.history=[];
+  S.guide=guideState(old.guide);
   if(!old.v || old.v<2){
     const now=Date.now();
     S.xp=S.history.reduce((s,h)=>s+(h.score||0),0);
@@ -4970,8 +5652,400 @@ const bossReady = S => blackRequirements(S).slice(0,3).every(r=>r.done);
 const blackStatus = (S,now) => !S.black.unlocked ? null : rustyWorlds(S,now).length ? 'grafit' : 'black';
 function playerLevel(xp){ let l=1; while(xp>=150*l*l) l++; return {level:l, from:150*(l-1)*(l-1), to:150*l*l}; }
 
+/* =====================================================================
+   GUIDEN: motorn
+   Varje avsnitt i kapitel 2 har en stege: E-, C- och A-uppgifter
+   (typ + vilka svårigheter som räknas), förståelseuppgifter (U) och
+   utmaningar (X, A+). Varje svar loggas. Ur loggen räknas hur säker
+   eleven är på varje nivå, vilket betyg svaren visar, vad som faller och
+   vilka fel som återkommer. Planeraren väljer nästa pass utifrån det.
+   Allt här är rena funktioner av sparat läge, så det går att testa.
+   ===================================================================== */
+const LADDER={
+  s211:{E:[['b-kvrot',[1]],['b-nollprod',[1]],['rot-faktor',[1]]], C:[['b-kvrot',[2,3]],['b-nollprod',[2]],['rot-faktor',[2]]], A:[['a-211',[3]]],
+        U:['u-varfor-nollprodukt','u-felet-delax','u-metod'], X:['c3a','c3c']},
+  s212:{E:[['pq',[1]]], C:[['pq',[2]],['pq-dela',[2,3]],['b-pqdec',[2]]], A:[['a-212',[3]]],
+        U:['u-varfor-dela','u-felet-pq','u-ordna-pq'], X:['c4b','c4c']},
+  s213:{E:[['b-omskriv',[2]],['pq-dela',[2]]], C:[['b-antal',[2]],['pq-dela',[3]]], A:[['b-antal',[3]]],
+        U:['u-forutsag-antal','u-tvavagar','u-metod','u-felet-kvadregel','u-felet-distributiv'], X:['c4a','c7a','c7c','c8a','c2a','c2b','c10a']},
+  s214:{E:[['b-ord',[2]]], C:[['b-problem',[2]],['b-ord',[3]]], A:[['b-problem',[3]]],
+        U:['u-rimlig'], X:['c10b']},
+  s215:{E:[['rot-bygg',[1]],['rot-andra',[2]]], C:[['rot-bygg',[2]],['elever',[2]]], A:[['elever',[3]]],
+        U:['u-vieta','u-felet-faktorform'], X:['c3b']},
+  s221:{E:[['ins-kvad',[1,2]],['ins-los',[1]]], C:[['ins-los',[2]],['fn-ka',[2]],['fn-ff',[2]],['k-kvad',[1,2]]], A:[['a-221',[3]]],
+        U:['u-parentes','u-varfor-fx','u-felet-fka','u-felet-2a','u-varfor-k','u-ordna-k','u-ordna-fxk'], X:['c1a','c1b','c6a','c6b','c6c']},
+  s222:{E:[['b-sym',[1]],['b-grafsym',[1]],['graf-skar',[1]],['df-graf',[1]]], C:[['b-sym',[2]],['df-graf',[2,3]]], A:[['a-222',[3]]],
+        U:['u-koppla-kvad','u-varfor-skarning','u-fraga-dfvf','u-varfor-vf','u-varfor-prick'], X:['c1c','c5a','c5c','c8b','c8c']},
+  s223:{E:[['b-extrem',[2]]], C:[['b-param',[2]],['mod-max',[2]]], A:[['a-223',[3]]],
+        U:['u-forutsag-max','u-varfor-symmetri'], X:['c2c','c10c']},
+  s224:{E:[['b-rekt',[2]]], C:[['mod-max',[2]],['b-rekt',[2]]], A:[['a-224',[3]]],
+        U:['u-ordna-max','u-varfor-symmetri'], X:['c5b','c9c']},
+  s225:{E:[['b-modell',[2]]], C:[['b-vinst',[2]],['b-modell',[3]]], A:[['b-vinst',[3]],['mod-vf',[3]]],
+        U:['u-fraga-modell','u-varfor-olikhet','u-ordna-max'], X:['c9a','c9b']},
+  s231:{E:[['b-potval',[1]],['b-potlag',[1]],['b-potek',[1]]], C:[['b-potval',[2]],['b-potlag',[2,3]],['b-potek',[2]],['b-potcalc',[2]]], A:[['a-231',[3]]],
+        U:['u-felet-potlag','u-varfor-jamn'], X:['c23a','c23b','c23c']},
+  s232:{E:[['b-exp',[1]],['b-procent',[1]]], C:[['b-exp',[2]],['b-procent',[2]]], A:[['b-exp',[3]]],
+        U:['u-varfor-faktor','u-felet-procent'], X:['c23d','c23e']},
+  s241:{E:[['b-lg',[1]],['b-10x',[2]]], C:[['b-10x',[3]]], A:[['a-241',[3]]],
+        U:['u-varfor-lg','u-felet-10x'], X:['c24d']},
+  s242:{E:[['b-lgdef',[1]]], C:[['b-lgdef',[2]],['b-lglag',[2]]], A:[['b-lglag',[3]],['a-242',[3]]],
+        U:['u-felet-lglag','u-varfor-lg'], X:['c24a','c24b','c24c']},
+  s243:{E:[['b-expvspot',[1]]], C:[['b-expvspot',[2]]], A:[['b-expek',[3]]],
+        U:['u-ordna-expek','u-felet-10x'], X:['c24e']},
+  s244:{E:[['b-kol14',[1]]], C:[['b-kol14',[2]],['b-ranta',[2]]], A:[['b-ranta',[3]],['b-kol14',[3]]],
+        U:['u-varfor-halv','u-ordna-ranta'], X:['c24f','c24g']},
+  s251:{E:[['b-regmodell',[1]]], C:[['b-regmodell',[2]],['b-regtyp',[2]]], A:[['a-251',[3]]],
+        U:['u-varfor-regtyp'], X:['c25b']},
+  s252:{E:[['b-grafformel',[2]]], C:[['b-grafformel',[3]]], A:[['a-252',[3]]],
+        U:['u-felet-grafformel'], X:['c25a','c25c','c7b']},
+};
+const GSECS=BOOK.flatMap(c=>c.sections.map(s=>({id:s.id, title:s.title, page:s.page, chap:c.n, learn:s.learn||null})));
+const GCHAPS=BOOK.map(c=>c.n);
+const GDAY=86400000;
+const CELLS=['E','C','A','U'];
+const CELL_NAME={E:'E-nivå',C:'C-nivå',A:'A-nivå',U:'Förståelse',X:'A+'};
+const GRADES=['F','E','D','C','B','A'];
+const KAP_N=8, KAP_PASS=6, SLUT_N=12, SLUT_PASS=9, MAST_N=10, MAST_PASS=8;
+const gsec = id => GSECS.find(s=>s.id===id);
+const chalSec = id => { for(const s of GSECS) if(LADDER[s.id].X.includes(id)) return s.id; return null; };
+const poolOf = (s,c) => c==='X' ? LADDER[s].X : LADDER[s][c] || [];
+// Vilket avsnitt och vilken nivå ett svar räknas till (utanför guiden). Första träffen i bokens ordning.
+function cellOfTask(t, preferSec){
+  if(t.chal){ const s=chalSec(t.chal); return s?{s,c:'A',x:1}:null; }
+  const order = preferSec && LADDER[preferSec] ? [preferSec,...GSECS.map(s=>s.id).filter(id=>id!==preferSec)] : GSECS.map(s=>s.id);
+  for(const s of order){
+    const L=LADDER[s];
+    if(t.und){ if(L.U.includes(t.type)) return {s,c:'U'}; continue; }
+    for(const c of ['E','C','A']) if(L[c].some(([id,ds])=>id===t.type && ds.includes(t.diff))) return {s,c};
+  }
+  return null;
+}
+// Felets "nyckel": samma missuppfattning ska räknas ihop även när talen skiljer sig
+const errKey = (type,msg) => type+'|'+String(msg).replace(/\$[^$]*\$/g,'#').replace(/-?\d+([,.]\d+)?/g,'#').replace(/\s+/g,' ').slice(0,90);
+function guideState(G){
+  G=G&&typeof G==='object'?G:{};
+  return {log:Array.isArray(G.log)?G.log:[], em:G.em&&typeof G.em==='object'?G.em:{}, snaps:Array.isArray(G.snaps)?G.snaps:[],
+    kap:G.kap&&typeof G.kap==='object'?G.kap:{}, slut:G.slut||null, mast:G.mast||null, passes:G.passes||0};
+}
+// Loggar ett svar. e = {s, c, k (typ eller utmaning), d, ok, x (utmaning), m (läge), msg (felmeddelande)}
+function guideLog(G,e,now){
+  const ent={t:now, s:e.s, c:e.c, k:e.k, d:e.d||0, ok:e.ok?1:0};
+  if(e.x) ent.x=1; if(e.m) ent.m=e.m;
+  if(!e.ok && e.msg){ const key=errKey(e.k,e.msg); ent.e=key; G.em[key]={m:e.msg, k:e.k}; }
+  G.log.push(ent);
+  if(G.log.length>1500) G.log.splice(0,G.log.length-1500);
+  if(Object.keys(G.em).length>150){ const used=new Set(G.log.map(x=>x.e).filter(Boolean)); for(const k of Object.keys(G.em)) if(!used.has(k)) delete G.em[k]; }
+  return ent;
+}
+
+/* ---------- Hur säker är eleven på en nivå? ----------
+   De 10 senaste svaren, nyast väger mest (0,82 per steg bakåt) och allt bleknar
+   med halveringstiden 45 dygn. Startläget är pessimistiskt: utan svar antas man
+   inte kunna. Upprepade utmaningar (samma fasta fråga) räknas bara till en fjärdedel.
+   klar = minst 3 svar (2 för förståelse), säkerhet minst 72 % (65 % för förståelse) och senaste svaret rätt. */
+const G_REC=0.82, G_HALF=45, G_A0=0.3, G_B0=0.7, G_KLAR=0.72, G_KLAR_U=0.65;   // förståelse har bara två svar, därför en egen gräns så att den bleknar lika fort som räknandet
+function cellStat(entries,now,c){
+  const es=entries.slice(-10).reverse();       // nyast först
+  const seen={}; entries.slice(0,-10).forEach(e=>{ if(e.x) seen[e.k]=true; });
+  const rep=new Array(es.length).fill(false);
+  for(let i=es.length-1;i>=0;i--){ const e=es[i]; if(e.x){ if(seen[e.k]) rep[i]=true; seen[e.k]=true; } }
+  let w=0, wOk=0;
+  es.forEach((e,i)=>{ let wt=Math.pow(G_REC,i)*Math.pow(0.5,Math.max(0,now-e.t)/GDAY/G_HALF); if(rep[i]) wt*=0.25; w+=wt; if(e.ok) wOk+=wt; });
+  const p=(wOk+G_A0)/(w+G_A0+G_B0), n=es.length, last=es[0]||null;
+  const recent=es.slice(0,6).map(e=>e.ok).reverse();
+  const minN = c==='U' ? 2 : 3;
+  let st='ny';
+  if(n){
+    if(n>=minN && p>=(c==='U'?G_KLAR_U:G_KLAR) && last.ok) st='klar';
+    else if((n>=2 && p<0.45) || (n>=2 && !es[0].ok && !es[1].ok)) st='svag';
+    else if(p>=0.55) st='nara';
+    else st='ovar';
+  }
+  return {st, p, n, w, last:last?last.t:0, recent, tot:entries.length, right:entries.filter(e=>e.ok).length};
+}
+function secModel(s,byCell,now){
+  const L=LADDER[s], cells={};
+  for(const c of CELLS) cells[c]=Object.assign({has:c==='U'?L.U.length>0:L[c].length>0}, cellStat(byCell[c]||[],now,c));
+  const ok=c=>cells[c].st==='klar', weak=c=>cells[c].st==='svag';
+  const aOk=ok('A');
+  const cOk=(ok('C')||aOk) && !weak('C');
+  const eOk=((cells.E.has?ok('E'):false)||ok('C')||aOk) && !weak('E');
+  const uOk=ok('U');
+  const lv = eOk&&cOk&&aOk&&uOk ? 3 : eOk&&cOk&&uOk ? 2 : eOk ? 1 : 0;
+  const all=CELLS.flatMap(c=>byCell[c]||[]), last=all.reduce((m,e)=>Math.max(m,e.t),0);
+  // nästa sak att visa: lägsta nivån som saknas
+  const lastOk = cs => cs.n>0 && cs.recent[cs.recent.length-1];
+  const front = !eOk ? (cells.E.has && !lastOk(cells.C) && !lastOk(cells.A) ? 'E' : 'C') : !cOk ? 'C' : !uOk ? 'U' : !aOk ? 'A' : 'X';
+  // delvis framsteg mot nästa nivå, 0–1, används i poängen
+  const partCell = front==='X' ? null : cells[front];
+  const part = partCell ? Math.min(0.9, partCell.n ? partCell.p*Math.min(1,partCell.n/3) : 0) : 0;
+  return {cells, eOk, cOk, aOk, uOk, lv, front, part, last, n:all.length, solvedX:(byCell.X||[]).length};
+}
+function gradeOf(lvs,slutOk){
+  const N=lvs.length, half=Math.floor(N/2)+1, cnt=k=>lvs.filter(l=>l>=k).length;
+  if(cnt(3)===N && slutOk) return 'A';
+  if(cnt(2)===N && cnt(3)>=half && slutOk) return 'B';
+  if(cnt(2)===N) return 'C';
+  if(cnt(1)===N && cnt(2)>=half) return 'D';
+  if(cnt(1)===N) return 'E';
+  return 'F';
+}
+// Vad som krävs för varje betyg som inte är nått än
+function gradeReqs(m){
+  const N=GSECS.length, half=Math.floor(N/2)+1, list=GSECS.map(s=>m.secs[s.id]);
+  const below=k=>list.filter(x=>x.lv<k).map(x=>x.id), cnt=k=>list.filter(x=>x.lv>=k).length;
+  return {
+    E:{all:below(1)},
+    D:{all:below(1), more:Math.max(0,half-cnt(2)), lvl:2},
+    C:{all:below(2)},
+    B:{all:below(2), more:Math.max(0,half-cnt(3)), lvl:3, slut:!m.slutOk},
+    A:{all:below(3), slut:!m.slutOk},
+    half,
+  };
+}
+function guideModel(G0,now){
+  const G=guideState(G0), by={};
+  GSECS.forEach(s=>by[s.id]={E:[],C:[],A:[],U:[],X:[]});
+  for(const e of G.log){ const b=by[e.s]; if(!b||!b[e.c]) continue; b[e.c].push(e); if(e.x&&e.ok) b.X.push(e); }
+  const secs={};
+  GSECS.forEach(s=>{ secs[s.id]=Object.assign({id:s.id,title:s.title,chap:s.chap,page:s.page,learn:s.learn}, secModel(s.id,by[s.id],now)); });
+  const lvs=GSECS.map(s=>secs[s.id].lv);
+  const slutOk=!!(G.slut&&G.slut.passed), mastOk=!!(G.mast&&G.mast.passed);
+  const m={secs, slutOk, mastOk, kap:G.kap, passes:G.passes};
+  m.grade=gradeOf(lvs,slutOk);
+  m.counts={E:lvs.filter(l=>l>=1).length, C:lvs.filter(l=>l>=2).length, A:lvs.filter(l=>l>=3).length, N:lvs.length};
+  m.score=Math.round(1000*GSECS.reduce((s,x)=>s+Math.min(3,secs[x.id].lv+(secs[x.id].lv<3?secs[x.id].part:0)),0)/(3*GSECS.length))/10;
+  m.reqs=gradeReqs(m);
+  const n30=G.log.filter(e=>now-e.t<30*GDAY).length;
+  m.evidence={all:G.log.length, n30, untouched:GSECS.filter(s=>secs[s.id].n===0).map(s=>s.id)};
+  m.placed = G.log.length>=8;
+  m.falling=fallingOf(G,m,now);
+  m.errors=commonErrors(G,now);
+  m.next=nextNode(m);
+  return m;
+}
+const dayKey = t => { const d=new Date(t); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+// En punkt per dag: poäng, betyg och nivån i varje avsnitt
+function guideSnap(G,m,now){
+  const k=dayKey(now), snap={d:k, t:now, sc:m.score, g:m.grade, lv:GSECS.map(s=>m.secs[s.id].lv).join('')};
+  const last=G.snaps[G.snaps.length-1];
+  if(last && last.d===k) G.snaps[G.snaps.length-1]=snap; else G.snaps.push(snap);
+  if(G.snaps.length>180) G.snaps.splice(0,G.snaps.length-180);
+  return snap;
+}
+// Det som faller: tappad nivå, nivåer som bleknar för att de inte övats, eller många fel nyligen
+function fallingOf(G,m,now){
+  const out=[];
+  GSECS.forEach((s,i)=>{
+    const x=m.secs[s.id];
+    const recentSnaps=G.snaps.filter(p=>now-p.t<21*GDAY && p.lv && p.lv.length===GSECS.length);
+    const was=recentSnaps.reduce((mx,p)=>Math.max(mx,+p.lv[i]),0);
+    if(was>x.lv){ out.push({s:s.id, kind:'tappat', sev:3+was-x.lv, from:was, to:x.lv}); return; }
+    const es=G.log.filter(e=>e.s===s.id).slice(-3);
+    if(x.lv>=1 && es.length===3 && es.filter(e=>!e.ok).length>=2){ out.push({s:s.id, kind:'fel', sev:2, wrong:es.filter(e=>!e.ok).length}); return; }
+    const klar=CELLS.filter(c=>x.cells[c].n && x.cells[c].st==='klar');
+    if(x.lv>=1 && x.last && now-x.last>21*GDAY){ out.push({s:s.id, kind:'gammalt', sev:1, days:Math.floor((now-x.last)/GDAY)}); return; }
+    // en nivå som var klar men nu bleknat till "nära" utan nya fel
+    const faded=CELLS.filter(c=>{ const cs=x.cells[c]; return cs.n>=3 && cs.st==='nara' && cs.recent.every(v=>v) && now-cs.last>14*GDAY; });
+    if(faded.length && !klar.length) out.push({s:s.id, kind:'gammalt', sev:1, days:Math.floor((now-x.last)/GDAY)});
+  });
+  return out.sort((a,b)=>b.sev-a.sev);
+}
+// De vanligaste felen de senaste 45 dygnen
+function commonErrors(G,now){
+  const g={};
+  for(const e of G.log){ if(!e.e || now-e.t>45*GDAY) continue; const x=g[e.e]||(g[e.e]={key:e.e, k:e.k, s:e.s, n:0, last:0}); x.n++; x.last=Math.max(x.last,e.t); x.s=e.s; }
+  return Object.values(g).map(x=>Object.assign(x,{msg:(G.em[x.key]||{}).m||''})).filter(x=>x.msg)
+    .sort((a,b)=>b.n-a.n||b.last-a.last).slice(0,6);
+}
+// Nästa steg på vägen: kapitel för kapitel till C (med förståelse), sedan A överallt, sist proven
+function nextNode(m){
+  if(!m.placed) return {kind:'place'};
+  for(const ch of GCHAPS){
+    const secs=GSECS.filter(s=>s.chap===ch).map(s=>m.secs[s.id]);
+    const open=secs.find(x=>x.lv<2);
+    if(open) return {kind:'sec', s:open.id, c:open.front};
+    if(!(m.kap[ch]&&m.kap[ch].passed)) return {kind:'kap', n:ch};
+  }
+  const notA=GSECS.map(s=>m.secs[s.id]).find(x=>x.lv<3);
+  if(notA) return {kind:'sec', s:notA.id, c:notA.front};
+  if(!m.slutOk) return {kind:'slut'};
+  if(!m.mastOk) return {kind:'mast'};
+  return {kind:'maint'};
+}
+const kapOk = (m,n) => !!(m.kap[n]&&m.kap[n].passed);
+const slutUnlocked = m => GCHAPS.every(n=>kapOk(m,n));
+const mastUnlocked = m => m.slutOk;
+
+/* ---------- Planeraren ---------- */
+const UP={E:'C',C:'A',A:'X',U:'U',X:'X'}, DOWN={A:'C',C:'E',E:'E',U:'U',X:'A'};
+function upCell(s,c){ let u=UP[c]; while(u!=='X' && !poolOf(s,u).length) u=UP[u]; if(u==='X' && !poolOf(s,'X').length) return 'A'; return u; }
+function downCell(s,c){ let d=DOWN[c]; if(!poolOf(s,d).length) return c; return d; }
+function rotPick(pool,used){ const free=pool.filter(k=>!used.includes(k)); return pick(free.length?free:pool); }
+// Väljer typ (eller utmaning) för en cell. used: typer som redan finns i passet
+function specFor(s,c,why,used=[],extra={}){
+  if(c==='X'){ const xs=poolOf(s,'X'); if(!xs.length) return specFor(s,'A',why,used,extra); return Object.assign({s,c,k:rotPick(xs,used),why},extra); }
+  if(c==='U') return Object.assign({s,c,k:rotPick(LADDER[s].U,used),why},extra);
+  const pool=poolOf(s,c).length?poolOf(s,c):poolOf(s,UP[c]);
+  return Object.assign({s,c:poolOf(s,c).length?c:UP[c],k:rotPick(pool.map(e=>e[0]),used),why},extra);
+}
+const calcLevel = x => x.aOk ? 'A' : x.cOk ? 'C' : x.eOk ? 'C' : (x.cells.E.has ? 'E' : 'C');
+// Varför det här passet, i klartext
+function focusWhy(x,c){
+  const cs=x.cells[c==='X'?'A':c];
+  if(c==='U') return `Du räknar rätt i ${x.title}, men har inte visat att du förstår varför. Förståelsefrågor krävs för C-nivå.`;
+  if(!cs||!cs.n) return `Du har inte visat ${CELL_NAME[c]} i ${x.title} än.`;
+  const wrong=cs.recent.filter(v=>!v).length;
+  if(cs.st==='svag') return `${wrong} fel av de ${cs.recent.length} senaste på ${CELL_NAME[c]} i ${x.title}. Vi tar det lugnt och bygger upp det igen.`;
+  if(cs.st==='nara') return `Nästan klart: ${cs.recent.filter(v=>v).length} av ${cs.recent.length} rätt på ${CELL_NAME[c]} i ${x.title}. Några rätt i rad så sitter det.`;
+  if(cs.st==='klar') return `${CELL_NAME[c]} i ${x.title} sitter. Nu siktar vi högre.`;
+  return `Du övar ${CELL_NAME[c]} i ${x.title}: ${cs.recent.filter(v=>v).length} av ${cs.recent.length} rätt hittills.`;
+}
+// Svaga celler i andra avsnitt: det som ska repareras
+function repairCells(m,skip){
+  const out=[];
+  GSECS.forEach((s,i)=>{ if(s.id===skip) return; const x=m.secs[s.id];
+    for(const c of ['E','C','A','U']){ const cs=x.cells[c]; if(!cs.n || cs.st==='klar') continue;
+      const pr=(cs.st==='svag'?3:cs.st==='ovar'?2:1) + (m.errors.some(e=>e.s===s.id)?1:0) - i*0.01;
+      out.push({s:s.id, c, pr}); } });
+  return out.sort((a,b)=>b.pr-a.pr);
+}
+// Klara celler som inte övats på länge: underhåll, så att det som faller syns
+function reviewCells(m,skip,now){
+  const out=[];
+  GSECS.forEach(s=>{ if(s.id===skip) return; const x=m.secs[s.id];
+    for(const c of ['E','C','A']){ const cs=x.cells[c]; if(cs.st==='klar') out.push({s:s.id, c, age:now-cs.last}); } });
+  return out.sort((a,b)=>b.age-a.age);
+}
+function guidePlan(G0,now,opts={}){
+  const G=guideState(G0), m=guideModel(G,now);
+  const kind = opts.kind || (m.next.kind==='place'?'place':m.next.kind==='kap'?'kap':m.next.kind==='slut'?'slut':m.next.kind==='mast'?'mast':'pass');
+  const used=[];
+  const push=(arr,sp)=>{ arr.push(sp); used.push(sp.k); return sp; };
+  if(kind==='place'){
+    const items=[];
+    GCHAPS.forEach(ch=>{
+      const ss=shuffle(GSECS.filter(s=>s.chap===ch)), a=ss[0], b=ss[1]||ss[0];
+      push(items,specFor(a.id,'C','start',used,{lead:true}));
+      push(items,specFor(b.id,'C','start',used,{follow:true}));
+    });
+    const u1=pick(GSECS.filter(s=>s.chap<=22)), u2=pick(GSECS.filter(s=>s.chap>=23));
+    items.splice(4,0,specFor(u1.id,'U','start',used)); items.push(specFor(u2.id,'U','start',used));
+    return {kind, title:'Kartläggning', why:'Guiden vet inte var du står än. Tolv frågor från hela kapitlet: svarar du rätt blir nästa fråga svårare, svarar du fel blir den lättare.', items};
+  }
+  if(kind==='kap'){
+    const n=opts.chap||m.next.n||GCHAPS[0], ss=shuffle(GSECS.filter(s=>s.chap===n)), at=i=>ss[i%ss.length].id;
+    const items=[]; [0,1,2].forEach(i=>push(items,specFor(at(i),'C','prov',used)));
+    push(items,specFor(at(3),'U','prov',used));
+    [4,5,6].forEach(i=>push(items,specFor(at(i),'A','prov',used)));
+    const xs=ss.filter(s=>LADDER[s.id].X.length); push(items,specFor((xs[0]||ss[0]).id,xs.length?'X':'A','prov',used));
+    return {kind, chap:n, title:'Kapitelprov '+levelInfo(n).name.slice(0,3), why:`${KAP_N} uppgifter från hela ${levelInfo(n).name}, från C-nivå till A+. Minst ${KAP_PASS} rätt för att klara provet. Inga ledtrådar.`, items};
+  }
+  if(kind==='slut'){
+    const ss=shuffle(GSECS), items=[];
+    [0,1,2].forEach(i=>push(items,specFor(ss[i].id,'C','prov',used)));
+    push(items,specFor(ss[3].id,'U','prov',used));
+    [4,5,6,7,8].forEach(i=>push(items,specFor(ss[i].id,'A','prov',used)));
+    shuffle(GSECS.filter(s=>LADDER[s.id].X.length)).filter(s=>!ss.slice(0,9).includes(s)).slice(0,3).forEach(s=>push(items,specFor(s.id,'X','prov',used)));
+    return {kind, title:'Slutprovet', why:`${SLUT_N} uppgifter från hela kapitel 2, som ett riktigt prov: C-nivå först, sedan A-nivå och sist tre A+-frågor. Minst ${SLUT_PASS} rätt. Inga ledtrådar.`, items};
+  }
+  if(kind==='mast'){
+    const items=[], byCh={};
+    GSECS.forEach(s=>LADDER[s.id].X.forEach(k=>{ (byCh[s.chap]=byCh[s.chap]||[]).push({s:s.id,k}); }));
+    const first=GCHAPS.map(ch=>pick(byCh[ch]||[])).filter(Boolean);
+    const rest=shuffle(GSECS.flatMap(s=>LADDER[s.id].X.map(k=>({s:s.id,k})))).filter(x=>!first.some(f=>f.k===x.k));
+    [...first,...rest].slice(0,MAST_N).forEach(x=>push(items,{s:x.s,c:'X',k:x.k,why:'prov'}));
+    return {kind, title:'Mästarprovet', why:`${MAST_N} av de svåraste frågorna i hela kapitlet. Minst ${MAST_PASS} rätt. Här finns inga genvägar.`, items:shuffle(items)};
+  }
+  // Vanligt pass: fokus på ett avsnitt, reparation av svaga ställen, underhåll och en toppuppgift
+  const node = opts.sec ? {kind:'sec', s:opts.sec, c:m.secs[opts.sec].front} : m.next.kind==='sec' ? m.next : null;
+  let fs, fc;
+  if(node){ fs=node.s; fc=node.c; }
+  else { // allt klart eller nästa steg är ett prov: öva där det är svagast
+    const r=repairCells(m,null)[0]; fs=r?r.s:GSECS.reduce((a,s)=>m.secs[s.id].last<m.secs[a.id].last?s:a,GSECS[0]).id; fc=r?r.c:'A';
+  }
+  const x=m.secs[fs];
+  if(fc==='X') fc='A';   // allt klart här: öva A-nivå, toppuppgiften blir A+
+  const fcalc = fc==='U' ? calcLevel(x) : fc;
+  const F=[];   // fokus
+  if(fc==='U'){ ['U',fcalc,'U',fcalc,'U'].forEach(c=>push(F,specFor(fs,c,'fokus',used))); }
+  else { [fc,fc,fc,'U',fc].forEach(c=>push(F,specFor(fs,c,'fokus',used))); }
+  const rep=repairCells(m,fs).slice(0,3).map(r=>specFor(r.s,r.c,'repa',used));
+  rep.forEach(sp=>used.push(sp.k));
+  const rev=reviewCells(m,fs,now).filter(r=>r.age>GDAY/2).slice(0,3).map(r=>specFor(r.s,r.c,'underhall',used));
+  rev.forEach(sp=>used.push(sp.k));
+  const warm = rev.length>2 ? rev.pop() : specFor(fs, fc==='U'||fcalc==='E' ? fcalc : downCell(fs,fcalc), 'start', used);
+  const fill=()=>specFor(fs,fcalc,'fokus',used);
+  const R=[rep[0]||fill(), rep[1]||fill(), rep[2]||fill()], V=[rev[0]||fill(), rev[1]||fill()];
+  const top=specFor(fs, upCell(fs,fcalc), 'topp', used);
+  const items=[warm, F[0], F[1], R[0], F[2], F[3], R[1], F[4], V[0], R[2], V[1], top];
+  const counts={fokus:items.filter(i=>i.why==='fokus').length, repa:items.filter(i=>i.why==='repa').length, underhall:items.filter(i=>i.why==='underhall').length};
+  return {kind:'pass', sec:fs, cell:fc, title:x.title, why:focusWhy(x,fc), counts, items};
+}
+// Skapar en uppgift ur en plan-rad
+function genAt(id,diffs){ let t; for(let i=0;i<60;i++){ t=generate(id); if(diffs.includes(t.diff)) return t; } return t; }
+function guideTask(sp,avoid=[]){
+  let t;
+  for(let tries=0;tries<8;tries++){
+    if(sp.c==='X'){ const q=CHALLENGES.find(q=>q.id===sp.k); t=challengeTask(q); break; }
+    if(sp.c==='U') t=generate(sp.k);
+    else { const ent=poolOf(sp.s,sp.c).find(e=>e[0]===sp.k) || pick(poolOf(sp.s,sp.c)); t=genAt(ent[0],ent[1]); }
+    if(!avoid.some(o=>o.prompt===t.prompt && JSON.stringify(o.lines)===JSON.stringify(t.lines))) break;
+  }
+  t.g={s:sp.s, c:sp.c, why:sp.why};
+  return t;
+}
+/* ---------- Anpassning under passet ----------
+   plan: raderna, i: uppgiften som just besvarades, ok: rätt eller fel.
+   st: passets minne ({chans, up, down}). Returnerar ändringarna {j, sp, note}. */
+function guideAdapt(plan,i,ok,st,kind){
+  const out=[], cur=plan[i]; st=st||{};
+  if(kind==='place'){
+    if(cur.lead && plan[i+1] && plan[i+1].follow){
+      const nx=plan[i+1], c = ok ? upCell(nx.s,'C') : (poolOf(nx.s,'E').length?'E':'C');
+      out.push({j:i+1, sp:Object.assign(specFor(nx.s,c==='X'?'A':c,'start',[cur.k]),{follow:true}), note: ok ? 'Rätt! Nästa fråga blir svårare.' : 'Nästa fråga blir lite lättare.'});
+    }
+    return out;
+  }
+  if(kind!=='pass') return out;
+  st.chans=st.chans||0; st.up=st.up||0; st.down=st.down||0; st.streak=st.streak||0; st.miss=st.miss||0;
+  if(cur.why==='fokus'){ if(ok){ st.streak++; st.miss=0; } else { st.miss++; st.streak=0; } }
+  // Fel: en liknande uppgift kommer tillbaka om två steg
+  if(!ok && cur.why!=='chans' && cur.why!=='topp' && st.chans<3){
+    let j=-1;
+    for(let k=i+2;k<plan.length-1;k++){ if(['underhall','start','repa'].includes(plan[k].why)){ j=k; break; } }
+    if(j<0) for(let k=i+2;k<plan.length-1;k++){ if(plan[k].why==='fokus'){ j=k; break; } }
+    if(j>=0){ st.chans++; out.push({j, sp:{s:cur.s, c:cur.c, k:cur.k, why:'chans'}, note:'En liknande uppgift kommer snart igen, så att du får visa att du förstått.'}); }
+  }
+  // Tre rätt i rad i fokus (då sitter nivån): höj nivån på resten av fokusuppgifterna
+  if(ok && cur.why==='fokus' && st.streak>=3 && st.up<2 && cur.c!=='U'){
+    const nc=upCell(cur.s,cur.c);
+    if(nc!==cur.c && nc!=='X'){
+      const js=[]; for(let k=i+1;k<plan.length;k++) if(plan[k].why==='fokus' && plan[k].c===cur.c && !out.some(o=>o.j===k)) js.push(k);
+      if(js.length){ st.up++; st.streak=0; js.forEach(k=>out.push({j:k, sp:specFor(cur.s,nc,'fokus',[plan[k].k]), note:null}));
+        out[out.length-1].note=`Tre rätt i rad! Resten av passet höjs till ${CELL_NAME[nc]}.`; }
+    }
+  }
+  // Två fel i rad i fokus: ett steg tillbaka
+  if(!ok && cur.why==='fokus' && st.miss>=2 && st.down<1 && cur.c!=='U'){
+    const nc=downCell(cur.s,cur.c);
+    if(nc!==cur.c){
+      const js=[]; for(let k=i+1;k<plan.length;k++) if(plan[k].why==='fokus' && plan[k].c===cur.c && !out.some(o=>o.j===k)) js.push(k);
+      if(js.length){ st.down++; st.miss=0; js.forEach(k=>out.push({j:k, sp:specFor(cur.s,nc,'fokus',[plan[k].k]), note:null}));
+        out[out.length-1].note=`Två fel i rad. Vi tar ett steg tillbaka till ${CELL_NAME[nc]} och bygger upp det igen.`; }
+    }
+  }
+  return out;
+}
+// Resultat för proven
+function examResult(kind,right){
+  const need = kind==='kap'?KAP_PASS : kind==='slut'?SLUT_PASS : kind==='mast'?MAST_PASS : 0;
+  return {passed: need>0 && right>=need, need};
+}
+
 root.Core={Frac,F,Poly,parseNum,parseList,check,answerString,generate,makeRound,reviveTask,TYPES,LEVELS,typesFor,undTypesFor,levelInfo,timeFor,setRandom,sameVals,
-  UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,LEARN,BOOK_LEVELS,approxVals,BOOK,chapterTypes,allBookTypes,bookSection,methodFor,CHALLENGES,challengeTask,challengesOf,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
+  UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,LEARN,BOOK_LEVELS,approxVals,BOOK,chapterTypes,allBookTypes,bookSection,
+  LADDER,GSECS,GCHAPS,CELLS,CELL_NAME,GRADES,KAP_N,KAP_PASS,SLUT_N,SLUT_PASS,MAST_N,MAST_PASS,GDAY,cellOfTask,errKey,guideState,guideLog,cellStat,guideModel,guideSnap,guidePlan,guideTask,guideAdapt,examResult,gradeOf,kapOk,slutUnlocked,mastUnlocked,poolOf,chalSec,dayKey,decimalsAsked,methodFor,CHALLENGES,challengeTask,challengesOf,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
 })(typeof window!=='undefined'?window:globalThis);
 </script>
 
@@ -5093,10 +6167,10 @@ function openModal(html){ const m=$('#modal'); m.innerHTML=`<div class="inner">$
 function bindCards(root){ root.querySelectorAll('[data-card]').forEach(b=>b.onclick=()=>{ const c=C.CARDS.find(x=>x.id===b.dataset.card); openModal(cardHTML(c,true,{big:true})); }); }
 
 /* ---------- Skärmar ---------- */
-const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test','account','learn','topic','chal','book'];
+const SCREENS=['home','worlds','world','kodex','shop','stats','game','end','black','bworld','lesson','boss','test','account','learn','topic','chal','book','guide'];
 let curWorld=1;
 // Mobilens tillbaka-gest går tillbaka i appen. Sidor man bläddrar mellan läggs i webbläsarens historik.
-const NAV=['worlds','world','kodex','shop','stats','black','bworld','lesson','account','learn','topic','chal','book'];
+const NAV=['worlds','world','kodex','shop','stats','black','bworld','lesson','account','learn','topic','chal','book','guide'];
 function show(name,arg,fromHistory){
   if(!fromHistory){
     if(NAV.includes(name)) history.pushState({s:name,arg:arg===undefined?null:arg},'');
@@ -5119,6 +6193,7 @@ function show(name,arg,fromHistory){
   if(name==='learn') renderLearn();
   if(name==='chal') renderChal();
   if(name==='book') renderBook();
+  if(name==='guide') renderGuide();
   if(name==='topic'){ if(arg) curTopic=arg; renderTopic(); }
 }
 $$('[data-home]').forEach(b=>b.onclick=()=>show('home'));
@@ -5153,6 +6228,7 @@ function renderHome(){
   const allSecs=C.BOOK.flatMap(c=>c.sections), nSec=allSecs.filter(x=>S.secBest[x.id]!=null).length;
   $('#b-book').innerHTML=act(ICON.chapter,'Kapitel 2 i boken',nSec?`${nSec} av ${allSecs.length} avsnitt övade · 2.1–2.5`:'Samma avsnitt som i boken, 2.1–2.5');
   $('#home-timed').innerHTML=timeToggleHTML(); bindTimeToggle($('#home-timed'));
+  $('#b-guide').innerHTML=guideHomeHTML();
   const nRead=Object.values(C.LEARN).flat().filter(t=>S.read[t.id]).length, nTopics=Object.values(C.LEARN).flat().length;
   $('#b-learn').innerHTML=act(ICON.book,'Lär dig',nRead?`${nRead} av ${nTopics} avsnitt lästa · fungerar offline`:'Läs på i lugn och ro, även offline');
   $('#b-worlds').innerHTML=act(ICON.map,'Världar','Medaljer och nivåer');
@@ -5175,6 +6251,7 @@ $('#b-shop').onclick=()=>show('shop');
 $('#b-stats').onclick=()=>show('stats');
 $('#b-learn').onclick=()=>show('learn');
 $('#b-book').onclick=()=>show('book');
+$('#b-guide').onclick=()=>show('guide');
 $('#b-chal').onclick=()=>show('chal');
 
 /* ---------- Världar ---------- */
@@ -5239,7 +6316,7 @@ function renderKodex(){
       <div class="xpbar"><div style="width:${100*owned/C.CARDS.length}%"></div></div>
       <div class="muted small">${byR}</div>
       <p class="small" style="margin:10px 0 0">Varje kort är en regel som du har visat att du förstår. Du vinner kort genom förståelseuppgifter. Tryck på ett kort för att läsa det.</p></div>
-    ${[...C.WORLDS,10].map(w=>{ const cs=C.CARDS.filter(c=>c.w===w); return `<h3 class="small muted" style="margin:16px 0 0">${esc(worldName(w))}</h3><div class="kgrid">${cs.map(c=>cardHTML(c,!!S.cards[c.id])).join('')}</div>`; }).join('')}`;
+    ${[...C.WORLDS,10,...C.BOOK_LEVELS].filter(w=>C.CARDS.some(c=>c.w===w)).map(w=>{ const cs=C.CARDS.filter(c=>c.w===w); return `<h3 class="small muted" style="margin:16px 0 0">${esc(worldName(w))}</h3><div class="kgrid">${cs.map(c=>cardHTML(c,!!S.cards[c.id])).join('')}</div>`; }).join('')}`;
   bindCards($('#kodexbody'));
 }
 
@@ -5341,7 +6418,7 @@ function showTask(st){
   renderProgress();
   $('#g-score').textContent=R.score; $('#g-ins').textContent=R.ins;
   renderCombo(false);
-  $('#g-type').innerHTML=t.und?`<span class="ubadge">✦ ${esc(C.UND[t.und])}</span>`:esc(t.typeName);
+  $('#g-type').innerHTML=R.mode==='guide'?guideChip(t):t.und?`<span class="ubadge">✦ ${esc(C.UND[t.und])}</span>`:esc(t.typeName);
   $('#g-diff').innerHTML=(t.calc?'<span class="calctag">🧮</span>':'')+(t.diff>1&&!t.time&&isTimed(t)?'<span class="xtime">+ extra tid</span> ':'')+'Svårighet '+t.diff+' '+[1,2,3].map(i=>`<i class="${i<=t.diff?'on':''}"></i>`).join('');
   $('#g-prompt').innerHTML=`<div>${md(t.prompt)}</div>`;
   $('#g-lines').innerHTML=t.lines?`<ol class="sol">${t.lines.map((l,i)=>`<li class="${i===t.mark?'mark':''}"><span class="rn">Rad ${i+1}</span><span>${md(l)}</span></li>`).join('')}</ol>`:'';
@@ -5383,7 +6460,7 @@ function renderCombo(pop){
   el.classList.toggle('zero',R.streak===0); el.classList.toggle('hot',R.streak>=3);
   if(pop){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 }
-function runTitle(){ return R.mode==='section'?esc(R.sec.title):R.mode==='challenge'?'Utmaning':R.mode==='practice'?'Träna fel':R.mode==='und'?'Förståelse':R.level<=10?'Nivå '+R.level:esc(C.levelInfo(R.level).name); }
+function runTitle(){ return R.mode==='guide'?esc(R.gtitle):R.mode==='section'?esc(R.sec.title):R.mode==='challenge'?'Utmaning':R.mode==='practice'?'Träna fel':R.mode==='und'?'Förståelse':R.level<=10?'Nivå '+R.level:esc(C.levelInfo(R.level).name); }
 
 /* ----- Ledtråd ----- */
 function renderHintButton(){
@@ -5476,7 +6553,7 @@ function renderOrder(box,p){
 
 function submitPart(input){
   if(!R||R.done||R.paused) return;
-  const t=cur(), p=t.parts[R.part], res=C.check(p,input);
+  const t=cur(), p=t.parts[R.part], res=C.check(p,input,R.strict?{strict:true,prompt:t.prompt+' '+(p.prompt||'')}:undefined);
   const box=$('#g-parts').lastElementChild;
   if(!res.valid){
     const inp=box.querySelector('.display'), h=box.querySelector('.hint');
@@ -5573,6 +6650,8 @@ function finishTask(timedOut){
   S.bestStreak=Math.max(S.bestStreak,R.streak);
   if(t.chal){ if(ok) S.chal[t.chal]=S.chal[t.chal]||Date.now(); }
   else { const ts=S.types[t.type]||(S.types[t.type]={n:0,c:0,time:0}); ts.n++; if(ok) ts.c++; ts.time+=used; }
+  gLogAnswer(t,ok);
+  const gnote=gAdapt(ok), strictRes=(R.partRes||[]).map(r=>r&&r.res).find(r=>r&&r.strict);
   save();
 
   $('#g-score').textContent=R.score; $('#g-ins').textContent=R.ins;
@@ -5591,6 +6670,7 @@ function finishTask(timedOut){
   const fb=$('#g-feedback');
   fb.innerHTML=`<div class="feedback ${timedOut?'time':ok?'ok':'no'}">
       ${head}${facit}
+      ${strictRes?`<div class="gnote">${md(strictRes.msg)}</div>`:''}${gnote?`<div class="gnote">${md(gnote)}</div>`:''}
       ${ins?`<div class="insgain">+${ins} ✦ Insikter${predOk&&ins>2?' (varav 2 för rätt förutsägelse)':''}</div>`:''}
       ${newCard?`<div class="newcard"><div class="lbl">Nytt Kodex-kort!</div>${cardHTML(newCard,true,{reveal:true})}</div>`:''}
       <button class="btn lhelp morebtn${ok?'':' hot'}" id="b-more">📖 ${ok?'Visa lösningen':'Förklara hur man löser den'}</button><div id="morebox"></div>
@@ -5718,7 +6798,8 @@ const timeLeft=()=>R.limit ? Math.max(0,R.limit-elapsed()) : null;
 function saveRun(){
   if(!R) return;
   const o={v:1, savedAt:Date.now(), mode:R.mode, level:R.level, ids:R.ids||null, tasks:R.tasks, i:R.i, score:R.score, ins:R.ins, streak:R.streak,
-    results:R.results, newCards:R.newCards, chal:R.chal||null, sec:R.sec||null, noHints:!!R.noHints, before:R.before, plBefore:R.plBefore, sBefore:R.sBefore||null,
+    results:R.results, newCards:R.newCards, chal:R.chal||null, sec:R.sec||null, noHints:!!R.noHints, strict:!!R.strict,
+    plan:R.plan||null, gk:R.gk||null, gtitle:R.gtitle||null, gchap:R.gchap||null, gsec:R.gsec||null, gstate:R.gstate||null, gerrs:R.gerrs||null, gBefore:R.gBefore||null, before:R.before, plBefore:R.plBefore, sBefore:R.sBefore||null,
     cur:{done:!!R.done, part:R.part||0, partRes:R.partRes||[], hint:!!R.hint, hintPenalty:!!R.hintPenalty, limit:R.limit, elapsed:R.done?0:elapsed(), left:R.done?0:timeLeft()}};
   try{ localStorage.setItem(runKey(),JSON.stringify(o)); }catch(e){}
 }
@@ -5729,7 +6810,7 @@ function clearRun(){ try{ localStorage.removeItem(runKey()); }catch(e){} }
 function runPlace(o){
   const t=o.tasks[o.i]||o.tasks[0], n=o.tasks.length, at=Math.min(n,o.i+(o.cur.done?2:1));
   if(o.mode==='boss') return `Slutbossen · steg ${Math.min(o.cur.part+1,t.parts.length)} av ${t.parts.length}`;
-  const where = o.mode==='section' ? (o.sec?o.sec.title:'Kapitel 2') : o.mode==='challenge' ? 'Utmaning · '+(o.chal==='mix'?'blandat':worldName(o.level)) : o.mode==='practice' ? 'Träna fel' : (o.mode==='und'?'Förståelse · ':'')+worldName(o.level);
+  const where = o.mode==='guide' ? 'Guiden · '+(o.gtitle||'') : o.mode==='section' ? (o.sec?o.sec.title:'Kapitel 2') : o.mode==='challenge' ? 'Utmaning · '+(o.chal==='mix'?'blandat':worldName(o.level)) : o.mode==='practice' ? 'Träna fel' : (o.mode==='und'?'Förståelse · ':'')+worldName(o.level);
   return `${where} · uppgift ${at} av ${n}`;
 }
 function pauseRun(){
@@ -5801,6 +6882,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Enter' && R && R.done && !R
 function endRound(){
   clearRun();
   if(R.mode==='boss') return endBoss();
+  if(R.mode==='guide') return endGuide();
   const n=R.results.length, right=R.results.filter(r=>r.ok).length;
   const avg=R.results.reduce((s,r)=>s+r.time,0)/n;
   const missed={}; R.results.filter(r=>!r.ok).forEach(r=>{ missed[r.type]=missed[r.type]||{name:r.name,und:r.und,n:0}; missed[r.type].n++; });
@@ -5832,6 +6914,7 @@ function endRound(){
     if(after[w].medal>R.before[w].medal) banner+=`<div class="banner up">${MEDAL_ICON[after[w].medal]} Värld ${w} har nått ${C.MEDALS[after[w].medal]}!</div>`;
     if(after[w].und && !R.before[w].und) banner+=`<div class="banner up"><span class="stamp">Förstådd</span> Värld ${w} är förstådd. Nu kan den nå Guld.</div>`;
   });
+  { const gm=C.guideModel(S.guide,Date.now()); if(gm.placed) C.guideSnap(S.guide,gm,Date.now()); }   // guidens graf följer med
   save();
 
   const missedIds=Object.keys(missed);
@@ -6214,7 +7297,7 @@ function renderBook(){
    "Förklara mer" fungerar som vanligt. Påverkar inte stjärnor och medaljer.
    ===================================================================== */
 function startChallenge(w){
-  const qs = w==='mix' ? [...C.WORLDS,10].map(x=>shuffleArr(C.challengesOf(x))[0]) : C.challengesOf(w);
+  const qs = w==='mix' ? [...C.WORLDS,10,23,24,25].map(x=>shuffleArr(C.challengesOf(x))[0]) : C.challengesOf(w);
   startRun({mode:'challenge', level:w==='mix'?10:w, ids:w, chal:w, tasks:qs.map(C.challengeTask)});
 }
 function renderChal(){
@@ -6224,12 +7307,327 @@ function renderChal(){
     <p class="sub small">Riktigt svåra frågor, men bara sådant som ingår i Matte 2. Du får gott om tid, och efter varje fråga kan du trycka på <b>Förklara mer</b> för en lugn genomgång. Utmaningar påverkar inte stjärnor och medaljer.</p>
     <div class="card"><div class="kprog"><b>${done} av ${all} lösta</b><span class="muted small">${Math.round(100*done/all)} %</span></div><div class="xpbar"><div style="width:${Math.max(3,100*done/all)}%"></div></div></div>
     <button class="btn primary" id="ch-mix">Blandat prov: en fråga från varje område</button>
-    <div class="levels">${[...C.WORLDS,10].map(w=>{ const qs=C.challengesOf(w), d=qs.filter(q=>S.chal[q.id]).length;
+    <div class="levels">${[...C.WORLDS,10,23,24,25].map(w=>{ const qs=C.challengesOf(w), d=qs.filter(q=>S.chal[q.id]).length;
       return `<button class="lvl" data-cw="${w}" style="--wc:${wcol(w)}"><span class="n">${w}</span><span class="t">${esc(worldName(w))}<small>${qs.length} frågor · ${d} lösta</small></span>${d===qs.length?'<span class="ok">🏆</span>':''}</button>`; }).join('')}</div>
     <button class="btn ghost" data-home style="margin-top:14px">Tillbaka</button>`;
   $$('#chalbody [data-home]').forEach(b=>b.onclick=()=>show('home'));
   $$('#chalbody [data-cw]').forEach(b=>b.onclick=()=>startChallenge(+b.dataset.cw));
   $('#ch-mix').onclick=()=>startChallenge('mix');
+}
+
+/* =====================================================================
+   GUIDEN: skärmen, passen och slutskärmen
+   Motorn (Core.guideModel, guidePlan, guideAdapt) räknar. Här visas det.
+   ===================================================================== */
+const LV_LETTER=['–','E','C','A'];
+const WHY_LABEL={start:'Uppvärmning', fokus:'Fokus', repa:'Reparera', underhall:'Underhåll', topp:'Toppuppgift', chans:'Ny chans', prov:'Prov'};
+const ST_TEXT={klar:'sitter', nara:'nästan', svag:'svag', ovar:'övar', ny:'inte provat'};
+const ST_SYM={klar:'✓', nara:'≈', svag:'!', ovar:'·', ny:''};
+const secNum = id => id.slice(1,2)+'.'+id.slice(2,3)+'.'+id.slice(3);
+const gsecOf = id => C.GSECS.find(s=>s.id===id);
+const cellLabel = c => c==='X'?'A+':c==='U'?'Förståelse':c+'-nivå';
+const gNow = () => Date.now();
+const fsc = v => String(v).replace('.',',');
+let G_PLAN=null;
+function gBeforeOf(m){ const lv={}, st={}; C.GSECS.forEach(s=>{ const x=m.secs[s.id]; lv[s.id]=x.lv; st[s.id]={}; C.CELLS.forEach(c=>st[s.id][c]=x.cells[c].st); }); return {grade:m.grade, score:m.score, placed:m.placed, lv, st}; }
+function nodeText(m){
+  const n=m.next;
+  if(n.kind==='place') return 'Börja med kartläggningen';
+  if(n.kind==='sec') return `Nästa: ${secNum(n.s)} ${gsecOf(n.s).title} · ${n.c==='U'?'förståelse':n.c==='X'?'A':n.c}`;
+  if(n.kind==='kap') return `Nästa: Kapitelprov ${C.levelInfo(n.n).name.slice(0,3)}`;
+  if(n.kind==='slut') return 'Nästa: Slutprovet';
+  if(n.kind==='mast') return 'Nästa: Mästarprovet';
+  return 'Allt klart. Håll det vid liv med underhåll.';
+}
+function guideHomeHTML(){
+  const m=C.guideModel(S.guide,gNow());
+  return `<span class="gbadge" aria-hidden="true">${m.placed?m.grade:'?'}</span><span class="gt"><b>Guiden</b><small>${esc(nodeText(m))}</small>
+    <span class="gbar" aria-label="Kunskapspoäng ${fsc(m.score)} av 100"><i style="width:${Math.max(2,m.score)}%"></i></span></span><span class="chev">›</span>`;
+}
+function startGuide(plan){
+  const now=gNow();
+  if(!plan) plan=C.guidePlan(S.guide,now);
+  const tasks=[]; plan.items.forEach(sp=>tasks.push(C.guideTask(sp,tasks)));
+  const m=C.guideModel(S.guide,now), first=gsecOf(plan.items[0].s);
+  startRun({mode:'guide', level:first?first.chap:21, gk:plan.kind, gtitle:plan.title, gchap:plan.chap||null, gsec:plan.sec||null,
+    plan:plan.items, gstate:{}, gerrs:[], noHints:true, strict:true, tasks, gBefore:gBeforeOf(m)});
+}
+// Loggar ett svar till guiden, från alla lägen. Ledtråd = inte bevisat.
+function gLogAnswer(t,ok){
+  let cell = R.mode==='guide' && t.g ? {s:t.g.s, c:t.g.c==='X'?'A':t.g.c, x:t.g.c==='X'||!!t.chal} : C.cellOfTask(t, R.mode==='section'&&R.sec?R.sec.id:null);
+  if(!cell) return;
+  const pr=(R.partRes||[]).find((r,i)=>r && r.res && !r.res.correct && t.parts[i] && t.parts[i].role!=='predict');
+  const msg=pr&&pr.res.msg;
+  C.guideLog(S.guide,{s:cell.s, c:cell.c, k:t.chal||t.type, d:t.diff, ok:ok&&!R.hint, x:cell.x?1:0, m:R.mode, msg},gNow());
+  if(R.mode==='guide' && !ok){ R.gerrs=R.gerrs||[]; R.gerrs.push({s:cell.s, k:t.chal||t.type, name:t.typeName, msg:msg||null}); }
+}
+// Anpassning efter svaret: nya chanser, högre eller lägre nivå
+function gAdapt(ok){
+  if(R.mode!=='guide') return '';
+  let note='';
+  for(const ch of C.guideAdapt(R.plan,R.i,ok,R.gstate,R.gk)){
+    R.plan[ch.j]=ch.sp; R.tasks[ch.j]=C.guideTask(ch.sp,R.tasks.slice(0,ch.j));
+    if(ch.note) note=ch.note;
+  }
+  return note;
+}
+function guideChip(t){
+  const g=t.g; if(!g) return esc(t.typeName);
+  const why = R.gk==='place' ? 'Kartläggning' : WHY_LABEL[g.why]||'';
+  return `<span class="gchip c-${g.c}">${cellLabel(g.c)}</span> ${secNum(g.s)} · ${why}`;
+}
+
+/* ---------- Skärmen ---------- */
+function gradeHonest(m){
+  if(!m.placed) return 'Guiden behöver se dig räkna innan den kan säga något ärligt. Börja med kartläggningen: tolv frågor från hela kapitlet, och svårigheten anpassas efter dina svar.';
+  const un=m.evidence.untouched;
+  let s=`Bygger på ${m.evidence.all} svar, varav ${m.evidence.n30} de senaste 30 dagarna. `;
+  if(un.length) s+=`${un.length} av ${m.counts.N} avsnitt har du inte övat alls, och ett betyg kräver att du visat kunskap i alla avsnitt. `;
+  s+='Rättningen är stenhård: inga ledtrådar, avrundningen måste stämma och en nivå räknas först när den sitter, alltså flera rätt i rad. Det här är vad dina svar visar, inte en gissning om provet.';
+  return s;
+}
+function nextGradeHTML(m){
+  if(!m.placed) return '';
+  const order=C.GRADES, gi=order.indexOf(m.grade);
+  if(gi===order.length-1) return '<div class="gneed ok"><b>Du har visat A.</b> Håll det vid liv: det som inte övas bleknar efter några veckor.</div>';
+  const target=order[gi+1], r=m.reqs[target];
+  const chip=(id,need)=>`<span class="nchip"><b>${secNum(id)}</b> ${esc(need)}</span>`;
+  const needOf=(id,k)=>{ const x=m.secs[id]; if(!x.eOk) return 'E-nivå'; if(k>=2 && !x.cOk) return 'C-nivå'; if(k>=2 && !x.uOk) return 'förståelse'; return 'A-nivå'; };
+  const lvlNeed = {E:1,D:1,C:2,B:2,A:3}[target];
+  const list=r.all.slice(0,6).map(id=>chip(id,needOf(id,lvlNeed))).join('')+(r.all.length>6?`<span class="nchip">och ${r.all.length-6} till</span>`:'');
+  const parts=[];
+  if(r.all.length) parts.push(`${lvlNeed===1?'E-nivå':lvlNeed===2?'C-nivå med förståelse':'A-nivå'} i ${r.all.length} avsnitt till`);
+  if(r.more) parts.push(`${r.lvl===2?'C-nivå':'A-nivå'} i ${r.more} avsnitt till`);
+  if(r.slut) parts.push('klarat Slutprovet');
+  return `<div class="gneed"><b>För ${target} behöver du:</b> ${parts.join(', ')}.${list?`<div class="nchips">${list}</div>`:''}</div>`;
+}
+function gradeCardHTML(m){
+  const tick=(v,l)=>`<span class="tk" style="left:${v}%"><i></i><em>${l}</em></span>`;
+  return `<div class="card gradecard">
+    <div class="gc-top"><div class="gbig" aria-label="${m.placed?'Visat betyg '+m.grade:'Inget betyg än'}">${m.placed?m.grade:'?'}</div>
+      <div><span class="lkicker" style="--wc:var(--accent);margin:0">${m.placed?'Visat betyg':'Inget betyg än'}</span>
+      <b class="gline">${m.placed?`E-nivå i ${m.counts.E} av ${m.counts.N} avsnitt · C i ${m.counts.C} · A i ${m.counts.A}`:'Gör kartläggningen först'}</b></div></div>
+    <div class="gscale" role="img" aria-label="Kunskapspoäng ${fsc(m.score)} av 100. E överallt motsvarar 33, C överallt 67 och A överallt 100.">
+      <div class="trk"><div class="fil" style="width:${Math.max(1.5,m.score)}%"></div></div>${tick(100/3,'E')}${tick(200/3,'C')}${tick(100,'A')}</div>
+    <p class="small muted gpts"><b class="num">${fsc(m.score)}</b> av 100 i kunskapspoäng</p>
+    ${nextGradeHTML(m)}
+    <p class="small gwhy">${esc(gradeHonest(m))}</p>
+  </div>`;
+}
+function planChips(p){
+  if(!p.counts) return `<span class="chip">${p.items.length} uppgifter</span><span class="chip">inga ledtrådar</span>`;
+  const c=p.counts, out=[];
+  if(c.fokus) out.push(`${c.fokus} fokus`); if(c.repa) out.push(`${c.repa} reparera fel`); if(c.underhall) out.push(`${c.underhall} underhåll`);
+  out.push('1 toppuppgift');
+  return out.map(x=>`<span class="chip">${x}</span>`).join('');
+}
+function nextCardHTML(m,p){
+  const btn = p.kind==='place'?'Starta kartläggningen':p.kind==='kap'?'Starta kapitelprovet':p.kind==='slut'?'Starta Slutprovet':p.kind==='mast'?'Starta Mästarprovet':'Starta passet';
+  const title = p.kind==='pass' ? `${secNum(p.sec)} ${esc(p.title)} · ${cellLabel(p.cell)}` : esc(p.title);
+  return `<div class="card gnext"><span class="lkicker" style="--wc:var(--accent)">${m.next.kind==='maint'?'Underhåll':'Nästa steg'}</span>
+    <h3>${title}</h3><p class="small">${esc(p.why)}</p><div class="chips">${planChips(p)}</div>
+    <button class="btn primary" id="g-start">${btn}</button></div>`;
+}
+// Linjediagram: kunskapspoängen dag för dag, med linjer för E, C och A överallt
+function chartHTML(m){
+  const sn=S.guide.snaps.filter(s=>typeof s.sc==='number');
+  if(sn.length<2) return `<div class="card"><b>Kunskapspoäng över tid</b><p class="small muted" style="margin:6px 0 0">${sn.length?`I dag: <b class="num">${fsc(sn[0].sc)}</b> av 100. `:''}Grafen fylls på efter hand, en punkt för varje dag du övar.</p></div>`;
+  const W=320, H=170, L=8, Rg=22, T=12, B=26, iw=W-L-Rg, ih=H-T-B;
+  const t0=sn[0].t, t1=sn[sn.length-1].t, span=Math.max(1,t1-t0);
+  const X=t=>L+iw*(t-t0)/span, Y=v=>T+ih*(1-v/100);
+  const pts=sn.map(s=>[X(s.t),Y(s.sc)]);
+  const line=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join('');
+  const area=line+`L${pts[pts.length-1][0].toFixed(1)} ${Y(0).toFixed(1)}L${pts[0][0].toFixed(1)} ${Y(0).toFixed(1)}Z`;
+  const ref=(v,l)=>`<line class="gref" x1="${L}" x2="${L+iw}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/><text class="greft" x="${L+iw+6}" y="${(Y(v)+4).toFixed(1)}">${l}</text>`;
+  const fmtD=t=>new Date(t).toLocaleDateString('sv-SE',{day:'numeric',month:'short'});
+  const last=pts[pts.length-1];
+  const rows=sn.slice().reverse().map(s=>`<tr><td>${fmtD(s.t)}</td><td class="num">${fsc(s.sc)}</td><td>${s.g}</td></tr>`).join('');
+  return `<div class="card"><b>Kunskapspoäng över tid</b><p class="small muted" style="margin:2px 0 8px">0–100. Linjerna visar E, C och A i alla avsnitt.</p>
+    <div class="gchart" id="gchart"><svg viewBox="0 0 ${W} ${H}" tabindex="0" role="img" aria-label="Kunskapspoäng från ${fsc(sn[0].sc)} till ${fsc(sn[sn.length-1].sc)} av 100. Använd piltangenterna för att läsa av dagarna.">
+      <line class="gaxis" x1="${L}" x2="${L+iw}" y1="${Y(0)}" y2="${Y(0)}"/>
+      ${ref(100/3,'E')}${ref(200/3,'C')}${ref(100,'A')}
+      <path class="garea" d="${area}"/><path class="gpath" d="${line}"/>
+      <circle class="gdot" cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="4"/>
+      <text class="gend" x="${Math.min(last[0],L+iw-4).toFixed(1)}" y="${(last[1]-10).toFixed(1)}" text-anchor="end">${fsc(sn[sn.length-1].sc)}</text>
+      <text class="gxt" x="${L}" y="${H-6}">${fmtD(t0)}</text><text class="gxt" x="${L+iw}" y="${H-6}" text-anchor="end">${fmtD(t1)}</text>
+      <line class="gcross hidden" id="gx" x1="0" x2="0" y1="${T}" y2="${Y(0)}"/><circle class="gdot hidden" id="gxd" r="4"/>
+      <rect class="ghit" x="${L}" y="0" width="${iw}" height="${H}"/></svg>
+      <div class="gtip hidden" id="gtip"></div></div>
+    <details class="gtable"><summary>Visa som tabell</summary><table><tr><th>Dag</th><th>Poäng</th><th>Betyg</th></tr>${rows}</table></details></div>`;
+}
+function bindChart(){
+  const box=$('#gchart'); if(!box) return;
+  const sn=S.guide.snaps.filter(s=>typeof s.sc==='number'), svg=box.querySelector('svg');
+  const W=320, H=170, L=8, Rg=22, T=12, B=26, iw=W-L-Rg, ih=H-T-B, t0=sn[0].t, span=Math.max(1,sn[sn.length-1].t-t0);
+  const X=t=>L+iw*(t-t0)/span, Y=v=>T+ih*(1-v/100);
+  const fmtD=t=>new Date(t).toLocaleDateString('sv-SE',{day:'numeric',month:'short'});
+  const tip=$('#gtip'), cx=$('#gx'), cd=$('#gxd'); let idx=sn.length-1;
+  const showAt=i=>{
+    idx=Math.max(0,Math.min(sn.length-1,i)); const s=sn[idx], x=X(s.t), y=Y(s.sc);
+    cx.setAttribute('x1',x); cx.setAttribute('x2',x); cx.classList.remove('hidden');
+    cd.setAttribute('cx',x); cd.setAttribute('cy',y); cd.classList.remove('hidden');
+    tip.textContent=''; const v=document.createElement('b'); v.textContent=fsc(s.sc)+' poäng'; const d=document.createElement('span'); d.textContent=fmtD(s.t)+' · betyg '+s.g;
+    tip.append(v,d); tip.classList.remove('hidden');
+    const r=svg.getBoundingClientRect(), px=x/W*r.width;
+    tip.style.left=Math.max(0,Math.min(r.width-tip.offsetWidth,px-tip.offsetWidth/2))+'px';
+  };
+  const hide=()=>{ tip.classList.add('hidden'); cx.classList.add('hidden'); cd.classList.add('hidden'); };
+  const near=ev=>{ const r=svg.getBoundingClientRect(), x=(ev.clientX-r.left)/r.width*W; let b=0; sn.forEach((s,i)=>{ if(Math.abs(X(s.t)-x)<Math.abs(X(sn[b].t)-x)) b=i; }); return b; };
+  svg.addEventListener('pointermove',ev=>showAt(near(ev)));
+  svg.addEventListener('pointerdown',ev=>showAt(near(ev)));
+  svg.addEventListener('pointerleave',hide);
+  svg.addEventListener('focus',()=>showAt(idx)); svg.addEventListener('blur',hide);
+  svg.addEventListener('keydown',ev=>{ if(ev.key==='ArrowLeft'){ showAt(idx-1); ev.preventDefault(); } if(ev.key==='ArrowRight'){ showAt(idx+1); ev.preventDefault(); } });
+}
+function fallingHTML(m){
+  const rows=m.falling.slice(0,5).map(f=>{ const s=gsecOf(f.s);
+    const why = f.kind==='tappat' ? `Tappade ${LV_LETTER[f.from]}-nivå${f.to?`, nu ${LV_LETTER[f.to]}`:''}` : f.kind==='fel' ? `${f.wrong} fel av de 3 senaste svaren` : `Inte övat på ${f.days} dagar, det börjar blekna`;
+    return `<div class="grow"><span class="gic down" aria-hidden="true">↓</span><span class="gt"><b>${secNum(f.s)} ${esc(s.title)}</b><small>${esc(why)}</small></span><button class="btn sm" data-gsec="${f.s}">Reparera</button></div>`; }).join('');
+  return `<div class="card"><b>Det här faller</b>${rows||'<p class="small muted" style="margin:6px 0 0"><span class="gic ok" aria-hidden="true">✓</span> Inget faller just nu.</p>'}</div>`;
+}
+function errorsHTML(m){
+  if(!m.errors.length) return '';
+  const rows=m.errors.slice(0,5).map(e=>{ const T=C.TYPES[e.k], name=T?T.name:(e.k.startsWith('c')?'Utmaning':e.k);
+    return `<div class="grow err"><span class="gcount num">${e.n}×</span><span class="gt"><b>${esc(name)} · ${secNum(e.s)}</b><small>${md(e.msg)}</small></span><button class="btn sm" data-gsec="${e.s}">Träna bort</button></div>`; }).join('');
+  return `<div class="card"><b>Dina vanligaste fel</b><p class="small muted" style="margin:2px 0 6px">De senaste 45 dagarna. Samma missuppfattning räknas ihop även när talen skiljer sig.</p>${rows}</div>`;
+}
+// En lägre nivå räknas som klar när en högre sitter (C sitter ger E)
+const viaHigher = (x,c) => x.cells[c].st!=='klar' && ((c==='E'&&x.eOk)||(c==='C'&&x.cOk));
+const effSt = (x,c) => viaHigher(x,c) ? 'klar' : x.cells[c].st;
+function pillHTML(x,c){
+  const st=effSt(x,c);
+  return `<span class="pill st-${st}" aria-label="${cellLabel(c)}: ${ST_TEXT[st]}">${c==='U'?'💡':c}${ST_SYM[st]?`<i>${ST_SYM[st]}</i>`:''}</span>`;
+}
+function mapHTML(m){
+  const nx=m.next;
+  const chaps=C.GCHAPS.map(ch=>{
+    const L=C.levelInfo(ch), secs=C.GSECS.filter(s=>s.chap===ch), nC=secs.filter(s=>m.secs[s.id].lv>=2).length;
+    const nodes=secs.map(s=>{ const x=m.secs[s.id], isNext=nx.kind==='sec'&&nx.s===s.id;
+      return `<button class="gnode${isNext?' next':''}" data-gnode="${s.id}"><span class="lvdot l${x.lv}">${LV_LETTER[x.lv]}</span>
+        <span class="gt"><b>${secNum(s.id)} ${esc(s.title)}</b><span class="pills">${['E','C','A','U'].map(c=>pillHTML(x,c)).join('')}</span></span>${isNext?'<span class="ntag">Nästa</span>':'<span class="chev">›</span>'}</button>`; }).join('');
+    const kp=S.guide.kap[ch], isNext=nx.kind==='kap'&&nx.n===ch;
+    const exam=`<button class="gnode exam${isNext?' next':''}" data-gkap="${ch}"><span class="lvdot ex${kp&&kp.passed?' done':''}">◆</span>
+      <span class="gt"><b>Kapitelprov ${L.name.slice(0,3)}</b><small>${kp?`Bästa ${kp.best} av ${C.KAP_N}${kp.passed?' · klarat':''}`:`${C.KAP_N} uppgifter, minst ${C.KAP_PASS} rätt`}</small></span>${isNext?'<span class="ntag">Nästa</span>':'<span class="chev">›</span>'}</button>`;
+    return `<div class="gch" style="--wc:${wcol(ch)}"><div class="gch-h"><b>${esc(L.name)}</b><small>${nC} av ${secs.length} på C</small></div>${nodes}${exam}</div>`;
+  }).join('');
+  const sU=C.slutUnlocked(m), mU=C.mastUnlocked(m), sl=S.guide.slut, ms=S.guide.mast;
+  const fin=`<div class="gch" style="--wc:var(--accent)"><div class="gch-h"><b>Toppen</b><small>${m.counts.A} av ${m.counts.N} på A</small></div>
+    <button class="gnode exam${m.next.kind==='slut'?' next':''}${sU?'':' locked'}" data-gfinal="slut"><span class="lvdot ex${sl&&sl.passed?' done':''}">${sU?'🏁':'🔒'}</span>
+      <span class="gt"><b>Slutprovet</b><small>${sU?(sl?`Bästa ${sl.best} av ${C.SLUT_N}${sl.passed?' · klarat':''}`:`${C.SLUT_N} uppgifter, minst ${C.SLUT_PASS} rätt. Krävs för B och A.`):'Låst: klara alla fem kapitelprov först'}</small></span><span class="chev">›</span></button>
+    <button class="gnode exam${m.next.kind==='mast'?' next':''}${mU?'':' locked'}" data-gfinal="mast"><span class="lvdot ex${ms&&ms.passed?' done':''}">${mU?'👑':'🔒'}</span>
+      <span class="gt"><b>Mästarprovet</b><small>${mU?(ms?`Bästa ${ms.best} av ${C.MAST_N}${ms.passed?' · klarat':''}`:`${C.MAST_N} av de svåraste frågorna, minst ${C.MAST_PASS} rätt`):'Låst: klara Slutprovet först'}</small></span><span class="chev">›</span></button></div>`;
+  return `<h3 class="gh3">Kartan</h3><p class="small muted" style="margin:-4px 0 10px">Tryck på ett avsnitt för att se exakt vad som sitter. <span class="pill st-klar">E<i>✓</i></span> sitter · <span class="pill st-nara">C<i>≈</i></span> nästan · <span class="pill st-svag">A<i>!</i></span> svag · 💡 förståelse</p>${chaps}${fin}`;
+}
+const HOW_HTML=`<details class="card ghow"><summary><b>Så fungerar guiden</b></summary>
+  <p class="small">Varje avsnitt i kapitel 2 har tre nivåer, E, C och A, och förståelsefrågor 💡. En nivå <b>sitter</b> när du har minst tre rätt i rad på den nivån (två för förståelse) och säkerheten är minst 72 % (65 % för förståelse). Nyare svar väger mest. Ett fel kräver fyra rätt i rad efter sig.</p>
+  <p class="small"><b>C kräver förståelse.</b> Att räkna rätt räcker inte, du ska också visa att du förstår varför. A kräver dessutom tre rätt i rad på A-uppgifter, och A+-utmaningarna räknas dit.</p>
+  <p class="small"><b>Det du inte övar bleknar.</b> Svaren tappar i vikt med tiden, så efter några veckor utan övning räknas en nivå inte längre som säker. Då syns den under <i>Det här faller</i>.</p>
+  <p class="small"><b>Betyget</b> följer samma princip som i skolan: E kräver E-nivå i alla avsnitt, D även C i mer än hälften, C kräver C i alla, B även A i mer än hälften och A kräver A i alla. B och A kräver dessutom att du klarat Slutprovet.</p>
+  <p class="small"><b>Varje pass</b> har tolv uppgifter: fokus på nästa steg, reparation av det du har fel på, underhåll av det som sitter och en toppuppgift på nivån ovanför. Svarar du fel kommer en liknande uppgift tillbaka. Tre rätt i rad höjer nivån, två fel i rad sänker den.</p>
+  <p class="small"><b>Rättningen är stenhård:</b> inga ledtrådar, ett försök per uppgift och avrundningen måste stämma. Svar i andra lägen räknas också, men bara om du inte använt ledtråd.</p></details>`;
+function renderGuide(){
+  const now=gNow(), m=C.guideModel(S.guide,now);
+  const before=JSON.stringify(S.guide.snaps[S.guide.snaps.length-1]||null);
+  if(m.placed){ const sn=C.guideSnap(S.guide,m,now); if(JSON.stringify(sn)!==before) save(); }
+  G_PLAN=C.guidePlan(S.guide,now);
+  $('#guidebody').innerHTML=`<div class="backrow"><button class="backbtn" data-home>‹ Startsidan</button></div>
+    <p class="lkicker" style="--wc:var(--accent)">Guiden · Matte 2 kapitel 2</p><h2>Din väg till provet</h2>
+    ${gradeCardHTML(m)}${nextCardHTML(m,G_PLAN)}${m.placed?chartHTML(m)+fallingHTML(m)+errorsHTML(m):''}${mapHTML(m)}${HOW_HTML}
+    <button class="btn ghost" data-home>Tillbaka</button>`;
+  const box=$('#guidebody');
+  box.querySelectorAll('[data-home]').forEach(b=>b.onclick=()=>show('home'));
+  $('#g-start').onclick=()=>startGuide(G_PLAN);
+  box.querySelectorAll('[data-gsec]').forEach(b=>b.onclick=()=>startGuide(C.guidePlan(S.guide,gNow(),{kind:'pass',sec:b.dataset.gsec})));
+  box.querySelectorAll('[data-gnode]').forEach(b=>b.onclick=()=>openSecModal(b.dataset.gnode));
+  box.querySelectorAll('[data-gkap]').forEach(b=>b.onclick=()=>examModal('kap',+b.dataset.gkap));
+  box.querySelectorAll('[data-gfinal]').forEach(b=>b.onclick=()=>examModal(b.dataset.gfinal));
+  bindChart();
+}
+function gModal(html){ openModal(html); $('#modal .inner').classList.add('gm'); }
+function agoText(t){ if(!t) return 'aldrig'; const d=Math.floor((gNow()-t)/C.GDAY); return d<=0?'i dag':d===1?'i går':`för ${d} dagar sedan`; }
+function openSecModal(id){
+  const m=C.guideModel(S.guide,gNow()), x=m.secs[id], s=gsecOf(id), X=C.LADDER[id].X;
+  const solved=X.filter(k=>S.guide.log.some(e=>e.k===k&&e.ok)).length;
+  const row=c=>{ const cs=x.cells[c];
+    const txt = viaHigher(x,c) ? `Sitter, eftersom ${c==='E'&&x.cells.C.st==='klar'?'C':'A'}-nivån sitter` : !cs.n ? 'Inte provat än' : `${ST_TEXT[cs.st][0].toUpperCase()+ST_TEXT[cs.st].slice(1)} · ${cs.recent.filter(v=>v).length} av ${cs.recent.length} rätt senast · säkerhet ${Math.round(100*cs.p)} %`;
+    return `<div class="cellrow">${pillHTML(x,c)}<span class="gt"><b>${cellLabel(c)}</b><small>${txt}</small></span><span class="dots" aria-hidden="true">${cs.recent.map(v=>`<i class="${v?'ok':'no'}"></i>`).join('')}</span></div>`; };
+  gModal(`<p class="lkicker" style="--wc:${wcol(s.chap)};margin:0">${secNum(id)} · s. ${s.page}</p><h2 style="margin-top:4px">${esc(s.title)}</h2>
+    <p class="small muted" style="margin:-6px 0 10px">${x.lv?`Nivå som sitter: <b>${LV_LETTER[x.lv]}</b>`:'Ingen nivå sitter än'} · senast övat ${agoText(x.last)}</p>
+    ${['E','C','A','U'].map(row).join('')}
+    <p class="small" style="margin:12px 0 6px">A+-frågor lösta: <b>${solved} av ${X.length}</b></p>
+    <p class="small muted">E kräver tre rätt i rad på E-uppgifter. C kräver tre rätt i rad på C-uppgifter och två rätt på förståelsefrågor. A kräver dessutom tre rätt i rad på A-uppgifter.</p>
+    <button class="btn primary" id="sm-go">Öva det här</button>${s.learn?'<button class="btn" id="sm-read">Läs genomgången</button>':''}`);
+  $('#sm-go').onclick=()=>{ $('#modal').classList.add('hidden'); startGuide(C.guidePlan(S.guide,gNow(),{kind:'pass',sec:id})); };
+  if(s.learn) $('#sm-read').onclick=()=>{ $('#modal').classList.add('hidden'); openTopic(s.learn); };
+}
+function examModal(kind,chap){
+  const m=C.guideModel(S.guide,gNow());
+  if(kind==='slut' && !C.slutUnlocked(m)) return gModal(`<h2>Slutprovet är låst</h2><p>Klara alla fem kapitelprov först. Kvar: ${C.GCHAPS.filter(n=>!C.kapOk(m,n)).map(n=>C.levelInfo(n).name.slice(0,3)).join(', ')}.</p>`);
+  if(kind==='mast' && !C.mastUnlocked(m)) return gModal('<h2>Mästarprovet är låst</h2><p>Klara Slutprovet först.</p>');
+  const p=C.guidePlan(S.guide,gNow(),{kind,chap});
+  gModal(`<h2>${esc(p.title)}</h2><p>${esc(p.why)}</p><p class="small muted">Provet räknas bara om du gör klart det. Du kan pausa, men inte få ledtrådar.</p><button class="btn primary" id="ex-go">Starta</button>`);
+  $('#ex-go').onclick=()=>{ $('#modal').classList.add('hidden'); startGuide(p); };
+}
+
+/* ---------- Slutskärmen för guiden ---------- */
+function endGuide(){
+  const now=gNow(), n=R.results.length, right=R.results.filter(r=>r.ok).length;
+  S.history.push({level:R.level,correct:right,score:R.score,practice:true,date:now}); if(S.history.length>80) S.history=S.history.slice(-80);
+  S.rounds++; S.guide.passes=(S.guide.passes||0)+1;
+  let exam=null;
+  if(['kap','slut','mast'].includes(R.gk)){
+    exam=C.examResult(R.gk,right);
+    const prev = R.gk==='kap' ? S.guide.kap[R.gchap] : S.guide[R.gk];
+    const rec={best:Math.max((prev&&prev.best)||0,right), passed:!!(prev&&prev.passed)||exam.passed, t:now};
+    if(R.gk==='kap') S.guide.kap[R.gchap]=rec; else S.guide[R.gk]=rec;
+  }
+  const m=C.guideModel(S.guide,now); C.guideSnap(S.guide,m,now); save();
+  const b=R.gBefore, ups=[], downs=[];
+  C.GSECS.forEach(s=>{ const x=m.secs[s.id], was=b.lv[s.id], name=`${secNum(s.id)} ${s.title}`;
+    if(x.lv>was) ups.push(`${name}: ${LV_LETTER[x.lv]}-nivå sitter nu`);
+    else if(x.lv<was) downs.push(`${name}: tappade ${LV_LETTER[was]}-nivå`);
+    else C.CELLS.forEach(c=>{ const st=x.cells[c].st, bs=b.st[s.id][c];
+      if(st==='klar' && bs!=='klar') ups.push(`${name}: ${cellLabel(c)} sitter`);
+      else if(bs==='klar' && st!=='klar') downs.push(`${name}: ${cellLabel(c)} sitter inte längre`); });
+  });
+  const errs=(R.gerrs||[]);
+  const gradeTile = m.placed ? (b.placed && b.grade!==m.grade ? `${b.grade} → ${m.grade}` : m.grade) : '–';
+  const title = exam ? `${R.gtitle}: ${exam.passed?'klarat':'inte klarat'}` : R.gk==='place' ? 'Kartläggningen klar' : 'Passet klart';
+  const banner = exam ? (exam.passed ? `<div class="banner up">Klarat! ${right} av ${n} rätt, kravet var ${exam.need}.</div>` : `<div class="banner down">${right} av ${n} rätt. Kravet är ${exam.need}. Det du missade läggs in i dina nästa pass.</div>`)
+    : R.gk==='place' ? '<div class="banner up">Nu vet guiden var du står. Kartan och betyget nedan bygger på dina svar.</div>' : '';
+  const delta=Math.round(10*(m.score-b.score))/10;
+  $('#e-title').textContent=title;
+  $('#endbody').innerHTML=`${banner}
+    <div class="tiles">
+      <div class="tile"><span>Rätt</span><b>${right} av ${n}</b></div>
+      <div class="tile"><span>XP</span><b>${R.score}</b></div>
+      <div class="tile"><span>Visat betyg</span><b>${gradeTile}</b></div>
+      <div class="tile"><span>Kunskapspoäng</span><b>${fsc(m.score)}${delta?` <small class="${delta>0?'up':'dn'}">${delta>0?'+':''}${fsc(delta)}</small>`:''}</b></div>
+    </div>
+    ${R.gk==='place'?`<div class="card"><b>Så gick kartläggningen</b><ul class="glist">${R.plan.map((sp,i)=>{ const r=R.results[i]; if(!r) return '';
+      return `<li><span class="gic ${r.ok?'ok':'down'}" aria-hidden="true">${r.ok?'✓':'✗'}</span><span>${secNum(sp.s)} ${esc(gsecOf(sp.s).title)} · ${cellLabel(sp.c)}${r.ok?'':' <span class="muted">(fel)</span>'}</span></li>`; }).join('')}</ul>
+      <p class="small muted" style="margin:6px 0 0">Där du svarade rätt börjar guiden på en högre nivå. Ett svar räcker inte för att en nivå ska sitta, det kräver flera rätt i rad.</p></div>`:''}
+    <div class="card"><b>Det här hände</b>
+      ${ups.length||downs.length?`<ul class="glist">${ups.map(u=>`<li><span class="gic ok" aria-hidden="true">↑</span>${esc(u)}</li>`).join('')}${downs.map(d=>`<li><span class="gic down" aria-hidden="true">↓</span>${esc(d)}</li>`).join('')}</ul>`
+        :'<p class="small" style="margin:6px 0 0">Ingen nivå ändrades den här gången. En nivå räknas först när den sitter, alltså flera rätt i rad. Det kommer.</p>'}</div>
+    <div class="card"><b>Det här gick fel</b>
+      ${errs.length?`<ul class="glist">${errs.map(e=>`<li><span class="gic down" aria-hidden="true">✗</span><span><b>${esc(e.name||'')} · ${secNum(e.s)}</b>${e.msg?`<br><span class="small">${md(e.msg)}</span>`:''}</span></li>`).join('')}</ul><p class="small muted" style="margin:6px 0 0">De här kommer tillbaka i nästa pass, så att du får visa att du kan dem.</p>`
+        :'<p class="small" style="margin:6px 0 0">Inga fel. Snyggt!</p>'}</div>
+    <p class="small muted">${esc(nextGradeText(m))}</p>
+    <button class="btn primary" id="e-gnext">Nästa pass</button>
+    <button class="btn" id="e-guide">Till guiden</button>
+    <button class="btn ghost" id="e-home">Till startsidan</button>`;
+  $('#e-gnext').onclick=()=>startGuide();
+  $('#e-guide').onclick=()=>show('guide');
+  $('#e-home').onclick=()=>show('home');
+  document.body.classList.remove('bossmode');
+  show('end');
+}
+function nextGradeText(m){
+  if(!m.placed) return '';
+  const gi=C.GRADES.indexOf(m.grade); if(gi===C.GRADES.length-1) return 'Du har visat A. Håll det vid liv med underhåll.';
+  const t=C.GRADES[gi+1], r=m.reqs[t], n=r.all.length+(r.more||0);
+  return `Dina svar visar ${m.grade}. För ${t} saknas ${n?n+' avsnitt':''}${n&&r.slut?' och ':''}${r.slut?'Slutprovet':''}.`;
 }
 
 /* =====================================================================
@@ -6585,7 +7983,7 @@ function submitAcc(form){
 }
 
 // Intern krok för testsidan och testläget
-window.__app={startRun,show,state:()=>S,round:()=>R,save};
+window.__app={startRun,show,state:()=>S,round:()=>R,save,submit:x=>submitPart(x),startGuide};
 applySkin();
 show('home');
 if(location.hash==='#test') enterTest(); else cloudInit();

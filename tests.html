@@ -244,6 +244,59 @@ pre{white-space:pre-wrap;word-break:break-word}
     log(nt.length>=3, 'Problemlösning och tillämpningar har ingen tidspress', nt.join(', '));
   }
 
+  /* ---------- Guiden ---------- */
+  {
+    const D=C.GDAY, now=Date.parse('2026-11-04T12:00:00');
+    // stegarna
+    const probs=[];
+    for(const s of C.GSECS){
+      const L=C.LADDER[s.id]; if(!L){ probs.push(s.id+' saknar stege'); continue; }
+      if(!L.E.length||!L.C.length||!L.A.length||!L.U.length) probs.push(s.id+' saknar en nivå');
+      for(const c of ['E','C','A']) for(const [id,ds] of L[c]){
+        if(!C.TYPES[id]||C.TYPES[id].und){ probs.push(s.id+c+' fel typ '+id); continue; }
+        const got=new Set(); for(let i=0;i<120;i++) got.add(C.generate(id).diff);
+        ds.forEach(d=>{ if(!got.has(d)) probs.push(`${s.id}${c} ${id} ger aldrig svårighet ${d}`); });
+      }
+      L.U.forEach(id=>{ if(!C.TYPES[id]||!C.TYPES[id].und) probs.push(s.id+' U är ingen förståelseuppgift: '+id); });
+      L.X.forEach(id=>{ if(!C.CHALLENGES.some(q=>q.id===id)) probs.push(s.id+' okänd utmaning '+id); });
+    }
+    C.CHALLENGES.forEach(q=>{ if(!C.chalSec(q.id)) probs.push('utmaning utan avsnitt: '+q.id); });
+    log(probs.length===0,`Guiden: stegar för alla ${C.GSECS.length} avsnitt (E, C, A, förståelse och A+)`,probs.slice(0,5).join(' | '));
+    // säkerhet per nivå
+    const seq=(arr,days=0)=>arr.map((v,i)=>({t:now-days*D-(arr.length-i)*1000,ok:v,k:'t'}));
+    const st=(arr,c='C',days=0)=>C.cellStat(seq(arr,days),now,c).st;
+    log(st([1,1,1])==='klar' && st([1,1])!=='klar','Guiden: tre rätt i rad krävs för att en nivå ska sitta');
+    log(st([0,1,1,1])!=='klar' && st([0,1,1,1,1])==='klar','Guiden: efter ett fel krävs fyra rätt i rad');
+    log(st([1,1,0,0])==='svag','Guiden: två fel i rad ger svag');
+    log(st([1,1,1],'C',60)!=='klar' && st([1,1,1],'C',14)==='klar','Guiden: det som inte övas bleknar efter några veckor');
+    // betyg
+    const mk=(lvFor,slut)=>{ const G=C.guideState(null);
+      C.GSECS.forEach((s,i)=>{ const lv=lvFor(i), add=(c,n)=>{ for(let j=0;j<n;j++) C.guideLog(G,{s:s.id,c,k:'t',ok:true},now-j*1000-i); };
+        if(lv>=1) add('E',3); if(lv>=2){ add('C',3); add('U',2); } if(lv>=3) add('A',3); });
+      if(slut) G.slut={passed:true,best:10}; return G; };
+    const g=(f,sl)=>C.guideModel(mk(f,sl),now).grade;
+    log(g(()=>0)==='F' && g(i=>i<17?1:0)==='F' && g(()=>1)==='E' && g(i=>i<10?2:1)==='D' && g(()=>2)==='C','Guiden: betyg F, E, D och C som i skolan');
+    log(g(()=>3)==='C' && g(()=>3,true)==='A' && g(i=>i<10?3:2,true)==='B','Guiden: B och A kräver Slutprovet');
+    { const G=C.guideState(null); C.GSECS.forEach(s=>{ for(let j=0;j<3;j++){ C.guideLog(G,{s:s.id,c:'E',k:'t',ok:true},now-j); C.guideLog(G,{s:s.id,c:'C',k:'t',ok:true},now-j); } });
+      log(C.guideModel(G,now).grade==='E','Guiden: C-uppgifter utan förståelse räcker inte för C'); }
+    // planerare och anpassning
+    const p0=C.guidePlan(null,now);
+    log(p0.kind==='place' && p0.items.length===12 && p0.items.every(sp=>C.guideTask(sp).g),'Guiden: ny elev får en kartläggning med 12 frågor');
+    const G1=mk(i=>i<3?2:i<5?1:0), p1=C.guidePlan(G1,now);
+    log(p1.kind==='pass' && p1.sec==='s214' && p1.items.length===12 && p1.items[11].why==='topp','Guiden: passet fokuserar på nästa avsnitt och slutar med en toppuppgift');
+    const fi=p1.items.findIndex(x=>x.why==='fokus'), ch=C.guideAdapt(p1.items.slice(),fi,false,{},'pass');
+    log(ch.some(c=>c.sp.why==='chans' && c.sp.k===p1.items[fi].k && c.j>=fi+2),'Guiden: fel ger en ny chans på samma sorts uppgift senare i passet');
+    const G2=mk(()=>2); C.GCHAPS.forEach(n=>G2.kap[n]={passed:true,best:7});
+    const ps=C.guidePlan(G2,now,{kind:'slut'}), pm=C.guidePlan(G2,now,{kind:'mast'});
+    log(ps.items.length===12 && ps.items.slice(-3).every(x=>x.c==='X') && pm.items.length===10 && pm.items.every(x=>x.c==='X'),'Guiden: Slutprovet och Mästarprovet slutar svårast');
+    // stenhård rättning
+    const t={answer:{kind:'num',values:[C.parseNum('1.73')],ordered:false,tex:'',tol:0.0051},errors:[]}, pr='Svara med två decimaler.';
+    log(C.check(t,'1,73',{strict:true,prompt:pr}).correct && !C.check(t,'1,7321',{strict:true,prompt:pr}).correct && C.check(t,'1,7321').correct,'Guiden: stenhård rättning kräver rätt avrundning');
+    // samma fel räknas ihop
+    const G3=C.guideState(null); for(let i=0;i<3;i++) C.guideLog(G3,{s:'s211',c:'E',k:'b-kvrot',ok:false,msg:`Glöm inte den negativa roten: $x^2 = ${(i+3)**2}$.`},now-i);
+    log(C.guideModel(G3,now).errors[0].n===3,'Guiden: samma missuppfattning räknas ihop trots olika tal');
+  }
+
   /* ---------- Förståelse och Kodex ---------- */
   log(cardsSeen.size===cardIds.size, 'Alla Kodex-kort går att vinna', [...cardIds].filter(c=>!cardsSeen.has(c)).join(', '));
   C.WORLDS.forEach(w=>log((kindsPerWorld[w]||new Set()).size>=2, `Värld ${w} har minst två sorters förståelseuppgifter (krävs för Förstådd)`));
