@@ -1,0 +1,27 @@
+# Streamlits inställningar. Filen läses när du startar appen från mappen
+# fastighetsterminal/.
+
+[theme]
+base = "dark"
+primaryColor = "#ff9f1c"              # orange accentfärg (markeringar, fokus)
+backgroundColor = "#000000"           # svart bakgrund
+secondaryBackgroundColor = "#111419"  # mörkgrå: sidofältet och inmatningsrutor
+textColor = "#e8e8e8"                 # ljusgrå text
+borderColor = "#2a2f37"               # tunna grå kanter
+greenColor = "#3ddc84"                # grönt = upp
+redColor = "#ff5b55"                  # rött = ner
+baseRadius = "none"                   # fyrkantiga hörn, som i terminalen
+
+# Typsnitt: IBM Plex Sans för text och IBM Plex Mono (monospace) för siffror.
+# De hämtas från Google Fonts. Utan internet används datorns egna typsnitt.
+font = "IBM Plex Sans:https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap, sans-serif"
+codeFont = "IBM Plex Mono:https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap, monospace"
+
+paddingTop = "0.75rem"                # mindre luft högst upp på sidan
+paddingBottom = "2rem"
+
+[client]
+toolbarMode = "minimal"               # göm utvecklarmenyn uppe till höger
+
+[browser]
+gatherUsageStats = false              # skicka ingen användningsstatistik
