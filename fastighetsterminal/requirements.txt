@@ -1,4 +1,0 @@
-# Paket som appen behöver. Installera med:
-#   python -m pip install -r requirements.txt
-streamlit>=1.67,<2
-pandas>=2.2
