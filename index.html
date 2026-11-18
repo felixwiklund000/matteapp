@@ -593,6 +593,12 @@ body.bossmode .timer>div{background:linear-gradient(90deg,#f3d77a,#c9a227)}
 /* ===== Miniräknare ===== */
 .calcbtn{border:0;background:color-mix(in srgb,var(--ins) 20%,var(--card));color:var(--ins);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:800;margin-top:10px}
 .calctag{color:var(--ins);font-weight:800;margin-right:6px}
+.worktag{display:inline-block;margin:8px 0 0;padding:4px 10px;border-radius:99px;font-size:.82rem;font-weight:800;background:var(--warn-soft);color:var(--ink);border:1px solid color-mix(in srgb,var(--warn) 55%,transparent)}
+.worktag.R{background:var(--bad-soft);border-color:color-mix(in srgb,var(--bad) 55%,transparent)}
+.examnote{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:var(--raised);font-size:.9rem}
+.examnote.R{border-left:4px solid var(--bad)}
+.examnote.P{border-left:4px solid var(--warn)}
+.examnote.S{border-left:4px solid var(--good)}
 .calc{position:fixed;left:0;right:0;bottom:0;z-index:70;display:flex;justify-content:center;padding:0 8px calc(8px + env(safe-area-inset-bottom));pointer-events:none}
 .calc-in{pointer-events:auto;width:100%;max-width:560px;background:var(--card);border:1px solid var(--line);border-radius:22px 22px 18px 18px;padding:12px;box-shadow:0 -12px 40px rgba(0,0,0,.45);animation:slideup .25s ease-out both}
 .calc-top{display:flex;justify-content:space-between;align-items:center;margin:0 4px 6px}
@@ -796,6 +802,7 @@ body.calc-open #s-game{padding-bottom:380px}
   </div>
   <div class="card" id="g-card">
     <div class="meta"><span id="g-type"></span><span class="diff" id="g-diff"></span></div>
+    <div id="g-work"></div>
     <div class="prompt" id="g-prompt"></div>
     <div id="g-lines"></div>
     <div id="g-fig"></div>
@@ -5476,6 +5483,36 @@ Object.assign(METHOD,{
   'a-251':{topic:'l25-reg', how:['Skriv en modell för varje: linjär $y = m + kx$ och exponentiell $y = C\\cdot a^x$.','Ekvationen går inte att lösa exakt i Matte 2. Pröva år för år eller jämför graferna.','Svara med det första hela året då villkoret gäller.'], trap:'Att tro att den exponentiella modellen alltid ligger över från början.'},
   'a-252':{topic:'l25-graf', how:['Nollställena ger faktorformen $y = a(x - x_1)(x - x_2)$.','Den tredje punkten bestämmer $a$.','Multiplicera ut och läs av $a$, $b$ och $c$.'], trap:'Att glömma faktorn $a$.'}
 });
+/* ---------- Papper och redovisning ----------
+   S: går att räkna i huvudet, på ett prov räcker svaret.
+   P: skriv mellanstegen på papper, men på ett prov räcker svaret.
+   R: räkna på papper, på ett prov krävs fullständig redovisning.
+   En sträng ger samma värde för alla svårigheter, en array ger värdet per svårighet 1, 2, 3. */
+const WORK={
+  'b-kvrot':['S','P','R'], 'b-nollprod':['P','R','R'], 'rot-faktor':['S','P','P'], pq:'R', 'pq-dela':'R', 'b-pqdec':'R', abc:'R',
+  'b-omskriv':'R', 'b-antal':'R', 'b-problem':'R', 'b-ord':'R', 'rot-bygg':'P', 'rot-andra':'P', elever:'R', koef:'R',
+  'ins-kvad':['S','P','P'], 'ins-los':['S','P','P'], 'fn-ka':'P', 'fn-ff':'P', 'k-kvad':'P',
+  'b-sym':['S','P','P'], 'b-grafsym':'S', 'graf-skar':'S', 'df-graf':'S',
+  'b-extrem':'R', 'b-param':'R', 'mod-max':'R', 'b-rekt':'R', 'b-modell':'R', 'b-vinst':'R', 'mod-vf':'R',
+  'b-potval':['S','P','P'], 'b-potlag':['S','P','P'], 'b-potek':['S','P','P'], 'b-potcalc':'R',
+  'b-exp':['S','P','R'], 'b-procent':'P', 'b-lg':'S', 'b-10x':'R', 'b-lgdef':['S','P','P'], 'b-lglag':['P','P','R'],
+  'ins-lin':['S','S','P'], 'par-tva':'P', 'par-en':'P', 'par-a':'P', 'par-kvad':'P', 'df-tallinje':'S', 'fn-xk':'P', 'k-lin':['S','P','P'], 'k-tva':'R',
+  'graf-olikhet':['S','P','R'], 'mod-formel':'P', 'mod-varde':'P', 'mod-df':'P',
+  'b-expvspot':['S','R','R'], 'b-expek':'R', 'b-ranta':'R', 'b-kol14':['S','R','R'], 'b-regtyp':'S', 'b-regmodell':'P', 'b-grafformel':'R',
+};
+function workOf(t){
+  if(t.und) return null;                              // förståelsefrågor: tänk, ingen uträkning
+  if(t.chal || /^a-/.test(t.type)) return 'R';        // A-nivå och utmaningar kräver alltid redovisning
+  const w=WORK[t.type];
+  if(w) return Array.isArray(w) ? w[Math.min(3,Math.max(1,t.diff||1))-1] : w;
+  if(t.level>=10 || t.diff>=3) return 'R';
+  return t.diff>=2 ? 'P' : 'S';
+}
+const WORK_TEXT={
+  S:{tag:'', exam:'På ett prov: endast svar krävs. Den här går att räkna i huvudet.'},
+  P:{tag:'✍️ Skriv mellanstegen på ett papper', exam:'På ett prov: oftast räcker svaret, men räkna på kladdpapper så att du inte tappar ett steg.'},
+  R:{tag:'✍️ Räkna på papper: hela uträkningen', exam:'På ett prov krävs fullständig redovisning: ställ upp, visa varje steg och skriv svaret tydligt. Bara svaret ger inga poäng för metoden.'},
+};
 /* ---------- Nya utmaningar (A+) för 2.3–2.5 ---------- */
 CHALLENGES.push(
   {id:'c23a', w:23, prompt:'Lös ekvationen $x^{\\frac{3}{2}} = 27$.',
@@ -6045,7 +6082,7 @@ function examResult(kind,right){
 
 root.Core={Frac,F,Poly,parseNum,parseList,check,answerString,generate,makeRound,reviveTask,TYPES,LEVELS,typesFor,undTypesFor,levelInfo,timeFor,setRandom,sameVals,
   UND,CARDS,RARITY,MEDALS,WORLDS,RUST_DAYS,DAY,starsFor,LESSONS,LEARN,BOOK_LEVELS,approxVals,BOOK,chapterTypes,allBookTypes,bookSection,
-  LADDER,GSECS,GCHAPS,CELLS,CELL_NAME,GRADES,KAP_N,KAP_PASS,SLUT_N,SLUT_PASS,MAST_N,MAST_PASS,GDAY,cellOfTask,errKey,guideState,guideLog,cellStat,guideModel,guideSnap,guidePlan,guideTask,guideAdapt,examResult,gradeOf,kapOk,slutUnlocked,mastUnlocked,poolOf,chalSec,dayKey,decimalsAsked,methodFor,CHALLENGES,challengeTask,challengesOf,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
+  WORK,workOf,WORK_TEXT,LADDER,GSECS,GCHAPS,CELLS,CELL_NAME,GRADES,KAP_N,KAP_PASS,SLUT_N,SLUT_PASS,MAST_N,MAST_PASS,GDAY,cellOfTask,errKey,guideState,guideLog,cellStat,guideModel,guideSnap,guidePlan,guideTask,guideAdapt,examResult,gradeOf,kapOk,slutUnlocked,mastUnlocked,poolOf,chalSec,dayKey,decimalsAsked,methodFor,CHALLENGES,challengeTask,challengesOf,BLACK_LEVELS,BOSS_INSIGHTS,blackRequirements,bossReady,blackStatus,freshState,migrate,forstadd,cardsOfWorld,medalInfo,provGrade,isRusty,rustyWorlds,playerLevel};
 })(typeof window!=='undefined'?window:globalThis);
 </script>
 
@@ -6420,6 +6457,8 @@ function showTask(st){
   renderCombo(false);
   $('#g-type').innerHTML=R.mode==='guide'?guideChip(t):t.und?`<span class="ubadge">✦ ${esc(C.UND[t.und])}</span>`:esc(t.typeName);
   $('#g-diff').innerHTML=(t.calc?'<span class="calctag">🧮</span>':'')+(t.diff>1&&!t.time&&isTimed(t)?'<span class="xtime">+ extra tid</span> ':'')+'Svårighet '+t.diff+' '+[1,2,3].map(i=>`<i class="${i<=t.diff?'on':''}"></i>`).join('');
+  const wk=C.workOf(t);
+  $('#g-work').innerHTML = wk && C.WORK_TEXT[wk].tag ? `<span class="worktag ${wk}">${C.WORK_TEXT[wk].tag}</span>` : '';
   $('#g-prompt').innerHTML=`<div>${md(t.prompt)}</div>`;
   $('#g-lines').innerHTML=t.lines?`<ol class="sol">${t.lines.map((l,i)=>`<li class="${i===t.mark?'mark':''}"><span class="rn">Rad ${i+1}</span><span>${md(l)}</span></li>`).join('')}</ol>`:'';
   $('#g-fig').innerHTML=t.fig;
@@ -6670,6 +6709,7 @@ function finishTask(timedOut){
   const fb=$('#g-feedback');
   fb.innerHTML=`<div class="feedback ${timedOut?'time':ok?'ok':'no'}">
       ${head}${facit}
+      ${(w=>w?`<div class="examnote ${w}">📝 ${C.WORK_TEXT[w].exam}</div>`:'')(C.workOf(t))}
       ${strictRes?`<div class="gnote">${md(strictRes.msg)}</div>`:''}${gnote?`<div class="gnote">${md(gnote)}</div>`:''}
       ${ins?`<div class="insgain">+${ins} ✦ Insikter${predOk&&ins>2?' (varav 2 för rätt förutsägelse)':''}</div>`:''}
       ${newCard?`<div class="newcard"><div class="lbl">Nytt Kodex-kort!</div>${cardHTML(newCard,true,{reveal:true})}</div>`:''}

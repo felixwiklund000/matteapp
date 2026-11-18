@@ -244,6 +244,17 @@ pre{white-space:pre-wrap;word-break:break-word}
     log(nt.length>=3, 'Problemlösning och tillämpningar har ingen tidspress', nt.join(', '));
   }
 
+  /* ---------- Papper och redovisning ---------- */
+  {
+    const bad=[];
+    for(const id of Object.keys(C.TYPES)){ const T=C.TYPES[id]; if(T.special) continue;
+      for(let i=0;i<20;i++){ const t=C.generate(id), w=C.workOf(t);
+        if(t.und ? w!==null : !['S','P','R'].includes(w)) { bad.push(id); break; } } }
+    C.CHALLENGES.forEach(q=>{ if(C.workOf(C.challengeTask(q))!=='R') bad.push(q.id); });
+    log(bad.length===0,'Varje räkneuppgift säger om den ska räknas på papper och om ett prov kräver redovisning',bad.slice(0,6).join(', '));
+    log(['S','P','R'].every(k=>C.WORK_TEXT[k] && C.WORK_TEXT[k].exam),'Texterna för papper och prov finns');
+  }
+
   /* ---------- Guiden ---------- */
   {
     const D=C.GDAY, now=Date.parse('2026-11-04T12:00:00');
